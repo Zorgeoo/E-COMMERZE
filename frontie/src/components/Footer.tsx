@@ -15,15 +15,15 @@ export const Footer = () => {
             <Image src={`/Logo.png`} alt="" fill />
           </div>
           <div className="text-white flex justify-between gap-9 items-center">
-            <div className="flex gap-5">
-              <div>
-                <BsTelephone className="rounded-full border w-6 h-6" />
+            <div className="flex gap-5 items-center">
+              <div className="border rounded-full p-[14px]">
+                <BsTelephone className=" w-6 h-6" />
               </div>
               <div>(976) 7007-1234</div>
             </div>
-            <div className="flex gap-5">
-              <div>
-                <CiMail className="rounded-full border w-6 h-6" />
+            <div className="flex gap-5 items-center">
+              <div className="border rounded-full p-[14px]">
+                <CiMail className="w-6 h-6" />
               </div>
               <div>contact@ecommerce.mn</div>
             </div>

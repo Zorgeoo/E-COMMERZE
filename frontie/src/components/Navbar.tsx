@@ -32,9 +32,11 @@ export const Navbar = () => {
                 <CiHeart className="w-6 h-6" />
               </div>
             </Link>
-            <div>
-              <CiShoppingCart className="w-6 h-6" />
-            </div>
+            <Link href={`/cart`}>
+              <div>
+                <CiShoppingCart className="w-6 h-6" />
+              </div>
+            </Link>
           </div>
           <div className="flex gap-2">
             <button className="border border-[#2563EB] rounded-md py-2 px-3">
