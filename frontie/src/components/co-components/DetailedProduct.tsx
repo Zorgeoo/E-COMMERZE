@@ -4,13 +4,13 @@ import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 const images = ["/detail1.png", "/detail2.png", "/detail3.png", "/detail4.png"];
+const sizeData = ["S", "M", "L", "XL", "2XL"];
 export const DetailedProduct = () => {
   const [currentImage, setCurrentImage] = useState(images[0]);
   const [heartFill, setHeartFill] = useState(false);
   const [hiddenElement, setHiddenElement] = useState(false);
-
   const [count, setCount] = useState(0);
-
+  const [sizeChange, setSizeChange] = useState(0);
   return (
     <div>
       <div className="w-[1280px] m-auto">
@@ -66,21 +66,19 @@ export const DetailedProduct = () => {
               <div className="flex flex-col gap-2">
                 <div className="underline">Хэмжээний заавар</div>
                 <div className="flex gap-1">
-                  <div className="flex justify-center items-center p-2 w-8 h-8 rounded-full bg-black text-white">
-                    S
-                  </div>
-                  <div className="flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black">
-                    M
-                  </div>
-                  <div className="flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black">
-                    L
-                  </div>
-                  <div className="flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black">
-                    XL
-                  </div>
-                  <div className="flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black">
-                    2XL
-                  </div>
+                  {sizeData.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className={`flex justify-center items-center p-2 w-8 h-8 rounded-full bg-white border border-black text-black ${
+                          sizeChange === index ? "bg-black" : "bg-black"
+                        }`}
+                        onClick={() => setSizeChange(index)}
+                      >
+                        {item}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
               <div className="flex items-center gap-4">
