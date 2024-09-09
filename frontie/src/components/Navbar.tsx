@@ -14,8 +14,9 @@ export const Navbar = () => {
               <Image src={`/Logo.png`} alt="Hello" width={32} height={32} />
             </div>
           </Link>
+          <div>ECOMMERCE</div>
           <Link href={`/Category`}>
-            <div>Бүтээгдэхүүн</div>
+            <div>Ангилал</div>
           </Link>
         </div>
         <div className="relative">
@@ -32,16 +33,18 @@ export const Navbar = () => {
                 <CiHeart className="w-6 h-6" />
               </div>
             </Link>
-            <Link href={`/cart`}>
+            <Link href={`/buysteps/cart`}>
               <div>
                 <CiShoppingCart className="w-6 h-6" />
               </div>
             </Link>
           </div>
           <div className="flex gap-2">
-            <button className="border border-[#2563EB] rounded-md py-2 px-3">
-              Бүртгүүлэх
-            </button>
+            <Link href={`/register`}>
+              <button className="border border-[#2563EB] rounded-md py-2 px-3">
+                Бүртгүүлэх
+              </button>
+            </Link>
             <button className="bg-[#2563EB] rounded-md py-2 px-3">
               Нэвтрэх
             </button>

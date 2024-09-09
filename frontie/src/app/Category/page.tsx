@@ -18,6 +18,17 @@ const productData = [
   { img: "/girlwithcap.png", title: "Cap", price: 124000 },
   { img: "/girlWithTshirt.png", title: "Tee", price: 125000 },
 ];
+
+const categoriesData = [
+  "Малгай",
+  "Усны сав",
+  "T-shirt",
+  "Hoodie",
+  "Tee",
+  "Цүнх",
+];
+
+const sizeData = ["Free", "S", "M", "L", "XL", "2XL", "3XL"];
 export const Category = () => {
   return (
     <div>
@@ -26,24 +37,27 @@ export const Category = () => {
           <div>
             <div className="font-bold">Ангилал</div>
             <div className="flex flex-col gap-2 pt-4">
-              <div>Малгай</div>
-              <div>Усны сав</div>
-              <div>T-shirt</div>
-              <div>Hoodie</div>
-              <div>Tee</div>
-              <div>Цүнх</div>
+              {categoriesData.map((item, index) => {
+                return (
+                  <label key={index}>
+                    <input type="checkbox" id="cap" />
+                    {item}
+                  </label>
+                );
+              })}
             </div>
           </div>
           <div>
             <div className="font-bold">Хэмжээ</div>
             <div className="flex flex-col gap-2 pt-4">
-              <div>Free</div>
-              <div>S</div>
-              <div>M</div>
-              <div>L</div>
-              <div>XL</div>
-              <div>2XL</div>
-              <div>3XL</div>
+              {sizeData.map((item, index) => {
+                return (
+                  <label key={index}>
+                    <input type="checkbox" id="cap" />
+                    {item}
+                  </label>
+                );
+              })}
             </div>
           </div>
         </div>

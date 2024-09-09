@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
+import { Review } from "./Review";
 const images = ["/detail1.png", "/detail2.png", "/detail3.png", "/detail4.png"];
 const sizeData = ["S", "M", "L", "XL", "2XL"];
 export const DetailedProduct = () => {
@@ -10,7 +11,8 @@ export const DetailedProduct = () => {
   const [heartFill, setHeartFill] = useState(false);
   const [hiddenElement, setHiddenElement] = useState(false);
   const [count, setCount] = useState(0);
-  const [sizeChange, setSizeChange] = useState(0);
+  const [sizeChange, setSizeChange] = useState(6);
+  const [rating, setRating] = useState(0);
   return (
     <div>
       <div className="w-[1280px] m-auto">
@@ -70,8 +72,10 @@ export const DetailedProduct = () => {
                     return (
                       <div
                         key={index}
-                        className={`flex justify-center items-center p-2 w-8 h-8 rounded-full bg-white border border-black text-black ${
-                          sizeChange === index ? "bg-black" : "bg-black"
+                        className={`flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black text-black hover:bg-[#E4E4E7] ${
+                          sizeChange === index
+                            ? "bg-black text-white hover:bg-black"
+                            : "bg-white"
                         }`}
                         onClick={() => setSizeChange(index)}
                       >
@@ -116,11 +120,11 @@ export const DetailedProduct = () => {
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex">
+                  <FaStar className="text-yellow-400" />
+                  <FaStar className="text-yellow-400" />
+                  <FaStar className="text-yellow-400" />
                   <FaStar className="" />
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
+                  <FaStar className="" />
                 </div>
                 <div className="font-bold">4.7</div>
               </div>
@@ -130,11 +134,19 @@ export const DetailedProduct = () => {
                 <div>
                   <div>Одоор үнэлэх:</div>
                   <div className="flex">
-                    <FaStar />
-                    <FaStar />
-                    <FaStar />
-                    <FaStar />
-                    <FaStar />
+                    {Array(5)
+                      .fill(null)
+                      .map((item, index) => {
+                        return (
+                          <FaStar
+                            onClick={() => setRating(index + 1)}
+                            className={`${
+                              index + 1 <= rating ? "text-yellow-500" : ""
+                            }`}
+                            key={index}
+                          />
+                        );
+                      })}
                   </div>
                 </div>
                 <div className="flex gap-6 flex-col">
@@ -150,45 +162,11 @@ export const DetailedProduct = () => {
                   </button>
                 </div>
               </div>
-              <div className="border-gray-200 border-b border-dashed pt-6 pb-[21px]">
-                <div className="flex items-center gap-2">
-                  <div>Saraa lav bish</div>
-                  <div className="flex">
-                    <FaStar className="" />
-                    <FaStar className="" />
-                    <FaStar className="" />
-                    <FaStar className="" />
-                    <FaStar className="" />
-                  </div>
-                </div>
-                <div>Ваав материал ёстой гоё байна 😍</div>
-              </div>
-              <div className="border-gray-200 border-b border-dashed pt-6 pb-[21px]">
-                <div className="flex items-center gap-2">
-                  <div>Saraag samarna</div>
-                  <div className="flex">
-                    <FaStar className="" />
-                    <FaStar className="" />
-                    <FaStar className="" />
-                    <FaStar className="" />
-                    <FaStar className="" />
-                  </div>
-                </div>
-                <div>Ваав материал ёстой гоё байна 😍</div>
-              </div>
-              <div className="border-gray-200 border-b border-dashed pt-6 pb-[21px]">
-                <div className="flex items-center gap-2">
-                  <div>Saraa bitch!</div>
-                  <div className="flex">
-                    <FaStar className="" />
-                    <FaStar className="" />
-                    <FaStar className="" />
-                    <FaStar className="" />
-                    <FaStar className="" />
-                  </div>
-                </div>
-                <div>Ваав материал ёстой гоё байна 😍</div>
-              </div>
+              {Array(3)
+                .fill(null)
+                .map((_, index) => {
+                  return <Review key={index} />;
+                })}
             </div>
           </div>
         </div>

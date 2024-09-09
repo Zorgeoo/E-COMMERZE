@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Correct } from "../assets/Correct";
+import { Correct } from "../../assets/Correct";
 import Image from "next/image";
 
 export const Payment = () => {
@@ -27,8 +27,9 @@ export const Payment = () => {
             <div className="rounded-full bg-white w-fit py-1 px-2">14:59</div>
             <div className="relative">{/* <Image src= alt="" fill /> */}</div>
           </div>
-          <div></div>
-          <button className="py-2 px-9 bg-white rounded-full">Буцах</button>
+          <Link href={`/buysteps/success`}>
+            <button className="py-2 px-9 bg-white rounded-full">Буцах</button>
+          </Link>
         </div>
       </div>
     </div>

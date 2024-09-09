@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { DeliveryCard } from "../../components/co-components/DeliveryCard";
+import { DeliveryCard } from "../../../components/co-components/DeliveryCard";
 import { useProductContext } from "@/components/utils/context";
 
 const data = [
@@ -47,7 +47,7 @@ export const Cart = () => {
               <div>Үнийн дүн:</div>
               <div className="font-bold text-[20px]">total price</div>
             </div>
-            <Link href={`/address`} className="self-end">
+            <Link href={`/buysteps/address`} className="self-end">
               <button className="px-9 py-2 rounded-full text-white bg-[#2563EB]">
                 Худалдан авах
               </button>

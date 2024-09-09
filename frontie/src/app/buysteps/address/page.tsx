@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Correct } from "../assets/Correct";
+import { Correct } from "../../assets/Correct";
 import Link from "next/link";
 const data = [
   { img: "/hoodie.png", title: "Hoodie", price: 12000 },
@@ -93,7 +93,7 @@ export const address = () => {
                 <button className="py-2 px-9 rounded-full border bg-white">
                   Буцах
                 </button>
-                <Link href={`/payment`}>
+                <Link href={`/buysteps/payment`}>
                   <button className="py-2 px-9 rounded-full bg-[#2563EB] text-white">
                     Төлбөр төлөх
                   </button>
