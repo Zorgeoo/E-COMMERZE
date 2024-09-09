@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
-import { CiStar } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
 const images = ["/detail1.png", "/detail2.png", "/detail3.png", "/detail4.png"];
 export const DetailedProduct = () => {
   const [currentImage, setCurrentImage] = useState(images[0]);
@@ -118,11 +118,11 @@ export const DetailedProduct = () => {
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex">
-                  <CiStar />
-                  <CiStar />
-                  <CiStar />
-                  <CiStar />
-                  <CiStar />
+                  <FaStar className="" />
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
                 </div>
                 <div className="font-bold">4.7</div>
               </div>
@@ -132,11 +132,11 @@ export const DetailedProduct = () => {
                 <div>
                   <div>Одоор үнэлэх:</div>
                   <div className="flex">
-                    <CiStar />
-                    <CiStar />
-                    <CiStar />
-                    <CiStar />
-                    <CiStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
                   </div>
                 </div>
                 <div className="flex gap-6 flex-col">
@@ -156,11 +156,11 @@ export const DetailedProduct = () => {
                 <div className="flex items-center gap-2">
                   <div>Saraa lav bish</div>
                   <div className="flex">
-                    <CiStar />
-                    <CiStar />
-                    <CiStar />
-                    <CiStar />
-                    <CiStar />
+                    <FaStar className="" />
+                    <FaStar className="" />
+                    <FaStar className="" />
+                    <FaStar className="" />
+                    <FaStar className="" />
                   </div>
                 </div>
                 <div>Ваав материал ёстой гоё байна 😍</div>
@@ -169,11 +169,11 @@ export const DetailedProduct = () => {
                 <div className="flex items-center gap-2">
                   <div>Saraag samarna</div>
                   <div className="flex">
-                    <CiStar />
-                    <CiStar />
-                    <CiStar />
-                    <CiStar />
-                    <CiStar />
+                    <FaStar className="" />
+                    <FaStar className="" />
+                    <FaStar className="" />
+                    <FaStar className="" />
+                    <FaStar className="" />
                   </div>
                 </div>
                 <div>Ваав материал ёстой гоё байна 😍</div>
@@ -182,11 +182,11 @@ export const DetailedProduct = () => {
                 <div className="flex items-center gap-2">
                   <div>Saraa bitch!</div>
                   <div className="flex">
-                    <CiStar />
-                    <CiStar />
-                    <CiStar />
-                    <CiStar />
-                    <CiStar />
+                    <FaStar className="" />
+                    <FaStar className="" />
+                    <FaStar className="" />
+                    <FaStar className="" />
+                    <FaStar className="" />
                   </div>
                 </div>
                 <div>Ваав материал ёстой гоё байна 😍</div>

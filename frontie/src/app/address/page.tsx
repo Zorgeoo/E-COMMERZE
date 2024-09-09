@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Correct } from "../assets/Correct";
+import Link from "next/link";
 const data = [
   { img: "/hoodie.png", title: "Hoodie", price: 12000 },
   { img: "/boy.png", title: "Chunky boy", price: 13000 },
@@ -84,6 +85,19 @@ export const address = () => {
               <div>
                 <div>Нэмэлт мэдээлэл:</div>
                 <input id="surname" className="w-full rounded-md px-3 py-1" />
+                <div className="text-[12px]">
+                  Хүргэлттэй холбоотой нэмэлт мэдээлэл үлдээгээрэй
+                </div>
+              </div>
+              <div className="flex justify-between">
+                <button className="py-2 px-9 rounded-full border bg-white">
+                  Буцах
+                </button>
+                <Link href={`/payment`}>
+                  <button className="py-2 px-9 rounded-full bg-[#2563EB] text-white">
+                    Төлбөр төлөх
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
