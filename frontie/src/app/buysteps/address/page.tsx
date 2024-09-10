@@ -6,7 +6,7 @@ const data = [
   { img: "/boy.png", title: "Chunky boy", price: 13000 },
   { img: "/girlwithcap.png", title: "Cap", price: 124000 },
 ];
-export const address = () => {
+const address = () => {
   return (
     <div>
       <div className="w-[1280px] m-auto">

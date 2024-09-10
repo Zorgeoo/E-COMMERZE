@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ProductCard } from "./co-components/ProductCard";
 
 const productData = [
@@ -32,12 +33,14 @@ export const LandingPage = () => {
               index === 7 ? "764px" : index === 8 ? "764px" : "331px";
             return (
               <div key={index}>
-                <ProductCard
-                  img={item.img}
-                  title={item.title}
-                  price={item.price}
-                  customHeight={customHeight}
-                />
+                <Link href={`/Detail`}>
+                  <ProductCard
+                    img={item.img}
+                    title={item.title}
+                    price={item.price}
+                    customHeight={customHeight}
+                  />
+                </Link>
               </div>
             );
           })}

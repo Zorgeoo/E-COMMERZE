@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CiHeart } from "react-icons/ci";
 import { CiShoppingCart } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
+import { CiUser } from "react-icons/ci";
 
 export const Navbar = () => {
   return (
@@ -28,7 +29,7 @@ export const Navbar = () => {
         </div>
         <div className="flex items-center gap-6">
           <div className="flex gap-6">
-            <Link href={`/Detail`}>
+            <Link href={`/liked`}>
               <div>
                 <CiHeart className="w-6 h-6" />
               </div>
@@ -38,6 +39,11 @@ export const Navbar = () => {
                 <CiShoppingCart className="w-6 h-6" />
               </div>
             </Link>
+            <Link href={`/userinfo`}>
+              <div>
+                <CiUser className="w-6 h-6" />
+              </div>
+            </Link>
           </div>
           <div className="flex gap-2">
             <Link href={`/register`}>
@@ -45,9 +51,11 @@ export const Navbar = () => {
                 Бүртгүүлэх
               </button>
             </Link>
-            <button className="bg-[#2563EB] rounded-md py-2 px-3">
-              Нэвтрэх
-            </button>
+            <Link href={`/login`}>
+              <button className="bg-[#2563EB] rounded-md py-2 px-3">
+                Нэвтрэх
+              </button>
+            </Link>
           </div>
         </div>
       </div>

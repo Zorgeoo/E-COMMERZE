@@ -1,7 +1,7 @@
+"use client";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { ProductContext, useProductContext } from "../utils/context";
 
 interface AddressCardProps {
   item: {
@@ -13,7 +13,6 @@ interface AddressCardProps {
 
 export const DeliveryCard: React.FC<AddressCardProps> = ({ item }) => {
   const [count, setCount] = useState(0);
-  const { totalPrice, setTotalPrice } = useProductContext();
 
   return (
     <div className="flex justify-between gap-6">
