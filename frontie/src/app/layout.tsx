@@ -33,7 +33,9 @@ export default function RootLayout({
       >
         <ProductContextProvider>
           <Navbar />
-          {children}
+          <div style={{ minHeight: "calc(100vh - 320.5px - 74px)" }}>
+            {children}
+          </div>
           <Footer />
         </ProductContextProvider>
       </body>
