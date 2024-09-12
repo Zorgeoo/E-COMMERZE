@@ -23,7 +23,7 @@ export const ProductCard: React.FC<MyComponentProps> = ({
         style={{ height: customHeight }}
       >
         <Image
-          className="object-cover rounded-xl hover:scale-150 duration-[2000ms]"
+          className="object-cover rounded-xl hover:scale-150 duration-1000"
           src={img}
           fill
           quality={100}

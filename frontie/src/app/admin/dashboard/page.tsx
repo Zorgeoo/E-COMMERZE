@@ -13,18 +13,9 @@ const productData = [
   { img: "/boy.png", title: "Chunky boy", price: 13000 },
   { img: "/girlwithcap.png", title: "Cap", price: 124000 },
   { img: "/girlWithTshirt.png", title: "Tee", price: 125000 },
-  { img: "/magazine.png", title: "The Prompt magazine", price: 126000 },
   { img: "/Waterbottle.png", title: "Bottle", price: 127000 },
   { img: "/hoodie.png", title: "Hoodie", price: 12000 },
   { img: "/boy.png", title: "Sweater", price: 13000 },
-  //   { img: "/girlwithcap.png", title: "Cap", price: 124000 },
-  //   { img: "/girlWithTshirt.png", title: "Tee", price: 125000 },
-  //   { img: "/magazine.png", title: "The Prompt magazine", price: 126000 },
-  //   { img: "/Waterbottle.png", title: "Bottle", price: 127000 },
-  //   { img: "/hoodie.png", title: "Hoodie", price: 12000 },
-  //   { img: "/boy.png", title: "Sweater", price: 13000 },
-  //   { img: "/girlwithcap.png", title: "Cap", price: 124000 },
-  //   { img: "/girlWithTshirt.png", title: "Tee", price: 125000 },
 ];
 const Dashboard = () => {
   return (
@@ -69,13 +60,13 @@ const Dashboard = () => {
                   return (
                     <div className="flex py-4 items-center border-b">
                       <div className="w-[10%] text-center">{index + 1}</div>
-                      <div className="w-[50%] text-center flex justify-center">
-                        <div className="relative w-10 h-10 ">
+                      <div className="w-[50%] text-center flex justify-center gap-5">
+                        <div className="relative w-10 h-10">
                           <Image
                             alt=""
                             fill
                             src={item.img}
-                            className="rounded-full object-cover"
+                            className="rounded-full object-cover "
                           />
                         </div>
                         <div className="flex flex-col justify-center">
