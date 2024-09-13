@@ -1,20 +1,20 @@
 import { RequestHandler } from "express";
-import { userModel } from "../../models/user.schema";
+import { productModel } from "../../models/product.schema";
 
-export const getUserByIdController: RequestHandler = async (req, res) => {
+export const getProductByIdController: RequestHandler = async (req, res) => {
   const { id } = req.params; //Params-s id hesgiig ni avna. //REQ: http://localhost:3001/user/66e3a551a0c6d3d6477bcb65 id-g ni avahdaa : 66e3a551a0c6d3d6477bcb65
 
   try {
-    const user = await userModel.findById(id); //Usermodel-s tuhain id-tai tentseh user-g haina.
+    const product = await productModel.findById(id);
 
-    if (!user) {
+    if (!product) {
       return res.status(404).json({
-        message: "User not found",
+        message: "Product not found",
       });
     }
 
     return res.status(200).json({
-      user,
+      product,
     });
   } catch (error) {
     return res.status(500).json({

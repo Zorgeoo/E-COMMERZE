@@ -3,10 +3,13 @@ import { userModel } from "../../models/user.schema";
 
 export const createUserController: RequestHandler = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { username, email, products } = req.body; //Req-s table deer hadgalagdah fielduudee avna.
 
     await userModel.create({
-      name,
+      //User model schema deer username,email gsn fieldtei shine user nemeh uildel
+      username,
+      email,
+      products,
     });
 
     return res.status(201).json({
