@@ -10,7 +10,7 @@ export const AdminBurgerBar = () => {
   const currentPath =
     typeof window !== "undefined" ? window.location.pathname : "";
   return (
-    <div className="flex flex-col gap-4  w-[21%] bg-white pt-6">
+    <div className="flex flex-col gap-4  w-[21%] bg-white pt-6 h-[800px]">
       <Link href={`/admin/dashboard`}>
         <div
           className={`flex gap-4 items-center px-4 ${
@@ -27,18 +27,24 @@ export const AdminBurgerBar = () => {
           <div>Захиалга</div>
         </div>
       </Link>
-      <div className="flex gap-4 items-center px-4">
-        <FaTags className="text-2xl" />
-        <div>Орлого</div>
-      </div>
-      <div className="flex gap-4 items-center px-4">
-        <FaRegListAlt className="text-2xl" />
-        <div>Бүтээгдэхүүн</div>
-      </div>
-      <div className="flex gap-4 items-center px-4">
-        <IoSettingsSharp className="text-2xl" />
-        <div>Тохиргоо</div>
-      </div>
+      <Link href={`/admin/dashboard/income`}>
+        <div className="flex gap-4 items-center px-4">
+          <FaTags className="text-2xl" />
+          <div>Орлого</div>
+        </div>
+      </Link>
+      <Link href={`/admin/dashboard/product`}>
+        <div className="flex gap-4 items-center px-4">
+          <FaRegListAlt className="text-2xl" />
+          <div>Бүтээгдэхүүн</div>
+        </div>
+      </Link>
+      <Link href={`/admin/dashboard/settings`}>
+        <div className="flex gap-4 items-center px-4">
+          <IoSettingsSharp className="text-2xl" />
+          <div>Тохиргоо</div>
+        </div>
+      </Link>
     </div>
   );
 };

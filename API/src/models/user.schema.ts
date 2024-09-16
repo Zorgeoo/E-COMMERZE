@@ -8,7 +8,7 @@ const userSchema = new Schema({
   password: { type: String, required: true, default: "1243ab" },
   address: { type: String, required: true, default: "UB city" },
   role: { type: String, required: true, default: "Customer" },
-  products: { type: [Schema.Types.ObjectId], ref: "Product", required: false }, //ObjectId maani mongoDB-n ugj bga _id gsn ug. ref: "Product", ene ni Product gsn modeliin _id-g avj hadgalnaa gsn ug.
+  liked: { type: [Schema.Types.ObjectId], ref: "Product", required: false }, //ObjectId maani mongoDB-n ugj bga _id gsn ug. ref: "Product", ene ni Product gsn modeliin _id-g avj hadgalnaa gsn ug.
   createdAt: {
     type: Date,
     required: true,
