@@ -1,9 +1,18 @@
 import { RequestHandler } from "express";
 import { ReviewModel } from "../../models/review.schema";
 
-export const getReviewController: RequestHandler=async(req,res)=>{
-    try{const reviews=await ReviewModel.find({}).populate("userId").populate("productId")}
+export const getReviewController: RequestHandler = async (req, res) => {
+  try {
+    const reviews = await ReviewModel.find({})
+      .populate("userId")
+      .populate("productId"); //({}) iim baival table-s buh user-g duudna.
+
     return res.status(200).json({
-        products,
-      });
-}
+      reviews,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Review orsonguiee",
+    });
+  }
+};
