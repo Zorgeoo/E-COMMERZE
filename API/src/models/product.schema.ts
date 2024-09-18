@@ -11,6 +11,7 @@ const productSchema = new Schema({
   price: { type: Number, required: true, default: 10000 },
   qty: { type: Number, required: false },
   images: { type: [String], required: false },
+  sizes: { type: [String], required: false },
   salePercent: { type: Number, required: false },
   description: { type: String, required: true, default: "Description" },
   reviewCount: { type: Number, required: false },

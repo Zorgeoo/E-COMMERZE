@@ -8,6 +8,7 @@ interface Product {
   images: string[];
   productName: string;
   price: number;
+  _id: string;
 }
 interface ProductsType {
   products: Product[];
@@ -18,8 +19,8 @@ export const LandingPage = () => {
   const getProducts = async () => {
     try {
       const response = await axios.get("http://localhost:3001/product/");
-      setAllProducts(response.data);
-      console.log(response.data);
+      setAllProducts(response.data.products);
+      console.log(response.data.products);
     } catch (error) {
       console.log("error bdgshaa");
     }
@@ -33,12 +34,12 @@ export const LandingPage = () => {
     <div>
       <div className="w-[1280px] m-auto p-14">
         <div className="h-[3000px] w-full grid grid-cols-4 grid-rows-7 gap-x-5 gap-y-8 [&>div:nth-child(1)]:col-span-4 [&>div:nth-child(8)]:col-span-2 [&>div:nth-child(8)]:row-span-2 [&>div:nth-child(9)]:row-span-2 [&>div:nth-child(9)]:col-span-2">
-          {allProducts?.products.map((item, index) => {
+          {allProducts?.map((item, index) => {
             const customHeight =
               index === 7 ? "764px" : index === 8 ? "764px" : "331px";
             return (
               <div key={index}>
-                <Link href={`/Detail`}>
+                <Link href={`${item._id}`}>
                   <ProductCard
                     img={item.images[0]}
                     title={item.productName}
