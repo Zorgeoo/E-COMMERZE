@@ -3,7 +3,7 @@ import { productModel } from "../../models/product.schema";
 
 export const getProductsController: RequestHandler = async (req, res) => {
   try {
-    const products = await productModel.find({}).populate("categoryId"); //({}) iim baival table-s buh user-g duudna.
+    const products = await productModel.find({}); //({}) iim baival table-s buh user-g duudna.
 
     return res.status(200).json({
       products,

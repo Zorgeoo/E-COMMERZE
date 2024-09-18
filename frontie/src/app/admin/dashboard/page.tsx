@@ -1,12 +1,9 @@
-import { IoGrid } from "react-icons/io5";
-import { MdContentPaste } from "react-icons/md";
-import { FaTags } from "react-icons/fa";
-import { FaRegListAlt } from "react-icons/fa";
-import { IoSettingsSharp } from "react-icons/io5";
+"use client";
 import { FaArrowRight } from "react-icons/fa";
 import Image from "next/image";
-import Link from "next/link";
+import axios from "axios";
 import { AdminBurgerBar } from "@/components/AdminBurgerBar";
+import { useEffect, useState } from "react";
 
 const productData = [
   { img: "/hoodie.png", title: "Hoodie", price: 12000 },
@@ -17,7 +14,32 @@ const productData = [
   { img: "/hoodie.png", title: "Hoodie", price: 12000 },
   { img: "/boy.png", title: "Sweater", price: 13000 },
 ];
+
+interface Product {
+  images: string[];
+  productName: string;
+  price: number;
+  categoryId: string[];
+}
+interface ProductsType {
+  products: Product[];
+}
 const Dashboard = () => {
+  const [allProducts, setAllProducts] = useState<ProductsType | null>(null);
+
+  const getProducts = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/product/");
+      setAllProducts(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log("error bdgshaa");
+    }
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
   return (
     <div className="bg-[#1C20240A]">
       <div className="w-[1280px] m-auto flex">
@@ -56,7 +78,7 @@ const Dashboard = () => {
                 <div className="w-[20%] text-center">Үнэ</div>
               </div>
               <div>
-                {productData.map((item, index) => {
+                {allProducts?.products.slice(0, 6).map((item, index) => {
                   return (
                     <div className="flex py-4 items-center border-b">
                       <div className="w-[10%] text-center">{index + 1}</div>
@@ -65,12 +87,14 @@ const Dashboard = () => {
                           <Image
                             alt=""
                             fill
-                            src={item.img}
+                            src={item.images[0]}
                             className="rounded-full object-cover "
                           />
                         </div>
                         <div className="flex flex-col justify-center">
-                          <div className="font-semibold">{item.title}</div>
+                          <div className="font-semibold">
+                            {item.productName}
+                          </div>
                           <div className="text-[#3F4145]">#12345678</div>
                         </div>
                       </div>

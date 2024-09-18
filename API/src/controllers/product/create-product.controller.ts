@@ -3,12 +3,8 @@ import { productModel } from "../../models/product.schema";
 
 export const createProductController: RequestHandler = async (req, res) => {
   try {
-    const { productName, price, categoryId } = req.body;
-
     await productModel.create({
-      productName,
-      price,
-      categoryId,
+      ...req.body,
     });
 
     return res.status(201).json({

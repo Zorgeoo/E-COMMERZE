@@ -5,7 +5,7 @@ export const getReviewController: RequestHandler = async (req, res) => {
   try {
     const reviews = await ReviewModel.find({})
       .populate("userId")
-      .populate("productId"); //({}) iim baival table-s buh user-g duudna.
+      .populate("productId");
 
     return res.status(200).json({
       reviews,

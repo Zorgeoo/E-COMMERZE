@@ -27,7 +27,7 @@ export const ProductCard: React.FC<MyComponentProps> = ({
           src={img}
           fill
           quality={100}
-          alt="hello"
+          alt="henlo"
         />
         <FaHeart
           onClick={() => setHeartFill(!heartFill)}
