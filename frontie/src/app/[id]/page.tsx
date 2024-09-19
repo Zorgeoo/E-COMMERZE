@@ -113,7 +113,11 @@ export const Detail = () => {
   };
 
   useEffect(() => {
-    getOneProduct(id), getProducts(), getReviewByProductId(id);
+    getOneProduct(id), getProducts();
+  }, [product]);
+
+  useEffect(() => {
+    getReviewByProductId(id);
   }, []);
 
   return (
@@ -241,8 +245,13 @@ export const Detail = () => {
                       <FaStar className="text-gray-300" />
                       <FaStar className="text-gray-300" />
                     </div>
-                    <div>
-                      <div className="font-bold">{product?.reviewCount}</div>
+                    <div className="flex gap-2">
+                      <div className="font-bold">
+                        {product?.averageRating?.toFixed(1)}
+                      </div>
+                      <div className="text-gray-400">
+                        ({product?.reviewCount})
+                      </div>
                     </div>
                   </div>
                 </div>

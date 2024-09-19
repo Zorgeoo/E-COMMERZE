@@ -10,11 +10,9 @@ interface Product {
   price: number;
   _id: string;
 }
-interface ProductsType {
-  products: Product[];
-}
+
 export const LandingPage = () => {
-  const [allProducts, setAllProducts] = useState<ProductsType | null>(null);
+  const [allProducts, setAllProducts] = useState<Product[] | null>(null);
 
   const getProducts = async () => {
     try {

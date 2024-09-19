@@ -4,11 +4,18 @@ import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Link from "next/link";
+import axios from "axios";
 
+interface FormValues {
+  username: string;
+  email: string;
+  password: string;
+  confirm: string;
+}
 export const Register = () => {
-  const initialValues = {
+  const initialValues: FormValues = {
     //Ymr ymr medeelel back ruu shidehee todorhoilno
-    userName: "",
+    username: "",
     email: "",
     password: "",
     confirm: "",
@@ -16,7 +23,7 @@ export const Register = () => {
 
   const validationSchema = yup.object({
     //yup ashiglan ymr ymr utga avj bloh requirements-g oruulna
-    userName: yup.string().required("Нэвтрэх нэрээ оруулна уу"),
+    username: yup.string().required("Нэвтрэх нэрээ оруулна уу"),
     email: yup.string().email("Алдаатай имэйл").required("Имэйлээ оруулна уу"),
     password: yup
       .string()
@@ -37,12 +44,26 @@ export const Register = () => {
     validationSchema,
     onSubmit: (values) => {
       console.log(values);
+      createUser(values); // Pass form values to createUser
     },
   });
   const isValidationSymbol = /[^\w]/.test(formik.values.password);
   const isValidationNumber = /[0-9]/.test(formik.values.password);
   const isValidationUpperCase = /[A-Z]/.test(formik.values.password);
   const isValidationLowerCase = /[a-z]/.test(formik.values.password);
+
+  const createUser = async (values: FormValues) => {
+    try {
+      const response = await axios.post("http://localhost:3001/user/", {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      });
+      console.log("User created:", response.data.message);
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
+  };
 
   return (
     <div className="bg-[#F4F4F5]">
@@ -54,13 +75,10 @@ export const Register = () => {
               className="rounded-full pl-2 w-full
             "
               placeholder="Нэр"
-              name="userName"
-              value={formik.values.userName}
+              name="username"
+              value={formik.values.username}
               onChange={formik.handleChange}
             />
-            {/* {formik.errors.userName ? (
-              <p className="text-red-600">{formik.errors.userName}</p>
-            ) : null} */}
             <input
               className="rounded-full pl-2 w-full
             "
@@ -69,9 +87,6 @@ export const Register = () => {
               value={formik.values.email}
               onChange={formik.handleChange}
             />
-            {/* {formik.errors.email ? (
-              <p className="text-red-600">{formik.errors.email}</p>
-            ) : null} */}
             <input
               className="rounded-full pl-2 w-full
           "
@@ -80,9 +95,6 @@ export const Register = () => {
               value={formik.values.password}
               onChange={formik.handleChange}
             />
-            {/* {formik.errors.password ? (
-              <p className="text-red-600">{formik.errors.password}</p>
-            ) : null} */}
             <input
               className="rounded-full pl-2 w-full
         "
@@ -91,9 +103,9 @@ export const Register = () => {
               value={formik.values.confirm}
               onChange={formik.handleChange}
             />
-            {/* {formik.errors.confirm ? (
+            {formik.errors.confirm ? (
               <p className="text-red-600">{formik.errors.confirm}</p>
-            ) : null} */}
+            ) : null}
           </div>
           <div className="flex flex-col gap-1 px-2">
             <div

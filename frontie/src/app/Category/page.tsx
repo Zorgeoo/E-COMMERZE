@@ -4,33 +4,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 
-const productData = [
-  { img: "/hoodie.png", title: "Hoodie", price: 12000 },
-  { img: "/boy.png", title: "Chunky boy", price: 13000 },
-  { img: "/girlwithcap.png", title: "Cap", price: 124000 },
-  { img: "/girlWithTshirt.png", title: "Tee", price: 125000 },
-  { img: "/magazine.png", title: "The Prompt magazine", price: 126000 },
-  { img: "/Waterbottle.png", title: "Bottle", price: 127000 },
-  { img: "/hoodie.png", title: "Hoodie", price: 12000 },
-  { img: "/boy.png", title: "Sweater", price: 13000 },
-  { img: "/girlwithcap.png", title: "Cap", price: 124000 },
-  { img: "/girlWithTshirt.png", title: "Tee", price: 125000 },
-  { img: "/magazine.png", title: "The Prompt magazine", price: 126000 },
-  { img: "/Waterbottle.png", title: "Bottle", price: 127000 },
-  { img: "/hoodie.png", title: "Hoodie", price: 12000 },
-  { img: "/boy.png", title: "Sweater", price: 13000 },
-  { img: "/girlwithcap.png", title: "Cap", price: 124000 },
-  { img: "/girlWithTshirt.png", title: "Tee", price: 125000 },
-];
-
-const categoriesData = [
-  "Малгай",
-  "Усны сав",
-  "T-shirt",
-  "Hoodie",
-  "Tee",
-  "Цүнх",
-];
 const sizeData = ["Free", "S", "M", "L", "XL", "2XL", "3XL"];
 
 interface Product {
@@ -38,9 +11,7 @@ interface Product {
   productName: string;
   price: number;
   categoryId: string[];
-}
-interface ProductsType {
-  products: Product[];
+  sizes: string[];
 }
 
 interface Category {
@@ -53,11 +24,12 @@ interface CategoriesType {
 }
 
 export const Category = () => {
-  const [allProducts, setAllProducts] = useState<ProductsType | null>(null);
+  const [allProducts, setAllProducts] = useState<Product[] | null>(null);
   const [allCategories, setAllCategories] = useState<CategoriesType | null>(
     null
   );
   const [filterType, setFilterType] = useState("All");
+  const [filterBySize, setFilterBySize] = useState("All");
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   const getCategories = async () => {
@@ -72,8 +44,7 @@ export const Category = () => {
   const getProducts = async () => {
     try {
       const response = await axios.get("http://localhost:3001/product/");
-      setAllProducts(response.data);
-      console.log(response.data);
+      setAllProducts(response.data.products);
     } catch (error) {
       console.log("error bdgshaa");
     }
@@ -81,12 +52,22 @@ export const Category = () => {
 
   const filterProducts = () => {
     if (allProducts) {
-      const products =
-        filterType !== "All"
-          ? allProducts?.products.filter((product) =>
-              product.categoryId.includes(filterType)
-            )
-          : allProducts?.products;
+      let products = allProducts;
+
+      // Filter by category
+      if (filterType !== "All") {
+        products = products.filter((product) =>
+          product.categoryId.includes(filterType)
+        );
+      }
+
+      // Filter by size
+      if (filterBySize !== "All") {
+        products = products.filter((product) =>
+          product.sizes.includes(filterBySize)
+        );
+      }
+
       setFilteredProducts(products);
     }
   };
@@ -97,14 +78,14 @@ export const Category = () => {
 
   useEffect(() => {
     filterProducts();
-  }, [filterType, allProducts]);
+  }, [filterType, allProducts, filterBySize]);
 
   const handleFilter = (id: string) => {
-    if (filterType === id) {
-      setFilterType("All");
-    } else {
-      setFilterType(id);
-    }
+    setFilterType(filterType === id ? "All" : id);
+  };
+
+  const handleSizeFilter = (size: string) => {
+    setFilterBySize(filterBySize === size ? "All" : size);
   };
 
   return (
@@ -132,11 +113,16 @@ export const Category = () => {
           <div>
             <div className="font-bold">Хэмжээ</div>
             <div className="flex flex-col gap-2 pt-4">
-              {sizeData.map((item, index) => {
+              {sizeData.map((size, index) => {
                 return (
                   <label key={index}>
-                    <input type="checkbox" id="cap" />
-                    {item}
+                    <input
+                      type="checkbox"
+                      id="cap"
+                      checked={filterBySize === size}
+                      onClick={() => handleSizeFilter(size)}
+                    />
+                    {size}
                   </label>
                 );
               })}

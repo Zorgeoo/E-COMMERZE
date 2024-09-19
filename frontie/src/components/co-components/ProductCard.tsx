@@ -30,7 +30,10 @@ export const ProductCard: React.FC<MyComponentProps> = ({
           alt="henlo"
         />
         <FaHeart
-          onClick={() => setHeartFill(!heartFill)}
+          onClick={(e) => {
+            e.stopPropagation(); // This prevents the click event from triggering the <Link> navigation
+            setHeartFill(!heartFill); // Toggle the heart fill state
+          }}
           className={`absolute right-4 cursor-pointer top-4 w-6 h-6 ${
             heartFill ? "text-red-700" : ""
           }`}
