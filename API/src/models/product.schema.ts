@@ -14,8 +14,8 @@ const productSchema = new Schema({
   sizes: { type: [String], required: false },
   salePercent: { type: Number, required: false },
   description: { type: String, required: true, default: "Description" },
-  reviewCount: { type: Number, required: false },
-  averageRating: { type: Number, required: false },
+  reviewCount: { type: Number, required: false, default: 0 },
+  averageRating: { type: Number, required: false, default: 0 },
   createdAt: {
     type: Date,
     required: true,

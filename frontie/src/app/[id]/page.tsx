@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import Image from "next/image";
-import { Review } from "@/components/co-components/Review";
 import Link from "next/link";
 
 type ParamsType = {
@@ -19,6 +18,8 @@ type ProductType = {
   images: string[];
   _id: string;
   sizes: string[];
+  averageRating: number;
+  reviewCount: number;
 };
 
 interface Product {
@@ -27,71 +28,93 @@ interface Product {
   price: number;
   _id: string;
 }
-interface ProductsType {
-  products: Product[];
-}
-interface ReviewType {
+
+type userIdType = {
+  username: string;
+  _id: string;
+};
+type ReviewType = {
   productId: string;
-  userId: string;
+  userId: userIdType;
   comment: string;
   rating: number;
-}
+};
+
 export const Detail = () => {
   const [product, setProduct] = useState<ProductType>();
+  console.log(product);
+
   const [heartFill, setHeartFill] = useState(false);
   const [hiddenElement, setHiddenElement] = useState(false);
   const [count, setCount] = useState(0);
+
   const [sizeChange, setSizeChange] = useState(6);
+
+  //Review
   const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+
   const [currentImage, setCurrentImage] = useState<number>(0);
-  const [allProducts, setAllProducts] = useState<ProductsType | null>(null);
-  const [review, setReview] = useState<ReviewType>({
-    productId: "",
-    userId: "",
-    comment: "",
-    rating: 0,
-  });
+  const [allProducts, setAllProducts] = useState<Product[] | null>(null);
+
   const { id } = useParams<ParamsType>(); //ID-aa paramsaas avna
 
-  const createReview = async () => {
-    try {
-      const response = await axios.post("http://localhost:3001/review", review);
-      console.log(response.data);
-    } catch (error) {
-      console.log("error bdgshaa");
-    }
-  };
+  const [allReviews, setAllReviews] = useState<ReviewType[]>();
 
   const getOneProduct = async (id: string) => {
     //ID-raa back ruu get req yvulaad state-d hadgalna
     try {
       const response = await axios.get(`http://localhost:3001/product/${id}`);
       setProduct(response.data.product);
-      console.log(response.data.product);
     } catch (error) {
       console.log("error bdgshaa");
     }
   };
 
-  useEffect(() => {
-    getOneProduct(id);
-  }, []);
+  const getReviewByProductId = async (id: string) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/review/${id}`);
+      setAllReviews(response.data.reviews);
+      console.log(response.data.reviews);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getProducts = async () => {
     try {
       const response = await axios.get("http://localhost:3001/product/");
       setAllProducts(response.data.products);
-      console.log(response.data.products);
     } catch (error) {
       console.log("error bdgshaa");
     }
   };
+  const createReview = async (
+    productId: string,
+    userId: string,
+    comment: string,
+    rating: number
+  ) => {
+    try {
+      const response = await axios.post("http://localhost:3001/review/", {
+        productId,
+        userId,
+        comment,
+        rating,
+      });
+      setComment(""); // Reset comment input
+      setRating(0); // Reset rating
+      await getReviewByProductId(id);
+      console.log(response.data);
+    } catch (error) {
+      console.log("Review error bdgshaa");
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    getProducts();
+    getOneProduct(id), getProducts(), getReviewByProductId(id);
   }, []);
-
-  console.log(review);
 
   return (
     <div>
@@ -213,12 +236,14 @@ export const Detail = () => {
                   <div className="flex items-center gap-2">
                     <div className="flex">
                       <FaStar className="text-yellow-400" />
-                      <FaStar className="text-yellow-400" />
-                      <FaStar className="text-yellow-400" />
-                      <FaStar className="" />
-                      <FaStar className="" />
+                      <FaStar className="text-gray-300" />
+                      <FaStar className="text-gray-300" />
+                      <FaStar className="text-gray-300" />
+                      <FaStar className="text-gray-300" />
                     </div>
-                    <div className="font-bold">4.7</div>
+                    <div>
+                      <div className="font-bold">{product?.reviewCount}</div>
+                    </div>
                   </div>
                 </div>
                 <div className={`${hiddenElement ? "block" : "hidden"}`}>
@@ -233,13 +258,11 @@ export const Detail = () => {
                               <FaStar
                                 onClick={() => {
                                   setRating(index + 1);
-                                  setReview((preReview) => ({
-                                    ...preReview,
-                                    rating: index + 1,
-                                  }));
                                 }}
                                 className={`${
-                                  index + 1 <= rating ? "text-yellow-500" : ""
+                                  index + 1 <= rating
+                                    ? "text-yellow-500"
+                                    : "text-gray-300"
                                 }`}
                                 key={index}
                               />
@@ -255,27 +278,52 @@ export const Detail = () => {
                           placeholder="Энд бичнэ үү"
                           onChange={(
                             event: React.ChangeEvent<HTMLInputElement>
-                          ) =>
-                            setReview({
-                              ...review,
-                              comment: event.target.value,
-                            })
-                          }
+                          ) => setComment(event.target.value)}
                         />
                       </div>
                       <button
-                        onClick={createReview}
+                        onClick={() =>
+                          createReview(
+                            id,
+                            "66e90f8199481637e9913eed", // Replace with dynamic user ID as needed
+                            comment,
+                            rating
+                          )
+                        }
                         className="bg-[#2563EB] w-fit text-white py-2 px-9 rounded-full"
                       >
                         Үнэлэх
                       </button>
                     </div>
                   </div>
-                  {Array(3)
-                    .fill(null)
-                    .map((_, index) => {
-                      return <Review key={index} />;
-                    })}
+                  {allReviews?.map((review, indexAll) => {
+                    return (
+                      <div key={indexAll}>
+                        <div className="border-gray-200 border-b border-dashed pt-6 pb-[21px]">
+                          <div className="flex items-center gap-2">
+                            <div>{review.userId?.username}</div>
+                            <div className="flex">
+                              {Array(5)
+                                .fill(null)
+                                .map((item, index) => {
+                                  return (
+                                    <FaStar
+                                      className={`${
+                                        index + 1 <= review.rating
+                                          ? "text-yellow-500"
+                                          : ""
+                                      }`}
+                                      key={index}
+                                    />
+                                  );
+                                })}
+                            </div>
+                          </div>
+                          <div>{review.comment}😍</div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -290,7 +338,7 @@ export const Detail = () => {
                   <div key={index}>
                     <ProductCard
                       img={item.images[0]}
-                      title={item.title}
+                      title={item.productName}
                       price={item.price}
                       customHeight="331px"
                     />
