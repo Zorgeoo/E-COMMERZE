@@ -42,7 +42,6 @@ type ReviewType = {
 
 export const Detail = () => {
   const [product, setProduct] = useState<ProductType>();
-  console.log(product);
 
   const [heartFill, setHeartFill] = useState(false);
   const [hiddenElement, setHiddenElement] = useState(false);
@@ -294,7 +293,7 @@ export const Detail = () => {
                         onClick={() =>
                           createReview(
                             id,
-                            "66e90f8199481637e9913eed", // Replace with dynamic user ID as needed
+                            "66e90f8199481637e9913eed",
                             comment,
                             rating
                           )

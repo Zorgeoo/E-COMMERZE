@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface FormValues {
   username: string;
@@ -13,6 +14,7 @@ interface FormValues {
   confirm: string;
 }
 export const Register = () => {
+  const router = useRouter();
   const initialValues: FormValues = {
     //Ymr ymr medeelel back ruu shidehee todorhoilno
     username: "",
@@ -44,9 +46,10 @@ export const Register = () => {
     validationSchema,
     onSubmit: (values) => {
       console.log(values);
-      createUser(values); // Pass form values to createUser
+      createUser(values);
     },
   });
+
   const isValidationSymbol = /[^\w]/.test(formik.values.password);
   const isValidationNumber = /[0-9]/.test(formik.values.password);
   const isValidationUpperCase = /[A-Z]/.test(formik.values.password);
@@ -54,11 +57,12 @@ export const Register = () => {
 
   const createUser = async (values: FormValues) => {
     try {
-      const response = await axios.post("http://localhost:3001/user/", {
+      const response = await axios.post("http://localhost:3001/auth/register", {
         username: values.username,
         email: values.email,
         password: values.password,
       });
+      router.push("/login");
       console.log("User created:", response.data.message);
     } catch (error) {
       console.error("Error creating user:", error);
@@ -84,6 +88,7 @@ export const Register = () => {
             "
               placeholder="Имэйл"
               name="email"
+              type="email"
               value={formik.values.email}
               onChange={formik.handleChange}
             />
@@ -91,6 +96,7 @@ export const Register = () => {
               className="rounded-full pl-2 w-full
           "
               placeholder="Нууц үг"
+              type="password"
               name="password"
               value={formik.values.password}
               onChange={formik.handleChange}
@@ -100,6 +106,7 @@ export const Register = () => {
         "
               placeholder="Нууц үг давтах"
               name="confirm"
+              type="password"
               value={formik.values.confirm}
               onChange={formik.handleChange}
             />
@@ -155,7 +162,7 @@ export const Register = () => {
           </div>
           <div className="flex flex-col gap-12">
             <button
-              className="px-4 py-2 bg-[#2563EB] text-white rounded-full"
+              className="px-4 py-2 bg-[#2563EB] text-white rounded-full w-full"
               onClick={formik.submitForm}
               type="submit"
             >

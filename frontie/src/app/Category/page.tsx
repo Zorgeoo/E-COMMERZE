@@ -1,6 +1,6 @@
 "use client";
 import { ProductCard } from "@/components/co-components/ProductCard";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 
@@ -30,7 +30,7 @@ export const Category = () => {
   );
   const [filterType, setFilterType] = useState("All");
   const [filterBySize, setFilterBySize] = useState("All");
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  // const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   const getCategories = async () => {
     try {
@@ -49,36 +49,50 @@ export const Category = () => {
       console.log("error bdgshaa");
     }
   };
-
-  const filterProducts = () => {
-    if (allProducts) {
-      let products = allProducts;
-
-      // Filter by category
-      if (filterType !== "All") {
-        products = products.filter((product) =>
-          product.categoryId.includes(filterType)
-        );
-      }
-
-      // Filter by size
-      if (filterBySize !== "All") {
-        products = products.filter((product) =>
-          product.sizes.includes(filterBySize)
-        );
-      }
-
-      setFilteredProducts(products);
+  const getProductsFilter = async (categoryId: string, sizes: string) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/product?categoryId=${categoryId}&sizes=${filterBySize}`
+      );
+      setAllProducts(response.data.products);
+      console.log(response.data.products);
+    } catch (error) {
+      console.log("error bdgshaa");
     }
   };
 
-  useEffect(() => {
-    getProducts(), getCategories();
-  }, []);
+  // const filterProducts = () => {
+  //   if (allProducts) {
+  //     let products = allProducts;
+
+  //     // Filter by category
+  //     if (filterType !== "All") {
+  //       products = products.filter((product) =>
+  //         product.categoryId.includes(filterType)
+  //       );
+  //     }
+
+  //     // Filter by size
+  //     if (filterBySize !== "All") {
+  //       products = products.filter((product) =>
+  //         product.sizes.includes(filterBySize)
+  //       );
+  //     }
+
+  //     setFilteredProducts(products);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   filterProducts();
+  // }, [filterType, allProducts, filterBySize]);
 
   useEffect(() => {
-    filterProducts();
-  }, [filterType, allProducts, filterBySize]);
+    getProducts();
+  }, []);
+  useEffect(() => {
+    getProductsFilter(filterType, filterBySize), getCategories();
+  }, [filterType, filterBySize]);
 
   const handleFilter = (id: string) => {
     setFilterType(filterType === id ? "All" : id);
@@ -87,6 +101,7 @@ export const Category = () => {
   const handleSizeFilter = (size: string) => {
     setFilterBySize(filterBySize === size ? "All" : size);
   };
+  console.log(filterBySize);
 
   return (
     <div>
@@ -130,7 +145,7 @@ export const Category = () => {
           </div>
         </div>
         <div className="h-[2147px] w-[774px] grid grid-cols-3 grid-rows-5 gap-x-5 gap-y-12">
-          {filteredProducts.slice(0, 6).map((item, index) => {
+          {allProducts?.slice(0, 6).map((item, index) => {
             const customHeight =
               index === 7 ? "764px" : index === 8 ? "764px" : "331px";
             return (

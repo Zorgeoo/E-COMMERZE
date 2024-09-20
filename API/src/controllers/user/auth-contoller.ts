@@ -25,3 +25,11 @@ export const createUserController: RequestHandler = async (req, res) => {
     });
   }
 };
+
+// export const loginController: RequestHandler = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+
+//     const user = await userModel.findOne({ email });
+//   } catch (error) {}
+// };
