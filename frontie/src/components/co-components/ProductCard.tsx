@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 
@@ -8,12 +9,14 @@ interface MyComponentProps {
   title: string;
   price: number;
   customHeight: string;
+  id: string;
 }
 export const ProductCard: React.FC<MyComponentProps> = ({
   img,
   title,
   price,
   customHeight,
+  id,
 }) => {
   const [heartFill, setHeartFill] = useState(false);
   return (
@@ -22,13 +25,15 @@ export const ProductCard: React.FC<MyComponentProps> = ({
         className={`relative rounded-xl w-full overflow-hidden`}
         style={{ height: customHeight }}
       >
-        <Image
-          className="object-cover rounded-xl hover:scale-150 duration-1000"
-          src={img}
-          fill
-          quality={100}
-          alt="henlo"
-        />
+        <Link href={`${id}`}>
+          <Image
+            className="object-cover rounded-xl hover:scale-150 duration-1000"
+            src={img}
+            fill
+            quality={100}
+            alt="henlo"
+          />
+        </Link>
         <FaHeart
           onClick={() => {
             setHeartFill(!heartFill);

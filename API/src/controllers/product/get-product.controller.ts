@@ -4,32 +4,22 @@ import { productModel } from "../../models/product.schema";
 export const getProductsController: RequestHandler = async (req, res) => {
   try {
     const { categoryId, sizes } = req.query;
-    console.log(req.query);
     console.log(categoryId, sizes);
 
-    let products;
-    if (categoryId === "All" && sizes === "All") {
-      products = await productModel.find({});
-      return res.status(200).json({ products });
+    let query: any = {};
+
+    if (categoryId) {
+      query.categoryId = categoryId ? { $in: categoryId } : categoryId;
     }
 
-    if (categoryId && sizes === "All") {
-      products = await productModel.find({ categoryId: categoryId });
-      return res.status(200).json({ products });
+    if (sizes) {
+      query.sizes = sizes ? { $in: sizes } : sizes;
     }
 
-    if (sizes && categoryId === "All") {
-      products = await productModel.find({ sizes: sizes });
-      return res.status(200).json({ products });
-    }
-
-    if (categoryId && sizes) {
-      products = await productModel
-        .find({ sizes: sizes })
-        .find({ categoryId: categoryId });
-      return res.status(200).json({ products });
-    }
+    const products = await productModel.find(query);
+    return res.status(200).json({ products });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({
       message: "Internal server error",
     });

@@ -13,10 +13,24 @@ interface Product {
 
 export const LandingPage = () => {
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
+  const [filterBySize, setFilterBySize] = useState<string[]>([]);
+  const [filterType, setFilterType] = useState<string[]>([]);
 
-  const getProducts = async () => {
+  // const getProducts = async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:3001/product/");
+  //     setAllProducts(response.data.products);
+  //     console.log(response.data.products);
+  //   } catch (error) {
+  //     console.log("error bdgshaa");
+  //   }
+  // };
+
+  const getProductsFilter = async (categoryId: string[], sizes: string[]) => {
     try {
-      const response = await axios.get("http://localhost:3001/product/");
+      const response = await axios.get(`http://localhost:3001/product`, {
+        params: { categoryId: filterType, sizes: filterBySize },
+      });
       setAllProducts(response.data.products);
       console.log(response.data.products);
     } catch (error) {
@@ -25,7 +39,7 @@ export const LandingPage = () => {
   };
 
   useEffect(() => {
-    getProducts();
+    getProductsFilter(filterType, filterBySize);
   }, []);
 
   return (
@@ -37,14 +51,13 @@ export const LandingPage = () => {
               index === 7 ? "764px" : index === 8 ? "764px" : "331px";
             return (
               <div key={index}>
-                <Link href={`${item._id}`}>
-                  <ProductCard
-                    img={item.images[0]}
-                    title={item.productName}
-                    price={item.price}
-                    customHeight={customHeight}
-                  />
-                </Link>
+                <ProductCard
+                  img={item.images[0]}
+                  title={item.productName}
+                  price={item.price}
+                  customHeight={customHeight}
+                  id={item._id}
+                />
               </div>
             );
           })}

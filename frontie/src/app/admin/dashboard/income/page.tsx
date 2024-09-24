@@ -48,8 +48,7 @@ const productData = [
 const income = () => {
   return (
     <div className="bg-[#1C20240A]">
-      <div className="w-[1280px] m-auto flex">
-        <AdminBurgerBar />
+      <div className="w-[985px] m-auto flex">
         <div className="w-3/5 m-auto">
           <div className="w-full bg-white rounded-lg">
             <div className="flex justify-between p-6 border-b">

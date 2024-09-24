@@ -42,8 +42,7 @@ const Dashboard = () => {
   }, []);
   return (
     <div className="bg-[#1C20240A]">
-      <div className="w-[1280px] m-auto flex">
-        <AdminBurgerBar />
+      <div className="w-[985px] m-auto flex">
         <div className="flex flex-col gap-[50px] w-full  px-6 py-6">
           <div className="flex gap-6 w-full">
             <div className="flex-1 flex flex-col bg-white rounded-xl px-6 py-4">

@@ -37,8 +37,7 @@ const productData = [
 const order = () => {
   return (
     <div className="bg-[#1C20240A]">
-      <div className="w-[1280px] m-auto flex">
-        <AdminBurgerBar />
+      <div className="w-[985px] m-auto flex">
         <div className="w-full">
           <div className="flex border-b w-full">
             <div className="py-3 px-4">Бүгд</div>

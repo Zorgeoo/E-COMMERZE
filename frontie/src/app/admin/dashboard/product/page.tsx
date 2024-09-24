@@ -53,8 +53,7 @@ export default function home() {
   ];
   return (
     <div className="bg-[#1C20240A]">
-      <div className="w-[1280px] m-auto flex gap-4">
-        <AdminBurgerBar />
+      <div className="w-[985px] m-auto flex gap-4">
         <div className="flex w-full">
           <div className="flex flex-col w-full gap-6">
             <div className="flex border-b">

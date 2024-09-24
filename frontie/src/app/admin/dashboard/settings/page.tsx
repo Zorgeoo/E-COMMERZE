@@ -3,8 +3,7 @@ import { AdminBurgerBar } from "@/components/AdminBurgerBar";
 const settings = () => {
   return (
     <div className="bg-[#1C20240A]">
-      <div className="w-[1280px] m-auto flex">
-        <AdminBurgerBar />
+      <div className="w-[985px] m-auto flex">
         <div className="flex flex-col bg-white rounded-lg h-fit px-6 py-8 m-auto gap-2 w-1/2">
           <div className="font-bold">Тохиргоо</div>
           <div className="flex justify-between border rounded-lg py-2 px-3 items-center">

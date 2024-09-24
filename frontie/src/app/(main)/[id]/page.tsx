@@ -349,6 +349,7 @@ export const Detail = () => {
                       title={item.productName}
                       price={item.price}
                       customHeight="331px"
+                      id={item._id}
                     />
                   </div>
                 </Link>

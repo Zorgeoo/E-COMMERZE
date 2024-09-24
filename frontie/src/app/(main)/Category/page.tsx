@@ -2,7 +2,6 @@
 import { ProductCard } from "@/components/co-components/ProductCard";
 import { use, useEffect, useState } from "react";
 import axios from "axios";
-import Link from "next/link";
 
 const sizeData = ["Free", "S", "M", "L", "XL", "2XL", "3XL"];
 
@@ -12,6 +11,7 @@ interface Product {
   price: number;
   categoryId: string[];
   sizes: string[];
+  _id: string;
 }
 
 interface Category {
@@ -28,9 +28,8 @@ export const Category = () => {
   const [allCategories, setAllCategories] = useState<CategoriesType | null>(
     null
   );
-  const [filterType, setFilterType] = useState("All");
-  const [filterBySize, setFilterBySize] = useState("All");
-  // const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [filterType, setFilterType] = useState<string[]>([]);
+  const [filterBySize, setFilterBySize] = useState<string[]>([]);
 
   const getCategories = async () => {
     try {
@@ -41,19 +40,11 @@ export const Category = () => {
     }
   };
 
-  const getProducts = async () => {
+  const getProductsFilter = async (categoryId: string[], sizes: string[]) => {
     try {
-      const response = await axios.get("http://localhost:3001/product/");
-      setAllProducts(response.data.products);
-    } catch (error) {
-      console.log("error bdgshaa");
-    }
-  };
-  const getProductsFilter = async (categoryId: string, sizes: string) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3001/product?categoryId=${categoryId}&sizes=${filterBySize}`
-      );
+      const response = await axios.get(`http://localhost:3001/product`, {
+        params: { categoryId: filterType, sizes: filterBySize },
+      });
       setAllProducts(response.data.products);
       console.log(response.data.products);
     } catch (error) {
@@ -61,47 +52,30 @@ export const Category = () => {
     }
   };
 
-  // const filterProducts = () => {
-  //   if (allProducts) {
-  //     let products = allProducts;
-
-  //     // Filter by category
-  //     if (filterType !== "All") {
-  //       products = products.filter((product) =>
-  //         product.categoryId.includes(filterType)
-  //       );
-  //     }
-
-  //     // Filter by size
-  //     if (filterBySize !== "All") {
-  //       products = products.filter((product) =>
-  //         product.sizes.includes(filterBySize)
-  //       );
-  //     }
-
-  //     setFilteredProducts(products);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   filterProducts();
-  // }, [filterType, allProducts, filterBySize]);
-
   useEffect(() => {
-    getProducts();
+    getCategories();
   }, []);
+
   useEffect(() => {
-    getProductsFilter(filterType, filterBySize), getCategories();
+    getProductsFilter(filterType, filterBySize);
   }, [filterType, filterBySize]);
 
   const handleFilter = (id: string) => {
-    setFilterType(filterType === id ? "All" : id);
+    if (filterType.includes(id)) {
+      setFilterType(filterType.filter((filterId) => filterId !== id));
+    } else {
+      setFilterType([...filterType, id]);
+    }
   };
 
   const handleSizeFilter = (size: string) => {
-    setFilterBySize(filterBySize === size ? "All" : size);
+    if (filterBySize.includes(size)) {
+      setFilterBySize(filterBySize.filter((size) => size !== size));
+    } else {
+      setFilterBySize([...filterBySize, size]);
+    }
   };
-  console.log(filterBySize);
+  console.log(filterType);
 
   return (
     <div>
@@ -116,8 +90,8 @@ export const Category = () => {
                     <input
                       type="checkbox"
                       id="cap"
-                      checked={filterType === item._id}
-                      onClick={() => handleFilter(item._id)}
+                      checked={filterType.includes(item._id)}
+                      onChange={() => handleFilter(item._id)}
                     />
                     {item.categoryName}
                   </label>
@@ -134,7 +108,7 @@ export const Category = () => {
                     <input
                       type="checkbox"
                       id="cap"
-                      checked={filterBySize === size}
+                      checked={filterBySize.includes(size)}
                       onClick={() => handleSizeFilter(size)}
                     />
                     {size}
@@ -150,14 +124,13 @@ export const Category = () => {
               index === 7 ? "764px" : index === 8 ? "764px" : "331px";
             return (
               <div key={index}>
-                <Link href={`/Detail`}>
-                  <ProductCard
-                    img={item.images[0]}
-                    title={item.productName}
-                    price={item.price}
-                    customHeight={customHeight}
-                  />
-                </Link>
+                <ProductCard
+                  img={item.images[0]}
+                  title={item.productName}
+                  price={item.price}
+                  customHeight={customHeight}
+                  id={item._id}
+                />
               </div>
             );
           })}
