@@ -7,6 +7,7 @@ import { FaHeart } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
+import { useProductContext } from "@/components/utils/context";
 
 type ParamsType = {
   id: string;
@@ -55,6 +56,7 @@ export const Detail = () => {
 
   const [currentImage, setCurrentImage] = useState<number>(0);
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
+  const { user } = useProductContext();
 
   const { id } = useParams<ParamsType>(); //ID-aa paramsaas avna
 
@@ -63,7 +65,11 @@ export const Detail = () => {
   const getOneProduct = async (id: string) => {
     //ID-raa back ruu get req yvulaad state-d hadgalna
     try {
-      const response = await axios.get(`http://localhost:3001/product/${id}`);
+      const response = await axios.get(`http://localhost:3001/product/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       setProduct(response.data.product);
     } catch (error) {
       console.log("error bdgshaa");
@@ -72,7 +78,11 @@ export const Detail = () => {
 
   const getReviewByProductId = async (id: string) => {
     try {
-      const response = await axios.get(`http://localhost:3001/review/${id}`);
+      const response = await axios.get(`http://localhost:3001/review/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       setAllReviews(response.data.reviews);
       console.log(response.data.reviews);
     } catch (error) {
@@ -82,7 +92,11 @@ export const Detail = () => {
 
   const getProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/product/");
+      const response = await axios.get("http://localhost:3001/product/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       setAllProducts(response.data.products);
     } catch (error) {
       console.log("error bdgshaa");
@@ -95,12 +109,20 @@ export const Detail = () => {
     rating: number
   ) => {
     try {
-      const response = await axios.post("http://localhost:3001/review/", {
-        productId,
-        userId,
-        comment,
-        rating,
-      });
+      const response = await axios.post(
+        "http://localhost:3001/review/",
+        {
+          productId,
+          userId,
+          comment,
+          rating,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       setComment(""); // Reset comment input
       setRating(0); // Reset rating
       await getReviewByProductId(id);
@@ -116,6 +138,7 @@ export const Detail = () => {
   }, [product]);
 
   useEffect(() => {
+    console.log(user);
     getReviewByProductId(id);
   }, []);
 
@@ -291,12 +314,7 @@ export const Detail = () => {
                       </div>
                       <button
                         onClick={() =>
-                          createReview(
-                            id,
-                            "66e90f8199481637e9913eed",
-                            comment,
-                            rating
-                          )
+                          createReview(id, user?.id ?? "", comment, rating)
                         }
                         className="bg-[#2563EB] w-fit text-white py-2 px-9 rounded-full"
                       >

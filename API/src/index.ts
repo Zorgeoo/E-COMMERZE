@@ -22,7 +22,7 @@ app.use(express.json());
 app.get("/", (_req, res) => {
   res.json({ message: "Hello World" });
 });
-// app.use(authMiddleware);
+app.use(authMiddleware);
 
 app.use("/user", userRouter);
 app.use("/product", productRouter);

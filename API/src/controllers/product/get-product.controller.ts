@@ -4,7 +4,6 @@ import { productModel } from "../../models/product.schema";
 export const getProductsController: RequestHandler = async (req, res) => {
   try {
     const { categoryId, sizes } = req.query;
-    console.log(categoryId, sizes);
 
     let query: any = {};
 

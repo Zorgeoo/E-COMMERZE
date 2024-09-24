@@ -16,19 +16,12 @@ export const LandingPage = () => {
   const [filterBySize, setFilterBySize] = useState<string[]>([]);
   const [filterType, setFilterType] = useState<string[]>([]);
 
-  // const getProducts = async () => {
-  //   try {
-  //     const response = await axios.get("http://localhost:3001/product/");
-  //     setAllProducts(response.data.products);
-  //     console.log(response.data.products);
-  //   } catch (error) {
-  //     console.log("error bdgshaa");
-  //   }
-  // };
-
   const getProductsFilter = async (categoryId: string[], sizes: string[]) => {
     try {
       const response = await axios.get(`http://localhost:3001/product`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         params: { categoryId: filterType, sizes: filterBySize },
       });
       setAllProducts(response.data.products);

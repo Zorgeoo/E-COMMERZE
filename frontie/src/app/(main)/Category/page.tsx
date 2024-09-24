@@ -43,6 +43,9 @@ export const Category = () => {
   const getProductsFilter = async (categoryId: string[], sizes: string[]) => {
     try {
       const response = await axios.get(`http://localhost:3001/product`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         params: { categoryId: filterType, sizes: filterBySize },
       });
       setAllProducts(response.data.products);

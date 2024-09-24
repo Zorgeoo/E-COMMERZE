@@ -1,29 +1,14 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+
+import { useProductContext } from "@/components/utils/context";
 
 const Login = () => {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState();
 
-  const login = async (email: string, password: string) => {
-    try {
-      const response = await axios.post("http://localhost:3001/auth/login", {
-        email,
-        password,
-      });
-      localStorage.setItem("token", response.data.token); //Localstorage deer token-r SETelne./browser deer hadgalagdsn/
-      setUser(response.data);
-      console.log(response.data);
-      router.replace("/");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { login } = useProductContext();
 
   return (
     <div className="min-h-[70vh] bg-[#F4F4F5]">

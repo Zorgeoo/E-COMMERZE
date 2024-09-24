@@ -1,11 +1,20 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { CiHeart } from "react-icons/ci";
 import { CiShoppingCart } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
 import { CiUser } from "react-icons/ci";
+import { useProductContext } from "./utils/context";
 
 export const Navbar = () => {
+  const { user } = useProductContext();
+
+  useEffect(() => {
+    console.log(user);
+  }, []);
+
   return (
     <div className="bg-black">
       <div className="w-[1280px] py-4 px-6 m-auto flex text-[#FFFFFF] justify-between items-center">
@@ -19,6 +28,7 @@ export const Navbar = () => {
           <Link href={`/Category`}>
             <div>Ангилал</div>
           </Link>
+          <div className=""></div>
         </div>
         <div className="relative">
           <input
@@ -45,17 +55,20 @@ export const Navbar = () => {
               </div>
             </Link>
           </div>
-          <div className="flex gap-2">
-            <Link href={`/register`}>
-              <button className="border border-[#2563EB] rounded-md py-2 px-3">
-                Бүртгүүлэх
-              </button>
-            </Link>
-            <Link href={`/login`}>
-              <button className="bg-[#2563EB] rounded-md py-2 px-3">
-                Нэвтрэх
-              </button>
-            </Link>
+          <div className="flex ">
+            <div className={`flex gap-2 ${user ? "hidden" : "flex"} `}>
+              <Link href={`/register`}>
+                <button className="border border-[#2563EB] rounded-md py-2 px-3">
+                  Бүртгүүлэх
+                </button>
+              </Link>
+              <Link href={`/login`}>
+                <button className="bg-[#2563EB] rounded-md py-2 px-3">
+                  Нэвтрэх
+                </button>
+              </Link>
+            </div>
+            <div>{user ? user.username : "obso"}</div>
           </div>
         </div>
       </div>

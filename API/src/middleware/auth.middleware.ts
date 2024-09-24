@@ -22,7 +22,7 @@ const authMiddleware = (
   if (!token) return res.status(401).json({ error: "Нэвтэрнэ үү!" }); //Hervee token bhgui bol aldaa butsaana.
 
   try {
-    const user = jwt.verify(token, process.env.JWT_SECRET as string); //Hervee token baival ter tokeng zuv token esehig shalgana.
+    const user = jwt.verify(token, process.env.JWT_SECRET); //Hervee token baival ter tokeng zuv token esehig shalgana.
 
     req.user = user; //Hervee aldaagui bol user gdg dotor payload orood req.userd hadgalna.
 
