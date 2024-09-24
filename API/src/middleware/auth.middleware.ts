@@ -15,7 +15,7 @@ const authMiddleware = (
 
   if (req.path.startsWith("/auth")) return next(); //REQ ni /auth pathaar ehelsen bol algasna. Uchir ni login,signup huseltuuded token shalgah shaardlagagui. Busad REQ-d auth shaardana.
 
-  const auth = req.headers.authorization; //Req-header-s auth-oo avna.
+  const auth = req.headers.authorization; //Req-header-s token-oo avna.
 
   const token = auth?.split(" ")[1];
 
