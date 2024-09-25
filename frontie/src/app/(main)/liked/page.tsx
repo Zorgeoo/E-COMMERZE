@@ -1,18 +1,48 @@
-import { DeliveryCard } from "@/components/co-components/DeliveryCard";
-const productData = [
-  { img: "/hoodie.png", title: "Hoodie", price: 12000 },
-  { img: "/boy.png", title: "Chunky boy", price: 13000 },
-  { img: "/girlwithcap.png", title: "Cap", price: 124000 },
-];
+"use client";
+import { useProductContext } from "@/components/utils/context";
+import Image from "next/image";
+import { useState } from "react";
+import { FaHeart } from "react-icons/fa";
+
 const Liked = () => {
+  const { user, setUser } = useProductContext();
+
   return (
-    <div className="min-h-[70vh]">
-      <div className="w-[1280px] m-auto border">
-        <div>Хадгалсан бараа ({productData.length})</div>
-        <div>
-          {productData.map((item, index) => {
-            return <DeliveryCard key={index} item={item} />;
-          })}
+    <div className="min-h-[70vh] bg-[#F7F7F8]">
+      <div className="w-[1280px] m-auto">
+        <div className="w-3/5 m-auto pt-[80px]">
+          <div className="flex gap-1 text-[20px]">
+            <div className="pb-4 font-bold">Хадгалсан бараа</div>
+            <div>({user?.liked.length})</div>
+          </div>
+          <div className="flex flex-col gap-4 ">
+            {user?.liked.map((item, index) => {
+              return (
+                <div className="flex justify-between gap-6 bg-white rounded-2xl relative">
+                  <div className="relative h-[120px] w-[120px]">
+                    <Image
+                      alt=""
+                      fill
+                      src={item.images[0]}
+                      className="object-cover rounded-xl"
+                    />
+                  </div>
+                  <div className="flex flex-col w-full justify-around">
+                    <div>
+                      <div className="">{item.productName}</div>
+                    </div>
+                    <div className="font-bold">
+                      {item.price.toLocaleString()}₮
+                    </div>
+                    <button className="text-white bg-[#2563EB] w-fit py-2 px-3 rounded-full">
+                      Сагслах
+                    </button>
+                  </div>
+                  <FaHeart className="absolute top-4 right-4 w-6 h-6 text-red-700" />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

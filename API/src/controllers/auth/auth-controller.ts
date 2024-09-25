@@ -40,6 +40,7 @@ const login: RequestHandler = async (req, res) => {
       username: user.username,
       email: user.email,
       id: user._id,
+      liked: user.liked,
     },
     process.env.JWT_SECRET as string
   );

@@ -1,8 +1,10 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
+import { useProductContext } from "../utils/context";
+import axios from "axios";
 
 interface MyComponentProps {
   img: string;
@@ -19,6 +21,45 @@ export const ProductCard: React.FC<MyComponentProps> = ({
   id,
 }) => {
   const [heartFill, setHeartFill] = useState(false);
+  const { user } = useProductContext();
+
+  const handleLikedProducts = async () => {
+    setHeartFill(!heartFill);
+    if (user) {
+      try {
+        const response = await axios.post(
+          "http://localhost:3001/user/liked",
+          {
+            userId: user.id,
+            productId: id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("User not logged in");
+    }
+  };
+  console.log(user?.liked);
+
+  useEffect(() => {
+    try {
+      if (user && user.liked) {
+        const isLiked = user.liked.some((item) => item._id.toString() === id);
+        setHeartFill(isLiked);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [user, id]);
+
   return (
     <div className="rounded-xl overflow-hidden flex flex-col gap-2 h-fit">
       <div
@@ -35,9 +76,7 @@ export const ProductCard: React.FC<MyComponentProps> = ({
           />
         </Link>
         <FaHeart
-          onClick={() => {
-            setHeartFill(!heartFill);
-          }}
+          onClick={handleLikedProducts}
           className={`absolute right-4 cursor-pointer top-4 w-6 h-6 ${
             heartFill ? "text-red-700" : ""
           }`}

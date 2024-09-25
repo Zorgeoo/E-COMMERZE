@@ -16,6 +16,7 @@ interface User {
   username: string;
   email: string;
   id: string;
+  liked: object[];
 }
 
 interface ProductContextProviderProps {
@@ -31,6 +32,8 @@ interface ProductContextType {
   setTotalPrice: (price: number) => void;
   login: (email: string, password: string) => Promise<void>; // Add the login function type
   user: User | undefined; // Optional user state
+  setUser: (user: User) => void;
+  getMe: () => void;
 }
 
 export const ProductContextProvider = ({
@@ -40,6 +43,7 @@ export const ProductContextProvider = ({
   const router = useRouter();
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [user, setUser] = useState<User | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
 
   const login = async (email: string, password: string) => {
     try {
@@ -56,8 +60,52 @@ export const ProductContextProvider = ({
     }
   };
 
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const token = localStorage.getItem("token"); //Local storage-s tokenoo avna.
+
+        if (!token) return; //token bhgui bol duusgana.
+
+        const res = await axios.get("http://localhost:3001/user/me", {
+          headers: {
+            Authorization: `Bearer ${token}`, //Hervee token baival user ooriin mdeellee avna. buh huseltuud headers deer tokenoo yvuulna.
+          },
+        });
+
+        setUser(res.data);
+        console.log(res.data);
+      } catch (err) {
+        localStorage.removeItem("token");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadUser();
+  }, []);
+
+  const getMe = async () => {
+    try {
+      const res = await axios.get("http://localhost:3001/user/me", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      setUser(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading indicator while user data is being fetched
+  }
+
   return (
-    <ProductContext.Provider value={{ totalPrice, setTotalPrice, login, user }}>
+    <ProductContext.Provider
+      value={{ totalPrice, setTotalPrice, login, user, setUser, getMe }}
+    >
       {children}
     </ProductContext.Provider>
   );

@@ -13,13 +13,14 @@ export const getMeController = async (req: CustomRequest, res: Response) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const user = await userModel.findById(userId);
+    const user = await userModel.findById(userId).populate("liked");
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const userData = {
       id: user._id,
-      name: user.username,
+      username: user.username,
       email: user.email,
+      liked: user.liked,
       // Add any other fields you wish to return
     };
 

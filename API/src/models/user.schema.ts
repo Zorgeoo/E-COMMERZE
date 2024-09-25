@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Document, ObjectId } from "mongoose";
 const { Schema, model } = mongoose; //Mongoose-s Schema-g oruulj ireed table uusgene.
 
 const userSchema = new Schema({

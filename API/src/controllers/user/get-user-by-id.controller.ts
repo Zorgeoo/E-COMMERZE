@@ -18,7 +18,7 @@ export const getUserByIdController: RequestHandler = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      message: "Internal serverrr error",
+      message: "Internal serverrreeer error",
     });
   }
 };

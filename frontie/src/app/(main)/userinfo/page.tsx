@@ -1,4 +1,5 @@
 "use client";
+import { useProductContext } from "@/components/utils/context";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -10,6 +11,9 @@ const data = [
 export const Userinfo = () => {
   const [page, setPage] = useState(true);
   const [hideOrder, setHideOrder] = useState(true);
+  const { user } = useProductContext();
+  console.log(user);
+
   return (
     <div>
       <div className="w-[1280px] m-auto">
@@ -42,35 +46,37 @@ export const Userinfo = () => {
               <div>
                 <div>Овог:</div>
                 <input
-                  id="surname"
+                  id="lastname"
                   className="w-full rounded-md px-3 py-1 border"
                 />
               </div>
               <div>
                 <div>Нэр:</div>
                 <input
-                  id="surname"
+                  placeholder={user?.username}
+                  id="firstname"
                   className="w-full rounded-md px-3 py-1 border"
                 />
               </div>
               <div>
                 <div>Утасны дугаар:</div>
                 <input
-                  id="surname"
+                  id="phonenumber"
                   className="w-full rounded-md px-3 py-1 border"
                 />
               </div>
               <div>
                 <div>Имэйл:</div>
                 <input
-                  id="surname"
+                  id="email"
                   className="w-full rounded-md px-3 py-1 border"
+                  placeholder={user?.email}
                 />
               </div>
               <div>
                 <div>Хаяг:</div>
                 <input
-                  id="surname"
+                  id="address"
                   className="w-full rounded-md px-3 py-1 border"
                 />
               </div>
