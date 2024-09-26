@@ -1,19 +1,47 @@
 "use client";
 import { useProductContext } from "@/components/utils/context";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
+import axios from "axios";
 
 const Liked = () => {
-  const { user, setUser } = useProductContext();
+  const { user, getMe } = useProductContext();
+  const [heartFill, setHeartFill] = useState(false);
+  const [likedProducts, setLikedProducts] = useState([]);
+
+  const handleLikedProducts = async (productId: string) => {
+    setHeartFill(!heartFill);
+    if (user) {
+      try {
+        const response = await axios.post(
+          "http://localhost:3001/user/liked",
+          {
+            userId: user.id,
+            productId: productId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        getMe();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("User not logged in");
+    }
+  };
 
   return (
     <div className="min-h-[70vh] bg-[#F7F7F8]">
       <div className="w-[1280px] m-auto">
-        <div className="w-3/5 m-auto pt-[80px]">
+        <div className="w-3/5 m-auto px-[80px] pt-[70px]">
           <div className="flex gap-1 text-[20px]">
             <div className="pb-4 font-bold">Хадгалсан бараа</div>
-            <div>({user?.liked.length})</div>
+            <div>({user?.liked?.length})</div>
           </div>
           <div className="flex flex-col gap-4 ">
             {user?.liked.map((item, index) => {
@@ -38,7 +66,10 @@ const Liked = () => {
                       Сагслах
                     </button>
                   </div>
-                  <FaHeart className="absolute top-4 right-4 w-6 h-6 text-red-700" />
+                  <FaHeart
+                    // onClick={handleLikedProducts(item._id)}
+                    className={`absolute top-4 right-4 w-6 h-6 text-red-700`}
+                  />
                 </div>
               );
             })}

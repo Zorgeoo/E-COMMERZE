@@ -36,7 +36,7 @@ const productData = [
 ];
 const order = () => {
   return (
-    <div className="bg-[#1C20240A]">
+    <div className="bg-[#1C20240A] h-screen">
       <div className="w-[985px] m-auto flex">
         <div className="w-full">
           <div className="flex border-b w-full">

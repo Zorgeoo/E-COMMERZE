@@ -2,18 +2,7 @@
 import { FaArrowRight } from "react-icons/fa";
 import Image from "next/image";
 import axios from "axios";
-import { AdminBurgerBar } from "@/components/AdminBurgerBar";
 import { useEffect, useState } from "react";
-
-const productData = [
-  { img: "/hoodie.png", title: "Hoodie", price: 12000 },
-  { img: "/boy.png", title: "Chunky boy", price: 13000 },
-  { img: "/girlwithcap.png", title: "Cap", price: 124000 },
-  { img: "/girlWithTshirt.png", title: "Tee", price: 125000 },
-  { img: "/Waterbottle.png", title: "Bottle", price: 127000 },
-  { img: "/hoodie.png", title: "Hoodie", price: 12000 },
-  { img: "/boy.png", title: "Sweater", price: 13000 },
-];
 
 interface Product {
   images: string[];
@@ -21,17 +10,18 @@ interface Product {
   price: number;
   categoryId: string[];
 }
-interface ProductsType {
-  products: Product[];
-}
+
 const Dashboard = () => {
-  const [allProducts, setAllProducts] = useState<ProductsType | null>(null);
+  const [allProducts, setAllProducts] = useState<Product[] | null>(null);
 
   const getProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/product/");
-      setAllProducts(response.data);
-      console.log(response.data);
+      const response = await axios.get("http://localhost:3001/product/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setAllProducts(response.data.products);
     } catch (error) {
       console.log("error bdgshaa");
     }
@@ -41,7 +31,7 @@ const Dashboard = () => {
     getProducts();
   }, []);
   return (
-    <div className="bg-[#1C20240A]">
+    <div className="bg-[#1C20240A] h-screen">
       <div className="w-[985px] m-auto flex">
         <div className="flex flex-col gap-[50px] w-full  px-6 py-6">
           <div className="flex gap-6 w-full">
@@ -77,7 +67,7 @@ const Dashboard = () => {
                 <div className="w-[20%] text-center">Үнэ</div>
               </div>
               <div>
-                {allProducts?.products.slice(0, 6).map((item, index) => {
+                {allProducts?.slice(0, 6).map((item, index) => {
                   return (
                     <div className="flex py-4 items-center border-b">
                       <div className="w-[10%] text-center">{index + 1}</div>

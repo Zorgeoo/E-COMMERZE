@@ -47,7 +47,7 @@ const productData = [
 ];
 const income = () => {
   return (
-    <div className="bg-[#1C20240A]">
+    <div className="bg-[#1C20240A] h-screen">
       <div className="w-[985px] m-auto flex">
         <div className="w-3/5 m-auto">
           <div className="w-full bg-white rounded-lg">

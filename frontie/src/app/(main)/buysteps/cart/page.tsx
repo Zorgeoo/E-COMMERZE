@@ -5,12 +5,6 @@ import { useState } from "react";
 import { useProductContext } from "@/components/utils/context";
 import { DeliveryCard } from "@/components/co-components/DeliveryCard";
 
-const data = [
-  { img: "/hoodie.png", title: "Hoodie", price: 12000 },
-  { img: "/boy.png", title: "Chunky boy", price: 13000 },
-  { img: "/girlwithcap.png", title: "Cap", price: 124000 },
-];
-
 export const Cart = () => {
   const { totalPrice, setTotalPrice } = useProductContext();
 
@@ -34,13 +28,13 @@ export const Cart = () => {
             <div>(4)</div>
           </div>
           <div className="flex flex-col gap-6">
-            {data.map((item, index) => {
+            {/* {data.map((item, index) => {
               return (
                 <div>
                   <DeliveryCard key={index} item={item} />
                 </div>
               );
-            })}
+            })} */}
           </div>
           <div className="flex flex-col gap-12">
             <div className="flex justify-between pt-6">

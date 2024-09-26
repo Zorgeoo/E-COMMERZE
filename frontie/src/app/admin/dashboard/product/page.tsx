@@ -1,3 +1,4 @@
+"use client";
 import { LuShapes } from "react-icons/lu";
 import { IoSearchSharp } from "react-icons/io5";
 import { FaRegCalendar } from "react-icons/fa";
@@ -5,54 +6,38 @@ import { FaArrowDown } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 import Image from "next/image";
-import { AdminBurgerBar } from "@/components/AdminBurgerBar";
+import axios from "axios";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
+interface Product {
+  images: string[];
+  productName: string;
+  price: number;
+  categoryId: string[];
+}
 export default function home() {
-  const InitialData = [
-    {
-      img: "/boy.png",
-      name: "Laptop цүнх",
-      id: "0001",
-      angilal: "Эмэгтэй, цүнх",
-      price: 19000,
-      uldegdel: 76,
-      zaragdsan: 36,
-      date: "2024-01-10",
-    },
-    {
-      img: "/boy.png",
-      name: "Laptop цүнх",
-      id: "0001",
-      angilal: "Эмэгтэй, цүнх",
-      price: 19000,
-      uldegdel: 76,
-      zaragdsan: 36,
-      date: "2024-01-10",
-    },
-    {
-      img: "/boy.png",
-      name: "Laptop цүнх",
-      id: "0001",
-      angilal: "Эмэгтэй, цүнх",
-      price: 19000,
-      uldegdel: 76,
-      zaragdsan: 36,
-      date: "2024-01-10",
-    },
-    {
-      img: "/boy.png",
-      name: "Laptop цүнх",
-      id: "0001",
-      angilal: "Эмэгтэй, цүнх",
-      price: 19000,
-      uldegdel: 76,
-      zaragdsan: 36,
-      date: "2024-01-10",
-    },
-  ];
+  const [allProducts, setAllProducts] = useState<Product[] | null>(null);
+
+  const getProducts = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/product/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setAllProducts(response.data.products);
+      console.log(response.data.products);
+    } catch (error) {
+      console.log("error bdgshaa");
+    }
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
   return (
-    <div className="bg-[#1C20240A]">
+    <div className="bg-[#1C20240A] h-screen p-4">
       <div className="w-[985px] m-auto flex gap-4">
         <div className="flex w-full">
           <div className="flex flex-col w-full gap-6">
@@ -115,7 +100,7 @@ export default function home() {
                 <div className=" flex-1 ">Зарагдсан</div>
                 <div className=" flex-1 pr-[100px] "> Нэмсэн огноо</div>
               </div>
-              {InitialData.map((item, index) => {
+              {allProducts?.map((item, index) => {
                 return (
                   <div key={index} className="flex border-t h-[72px] text-sm">
                     <div className="flex-[2] flex  items-center  gap-[80px] justify-center">
@@ -125,33 +110,33 @@ export default function home() {
                       ></input>
                       <div className="flex gap-3 justify-center">
                         <div className="relative h-10 w-10 rounded-full overflow-hidden">
-                          <Image src={item.img} fill alt="aa" />
+                          <Image src={item.images[0]} fill alt="aa" />
                         </div>
                         <div className="flex flex-col">
                           <div className="font-semibold text-sm">
-                            {item.name}
+                            {item.productName}
                           </div>
                           <div className="text-[12px] text-[#5E6166]">
-                            {item.id}
+                            {/* {item.id} */}
                           </div>
                         </div>
                       </div>
                     </div>
 
                     <div className="flex-1  flex items-center justify-end">
-                      {item.angilal}
+                      {/* {item.angilal} */}
                     </div>
                     <div className="flex-1  flex items-center justify-center">
                       {item.price}₮
                     </div>
                     <div className="flex-1  flex items-center justify-center">
-                      {item.uldegdel}
+                      {/* {item.uldegdel} */}
                     </div>
                     <div className="flex-1  flex items-center justify-center">
-                      {item.zaragdsan}
+                      {/* {item.zaragdsan} */}
                     </div>
                     <div className="flex-1  flex items-center justify-center">
-                      {item.date}
+                      {/* {item.date} */}
                     </div>
                     <div className="flex-1  flex items-center justify-center gap-3">
                       <MdDeleteForever />

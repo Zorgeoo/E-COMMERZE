@@ -57,7 +57,6 @@ export const Detail = () => {
   const [currentImage, setCurrentImage] = useState<number>(0);
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
   const { user } = useProductContext();
-
   const { id } = useParams<ParamsType>(); //ID-aa paramsaas avna
 
   const [allReviews, setAllReviews] = useState<ReviewType[]>();
@@ -138,9 +137,9 @@ export const Detail = () => {
   }, [product]);
 
   useEffect(() => {
-    console.log(user);
     getReviewByProductId(id);
   }, []);
+  useEffect(() => {}, []);
 
   return (
     <div>
@@ -193,7 +192,11 @@ export const Detail = () => {
                         <FaHeart
                           onClick={() => setHeartFill(!heartFill)}
                           className={`cursor-pointer top-4 w-6 h-6 ${
-                            heartFill ? "text-red-700" : ""
+                            user?.liked.some(
+                              (item) => item._id.toString() === id
+                            )
+                              ? "text-red-700"
+                              : ""
                           }`}
                         />
                       </div>

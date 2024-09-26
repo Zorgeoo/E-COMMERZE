@@ -21,7 +21,8 @@ export const ProductCard: React.FC<MyComponentProps> = ({
   id,
 }) => {
   const [heartFill, setHeartFill] = useState(false);
-  const { user } = useProductContext();
+  const { user, getMe } = useProductContext();
+  const [liked, setLiked] = useState<string[]>([]);
 
   const handleLikedProducts = async () => {
     setHeartFill(!heartFill);
@@ -39,7 +40,8 @@ export const ProductCard: React.FC<MyComponentProps> = ({
             },
           }
         );
-        console.log(response.data);
+        setLiked(response.data.liked);
+        getMe();
       } catch (error) {
         console.log(error);
       }
@@ -47,7 +49,6 @@ export const ProductCard: React.FC<MyComponentProps> = ({
       console.log("User not logged in");
     }
   };
-  console.log(user?.liked);
 
   useEffect(() => {
     try {

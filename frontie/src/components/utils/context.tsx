@@ -16,7 +16,7 @@ interface User {
   username: string;
   email: string;
   id: string;
-  liked: object[];
+  liked: any[];
 }
 
 interface ProductContextProviderProps {
@@ -31,8 +31,8 @@ interface ProductContextType {
   totalPrice: number;
   setTotalPrice: (price: number) => void;
   login: (email: string, password: string) => Promise<void>; // Add the login function type
-  user: User | undefined; // Optional user state
-  setUser: (user: User) => void;
+  user: User | null; // Optional user state
+  setUser: (user: User | null) => void;
   getMe: () => void;
 }
 
@@ -42,7 +42,7 @@ export const ProductContextProvider = ({
   // Initialize state with a type annotation
   const router = useRouter();
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [user, setUser] = useState<User | undefined>(undefined);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   const login = async (email: string, password: string) => {
@@ -74,9 +74,8 @@ export const ProductContextProvider = ({
         });
 
         setUser(res.data);
-        console.log(res.data);
       } catch (err) {
-        localStorage.removeItem("token");
+        // localStorage.removeItem("token");
       } finally {
         setLoading(false);
       }

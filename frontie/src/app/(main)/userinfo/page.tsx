@@ -53,7 +53,7 @@ export const Userinfo = () => {
               <div>
                 <div>Нэр:</div>
                 <input
-                  placeholder={user?.username}
+                  value={user?.username}
                   id="firstname"
                   className="w-full rounded-md px-3 py-1 border"
                 />
@@ -70,7 +70,7 @@ export const Userinfo = () => {
                 <input
                   id="email"
                   className="w-full rounded-md px-3 py-1 border"
-                  placeholder={user?.email}
+                  value={user?.email}
                 />
               </div>
               <div>

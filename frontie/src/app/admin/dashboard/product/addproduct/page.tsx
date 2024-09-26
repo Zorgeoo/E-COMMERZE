@@ -1,11 +1,13 @@
-import { AdminBurgerBar } from "@/components/AdminBurgerBar";
 import { FaArrowLeft } from "react-icons/fa";
 
 export default function home() {
+  const createProduct = async () => {
+    try {
+    } catch (error) {}
+  };
   return (
-    <div className="bg-[#1C20240A]">
-      <div className="flex w-[1280px] m-auto gap-4">
-        <AdminBurgerBar />
+    <div className="bg-[#1C20240A] h-screen p-4">
+      <div className="flex w-[940px] m-auto gap-4">
         <div className="flex-1 flex flex-col gap-8">
           <div className="flex gap-4 items-center p-4 bg-white">
             <div className="">

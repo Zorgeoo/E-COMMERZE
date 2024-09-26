@@ -9,11 +9,16 @@ import { CiUser } from "react-icons/ci";
 import { useProductContext } from "./utils/context";
 
 export const Navbar = () => {
-  const { user } = useProductContext();
+  const { user, setUser } = useProductContext();
 
-  useEffect(() => {
-    console.log(user);
-  }, []);
+  const logOut = async () => {
+    try {
+      localStorage.removeItem("token");
+      setUser(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="bg-black">
@@ -68,7 +73,17 @@ export const Navbar = () => {
                 </button>
               </Link>
             </div>
-            <div>{user ? user.username : "obso"}</div>
+            <div
+              className={`flex gap-4 items-center ${user ? "flex" : "hidden"}`}
+            >
+              <div>{user?.username}</div>
+              <button
+                onClick={logOut}
+                className="border rounded-full px-3 py-2"
+              >
+                Гарах
+              </button>
+            </div>
           </div>
         </div>
       </div>

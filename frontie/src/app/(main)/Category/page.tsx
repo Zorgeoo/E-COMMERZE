@@ -2,6 +2,7 @@
 import { ProductCard } from "@/components/co-components/ProductCard";
 import { use, useEffect, useState } from "react";
 import axios from "axios";
+import { number } from "yup";
 
 const sizeData = ["Free", "S", "M", "L", "XL", "2XL", "3XL"];
 
@@ -30,10 +31,16 @@ export const Category = () => {
   );
   const [filterType, setFilterType] = useState<string[]>([]);
   const [filterBySize, setFilterBySize] = useState<string[]>([]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
 
   const getCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/category/");
+      const response = await axios.get("http://localhost:3001/category/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       setAllCategories(response.data);
     } catch (error) {
       console.log("error bdgshaa");
@@ -46,10 +53,10 @@ export const Category = () => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        params: { categoryId: filterType, sizes: filterBySize },
+        params: { categoryId: filterType, sizes: filterBySize, page },
       });
       setAllProducts(response.data.products);
-      console.log(response.data.products);
+      setTotal(response.data.totalCount);
     } catch (error) {
       console.log("error bdgshaa");
     }
@@ -61,7 +68,7 @@ export const Category = () => {
 
   useEffect(() => {
     getProductsFilter(filterType, filterBySize);
-  }, [filterType, filterBySize]);
+  }, [filterType, filterBySize, page]);
 
   const handleFilter = (id: string) => {
     if (filterType.includes(id)) {
@@ -78,12 +85,11 @@ export const Category = () => {
       setFilterBySize([...filterBySize, size]);
     }
   };
-  console.log(filterType);
 
   return (
     <div>
       <div className="w-[1280px] m-auto flex justify-around pt-12 pb-24">
-        <div className="flex flex-col gap-12 border pr-40">
+        <div className="flex flex-col gap-12 pr-40">
           <div>
             <div className="font-bold">Ангилал</div>
             <div className="flex flex-col gap-2 pt-4">
@@ -121,22 +127,36 @@ export const Category = () => {
             </div>
           </div>
         </div>
-        <div className="h-[2147px] w-[774px] grid grid-cols-3 grid-rows-5 gap-x-5 gap-y-12">
-          {allProducts?.slice(0, 6).map((item, index) => {
-            const customHeight =
-              index === 7 ? "764px" : index === 8 ? "764px" : "331px";
-            return (
-              <div key={index}>
-                <ProductCard
-                  img={item.images[0]}
-                  title={item.productName}
-                  price={item.price}
-                  customHeight={customHeight}
-                  id={item._id}
-                />
+        <div>
+          <div className="h-fit w-[774px] grid grid-cols-3 grid-rows-2 gap-x-5 gap-y-12">
+            {allProducts?.slice(0, 6).map((item, index) => {
+              const customHeight =
+                index === 7 ? "764px" : index === 8 ? "764px" : "331px";
+              return (
+                <div key={index}>
+                  <ProductCard
+                    img={item.images[0]}
+                    title={item.productName}
+                    price={item.price}
+                    customHeight={customHeight}
+                    id={item._id}
+                  />
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex gap-6 w-fit m-auto pt-10">
+            {new Array(Math.ceil(total / 6)).fill(0).map((_, index) => (
+              <div
+                onClick={() => setPage(index + 1)}
+                className={`cursor-pointer border rounded-full py-2 px-4 ${
+                  page === index + 1 ? "bg-black text-white" : ""
+                }`}
+              >
+                {index + 1}
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
     </div>
