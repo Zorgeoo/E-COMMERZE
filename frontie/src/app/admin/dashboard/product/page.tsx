@@ -92,7 +92,7 @@ export default function home() {
               </div>
             </div>
             <div className="flex flex-col bg-white rounded-[12px]">
-              <div className="flex w-full h-11 items-center border-b">
+              <div className="flex w-full h-11 items-center border">
                 <div className=" flex-1 pl-[140px] ">Бүтээгдэхүүн</div>
                 <div className=" flex-1 flex justify-center">Ангилал</div>
                 <div className=" flex-1 flex justify-center">Үнэ</div>
@@ -104,10 +104,12 @@ export default function home() {
                 return (
                   <div key={index} className="flex border-t h-[72px] text-sm">
                     <div className="flex-[2] flex  items-center  gap-[80px] justify-center">
-                      <input
-                        type="checkbox"
-                        className="w-5 h-5 border-black border"
-                      ></input>
+                      <div className="border flex justify-center items-center">
+                        <input
+                          type="checkbox"
+                          className="w-5 h-5 border-black border"
+                        ></input>
+                      </div>
                       <div className="flex gap-3 justify-center">
                         <div className="relative h-10 w-10 rounded-full overflow-hidden">
                           <Image src={item.images[0]} fill alt="aa" />

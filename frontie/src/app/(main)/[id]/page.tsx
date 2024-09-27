@@ -56,7 +56,7 @@ export const Detail = () => {
 
   const [currentImage, setCurrentImage] = useState<number>(0);
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
-  const { user } = useProductContext();
+  const { user, getMe } = useProductContext();
   const { id } = useParams<ParamsType>(); //ID-aa paramsaas avna
 
   const [allReviews, setAllReviews] = useState<ReviewType[]>();
@@ -72,6 +72,31 @@ export const Detail = () => {
       setProduct(response.data.product);
     } catch (error) {
       console.log("error bdgshaa");
+    }
+  };
+
+  const handleLikedProducts = async (productId: string) => {
+    setHeartFill(!heartFill);
+    if (user) {
+      try {
+        const response = await axios.post(
+          "http://localhost:3001/user/liked",
+          {
+            userId: user.id,
+            productId: productId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        getMe();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log("User not logged in");
     }
   };
 
@@ -190,7 +215,7 @@ export const Detail = () => {
                       <div>{product?.productName}</div>
                       <div>
                         <FaHeart
-                          onClick={() => setHeartFill(!heartFill)}
+                          onClick={() => handleLikedProducts(id)}
                           className={`cursor-pointer top-4 w-6 h-6 ${
                             user?.liked.some(
                               (item) => item._id.toString() === id

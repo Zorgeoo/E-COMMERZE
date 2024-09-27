@@ -22,7 +22,6 @@ export const ProductCard: React.FC<MyComponentProps> = ({
 }) => {
   const [heartFill, setHeartFill] = useState(false);
   const { user, getMe } = useProductContext();
-  const [liked, setLiked] = useState<string[]>([]);
 
   const handleLikedProducts = async () => {
     setHeartFill(!heartFill);
@@ -40,7 +39,7 @@ export const ProductCard: React.FC<MyComponentProps> = ({
             },
           }
         );
-        setLiked(response.data.liked);
+        console.log(response.data.message);
         getMe();
       } catch (error) {
         console.log(error);

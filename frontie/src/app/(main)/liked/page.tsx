@@ -8,7 +8,6 @@ import axios from "axios";
 const Liked = () => {
   const { user, getMe } = useProductContext();
   const [heartFill, setHeartFill] = useState(false);
-  const [likedProducts, setLikedProducts] = useState([]);
 
   const handleLikedProducts = async (productId: string) => {
     setHeartFill(!heartFill);
@@ -38,7 +37,7 @@ const Liked = () => {
   return (
     <div className="min-h-[70vh] bg-[#F7F7F8]">
       <div className="w-[1280px] m-auto">
-        <div className="w-3/5 m-auto px-[80px] pt-[70px]">
+        <div className="w-3/5 m-auto px-[80px] py-[70px]">
           <div className="flex gap-1 text-[20px]">
             <div className="pb-4 font-bold">Хадгалсан бараа</div>
             <div>({user?.liked?.length})</div>
@@ -67,7 +66,7 @@ const Liked = () => {
                     </button>
                   </div>
                   <FaHeart
-                    // onClick={handleLikedProducts(item._id)}
+                    onClick={() => handleLikedProducts(item._id)}
                     className={`absolute top-4 right-4 w-6 h-6 text-red-700`}
                   />
                 </div>

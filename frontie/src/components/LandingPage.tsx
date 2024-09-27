@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import axios from "axios";
 import { ProductCard } from "./co-components/ProductCard";
 import { useEffect, useState } from "react";
@@ -26,7 +25,6 @@ export const LandingPage = () => {
         params: { categoryId: filterType, sizes: filterBySize, limit },
       });
       setAllProducts(response.data.products);
-      console.log(response.data.products);
     } catch (error) {
       console.log("error bdgshaa");
     }
