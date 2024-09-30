@@ -47,7 +47,7 @@ export const ProductContextProvider = ({
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:3001/auth/login", {
+      const response = await axios.post("http://localhost:3004/auth/login", {
         email,
         password,
       });
@@ -67,7 +67,7 @@ export const ProductContextProvider = ({
 
         if (!token) return; //token bhgui bol duusgana.
 
-        const res = await axios.get("http://localhost:3001/user/me", {
+        const res = await axios.get("http://localhost:3004/user/me", {
           headers: {
             Authorization: `Bearer ${token}`, //Hervee token baival user ooriin mdeellee avna. buh huseltuud headers deer tokenoo yvuulna.
           },
@@ -85,7 +85,7 @@ export const ProductContextProvider = ({
 
   const getMe = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/user/me", {
+      const res = await axios.get("http://localhost:3004/user/me", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

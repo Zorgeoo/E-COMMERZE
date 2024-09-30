@@ -14,7 +14,7 @@ const Liked = () => {
     if (user) {
       try {
         const response = await axios.post(
-          "http://localhost:3001/user/liked",
+          "http://localhost:3004/user/liked",
           {
             userId: user.id,
             productId: productId,

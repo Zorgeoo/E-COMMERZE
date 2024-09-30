@@ -36,7 +36,7 @@ export const Category = () => {
 
   const getCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/category/", {
+      const response = await axios.get("http://localhost:3004/category/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -49,7 +49,7 @@ export const Category = () => {
 
   const getProductsFilter = async (categoryId: string[], sizes: string[]) => {
     try {
-      const response = await axios.get(`http://localhost:3001/product`, {
+      const response = await axios.get(`http://localhost:3004/product`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

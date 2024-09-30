@@ -18,7 +18,7 @@ export const LandingPage = () => {
 
   const getProductsFilter = async (categoryId: string[], sizes: string[]) => {
     try {
-      const response = await axios.get(`http://localhost:3001/product`, {
+      const response = await axios.get(`http://localhost:3004/product`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

@@ -31,6 +31,6 @@ app.use("/order", orderRouter);
 app.use("/review", reviewRouter);
 app.use("/auth", authRouter);
 
-app.listen(3001, () => {
-  console.log("Server is running on http://localhost:3001");
+app.listen(3004, () => {
+  console.log("Server is running on http://localhost:3004");
 });

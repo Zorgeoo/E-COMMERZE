@@ -1,10 +1,63 @@
+"use client";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 
 export default function home() {
+  const [productName, setProductName] = useState("");
+  const [product, setProduct] = useState();
+  const [price, setPrice] = useState<number>();
+  const [allCategories, setAllCategories] = useState<CategoriesType | null>(
+    null
+  );
+
+  interface Category {
+    categoryName: string;
+    _id: string;
+  }
+
+  interface CategoriesType {
+    categories: Category[];
+  }
   const createProduct = async () => {
     try {
-    } catch (error) {}
+      const response = await axios.post(
+        "http://localhost:3004/product/",
+        {
+          productName,
+          price,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log(response.data);
+      setProduct(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const getCategories = async () => {
+    try {
+      const response = await axios.get("http://localhost:3004/category/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setAllCategories(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log("error bdgshaa");
+    }
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
+
   return (
     <div className="bg-[#1C20240A] h-screen p-4">
       <div className="flex w-[940px] m-auto gap-4">
@@ -24,6 +77,8 @@ export default function home() {
                   </div>
                   <input
                     placeholder="Нэр"
+                    onChange={(event) => setProductName(event.target.value)}
+                    value={productName}
                     className="bg-[#F7F7F8] text-[#8B8E95] p-2 rounded-lg w-full"
                   ></input>
                 </div>
@@ -65,6 +120,11 @@ export default function home() {
                   <input
                     className="p-3 bg-[#F7F7F8] text-[#8B8E95] rounded-lg w-full"
                     placeholder="Үндсэн үнэ"
+                    value={price}
+                    type="number"
+                    onChange={(event) =>
+                      setPrice(Number(event.target.value) || undefined)
+                    }
                   ></input>
                 </div>
                 <div className="flex-1">
@@ -116,7 +176,10 @@ export default function home() {
                   <div className="border bg-white font-semibold rounded-lg w-fit px-5 py-4 text-lg">
                     Ноорог
                   </div>
-                  <div className="bg-black text-white font-semibold rounded-lg w-fit px-5 py-4 text-lg">
+                  <div
+                    className="bg-black text-white font-semibold rounded-lg w-fit px-5 py-4 text-lg"
+                    onClick={createProduct}
+                  >
                     Нийтлэх
                   </div>
                 </div>

@@ -33,7 +33,7 @@ export const Navbar = () => {
 
   const getProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/product/", {
+      const response = await axios.get("http://localhost:3004/product/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -108,8 +108,12 @@ export const Navbar = () => {
             <Link href={`/liked`}>
               <div className="relative">
                 <CiHeart className="w-6 h-6" />
-                <div className="bg-[#2563EB] rounded-full px-1 text-xs absolute top-[-15%] right-[-15%]">
-                  {user?.liked.length}
+                <div
+                  className={`bg-[#2563EB] rounded-full px-1 text-xs absolute top-[-15%] right-[-15%]  ${
+                    user?.liked.length === 0 ? "hidden" : "block"
+                  }`}
+                >
+                  {user?.liked?.length}
                 </div>
               </div>
             </Link>

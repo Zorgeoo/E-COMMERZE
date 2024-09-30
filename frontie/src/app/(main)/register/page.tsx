@@ -57,7 +57,7 @@ export const Register = () => {
 
   const createUser = async (values: FormValues) => {
     try {
-      const response = await axios.post("http://localhost:3001/auth/register", {
+      const response = await axios.post("http://localhost:3004/auth/register", {
         username: values.username,
         email: values.email,
         password: values.password,
