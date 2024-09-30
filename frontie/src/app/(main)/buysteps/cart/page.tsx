@@ -1,15 +1,35 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProductContext } from "@/components/utils/context";
-import { DeliveryCard } from "@/components/co-components/DeliveryCard";
+import axios from "axios";
 
 export const Cart = () => {
-  const { totalPrice, setTotalPrice } = useProductContext();
+  const { user, getMe } = useProductContext();
+  const [carts, setCarts] = useState();
+  const getCarts = async (userId: string) => {
+    try {
+      const res = await axios.get(`http://localhost:3004/cart/?${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
 
-  console.log(totalPrice);
-
+        // params: { userId },
+      });
+      setCarts(res.data.carts);
+      console.log(res.data.carts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (user?.id) {
+      getCarts(user.id);
+      console.log("ajillav");
+    }
+    getMe();
+  }, []);
   return (
     <div>
       <div className="w-[1280px] m-auto pt-7 pb-[137px]">

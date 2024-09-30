@@ -46,9 +46,9 @@ export const Detail = () => {
 
   const [heartFill, setHeartFill] = useState(false);
   const [hiddenElement, setHiddenElement] = useState(false);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
 
-  const [sizeChange, setSizeChange] = useState(6);
+  const [sizeChange, setSizeChange] = useState("");
 
   //Review
   const [rating, setRating] = useState(0);
@@ -166,6 +166,28 @@ export const Detail = () => {
   }, []);
   useEffect(() => {}, []);
 
+  const buyProduct = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:3004/cart`,
+        {
+          userId: user?.id,
+          quantity: count,
+          cartProducts: id,
+          size: sizeChange,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="w-[1280px] m-auto">
@@ -238,11 +260,11 @@ export const Detail = () => {
                           <div
                             key={index}
                             className={`flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black text-black hover:bg-[#E4E4E7] ${
-                              sizeChange === index
+                              sizeChange === item
                                 ? "bg-black text-white hover:bg-black"
                                 : "bg-white"
                             }`}
-                            onClick={() => setSizeChange(index)}
+                            onClick={() => setSizeChange(item)}
                           >
                             {item}
                           </div>
@@ -272,7 +294,10 @@ export const Detail = () => {
                   <div className="font-bold text-[20px] pb-2">
                     {product?.price}$
                   </div>
-                  <button className="text-white bg-[#2563EB] py-2 px-9 rounded-full">
+                  <button
+                    onClick={buyProduct}
+                    className="text-white bg-[#2563EB] py-2 px-9 rounded-full"
+                  >
                     Сагсанд нэмэх
                   </button>
                 </div>

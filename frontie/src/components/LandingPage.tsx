@@ -2,6 +2,7 @@
 import axios from "axios";
 import { ProductCard } from "./co-components/ProductCard";
 import { useEffect, useState } from "react";
+import { useProductContext } from "./utils/context";
 
 interface Product {
   images: string[];
@@ -11,6 +12,7 @@ interface Product {
 }
 
 export const LandingPage = () => {
+  const { getMe } = useProductContext();
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
   const [filterBySize, setFilterBySize] = useState<string[]>([]);
   const [filterType, setFilterType] = useState<string[]>([]);
@@ -32,6 +34,7 @@ export const LandingPage = () => {
 
   useEffect(() => {
     getProductsFilter(filterType, filterBySize);
+    getMe();
   }, []);
 
   return (

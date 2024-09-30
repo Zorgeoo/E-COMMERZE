@@ -16,7 +16,7 @@ interface Product {
   _id: string;
 }
 export const Navbar = () => {
-  const { user, setUser } = useProductContext();
+  const { user, setUser, getMe } = useProductContext();
   const [search, setSearch] = useState("");
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -29,7 +29,6 @@ export const Navbar = () => {
       console.log(error);
     }
   };
-  console.log(search);
 
   const getProducts = async () => {
     try {
@@ -46,6 +45,7 @@ export const Navbar = () => {
   };
   useEffect(() => {
     getProducts();
+    getMe();
   }, []);
 
   useEffect(() => {
@@ -58,7 +58,6 @@ export const Navbar = () => {
       setFilteredProducts([]);
     }
   }, [search, allProducts]);
-  console.log(filteredProducts);
 
   return (
     <div className="bg-black">
@@ -110,7 +109,7 @@ export const Navbar = () => {
                 <CiHeart className="w-6 h-6" />
                 <div
                   className={`bg-[#2563EB] rounded-full px-1 text-xs absolute top-[-15%] right-[-15%]  ${
-                    user?.liked.length === 0 ? "hidden" : "block"
+                    user?.liked?.length === 0 ? "hidden" : "block"
                   }`}
                 >
                   {user?.liked?.length}

@@ -53,10 +53,25 @@ export const ProductContextProvider = ({
       });
       localStorage.setItem("token", response.data.token); //Localstorage deer token-r SETelne./browser deer hadgalagdsn/
       setUser(response.data.user);
-      console.log(response.data);
       router.replace("/");
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const getMe = async () => {
+    try {
+      const res = await axios.get("http://localhost:3004/user/me", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      setUser(res.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -82,20 +97,6 @@ export const ProductContextProvider = ({
     };
     loadUser();
   }, []);
-
-  const getMe = async () => {
-    try {
-      const res = await axios.get("http://localhost:3004/user/me", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      setUser(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   if (loading) {
     return <div>Loading...</div>; // Show loading indicator while user data is being fetched

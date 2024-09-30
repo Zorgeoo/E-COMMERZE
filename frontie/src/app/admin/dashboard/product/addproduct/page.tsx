@@ -3,22 +3,21 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 
+const sizeData = ["Free", "S", "M", "L", "XL", "2XL", "3XL"];
+
 export default function home() {
   const [productName, setProductName] = useState("");
-  const [product, setProduct] = useState();
-  const [price, setPrice] = useState<number>();
-  const [allCategories, setAllCategories] = useState<CategoriesType | null>(
-    null
-  );
+  const [price, setPrice] = useState<number | undefined>();
+  const [allCategories, setAllCategories] = useState<Category[] | null>(null);
+  const [categoryId, setCategoryId] = useState<string[]>([]);
+  const [description, setDescription] = useState("");
+  const [sizes, setSizes] = useState<string[]>([]);
 
   interface Category {
     categoryName: string;
     _id: string;
   }
 
-  interface CategoriesType {
-    categories: Category[];
-  }
   const createProduct = async () => {
     try {
       const response = await axios.post(
@@ -26,6 +25,9 @@ export default function home() {
         {
           productName,
           price,
+          categoryId,
+          description,
+          sizes,
         },
         {
           headers: {
@@ -33,8 +35,7 @@ export default function home() {
           },
         }
       );
-      console.log(response.data);
-      setProduct(response.data);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -47,8 +48,8 @@ export default function home() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      setAllCategories(response.data);
-      console.log(response.data);
+      setAllCategories(response.data.categories);
+      console.log(response.data.categories);
     } catch (error) {
       console.log("error bdgshaa");
     }
@@ -58,6 +59,25 @@ export default function home() {
     getCategories();
   }, []);
 
+  console.log(allCategories);
+  console.log(categoryId);
+  console.log(sizes);
+
+  const handleCategory = (id: string) => {
+    if (categoryId?.includes(id)) {
+      setCategoryId(categoryId.filter((filterId) => filterId !== id));
+    } else {
+      setCategoryId([...categoryId, id]);
+    }
+  };
+
+  const handleSize = (size: string) => {
+    if (sizes?.includes(size)) {
+      setSizes(sizes.filter((sizeName) => sizeName !== size));
+    } else {
+      setSizes([...sizes, size]);
+    }
+  };
   return (
     <div className="bg-[#1C20240A] h-screen p-4">
       <div className="flex w-[940px] m-auto gap-4">
@@ -89,6 +109,8 @@ export default function home() {
                   <textarea
                     placeholder="Гол онцлог, давуу тал, техникийн үзүүлэлтүүдийг онцолсон дэлгэрэнгүй, сонирхолтой тайлбар."
                     className="bg-[#F7F7F8] text-[#8B8E95] p-2 rounded-lg w-full  resize-none"
+                    value={description}
+                    onChange={(event) => setDescription(event.target.value)}
                   ></textarea>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -143,32 +165,43 @@ export default function home() {
               <div className="bg-white rounded-lg w-full flex flex-col gap-4 p-6">
                 <div className="flex flex-col gap-2">
                   <div className="font-semibold">Ерөнхий ангилал</div>
+                  <div className="flex flex-col gap-1">
+                    {allCategories?.map((item, index) => {
+                      return (
+                        <label key={index}>
+                          <input
+                            type="checkbox"
+                            id={item.categoryName}
+                            checked={categoryId?.includes(item._id)}
+                            onChange={() => handleCategory(item._id)}
+                          />
+                          {item.categoryName}
+                        </label>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
               <div className="bg-white rounded-lg w-full flex flex-col gap-6 p-6">
-                <div className="font-semibold">Төрөл</div>
+                <div className="font-semibold">Хэмжээ</div>
                 <div className="flex flex-col gap-2">
                   <div className="flex gap-6">
-                    <div>Өнгө</div>
-                    <div>+</div>
+                    <div className="flex gap-3 justify-center">
+                      {sizeData.map((size, index) => {
+                        return (
+                          <label key={index}>
+                            <input
+                              type="checkbox"
+                              id={size}
+                              checked={sizes?.includes(size)}
+                              onClick={() => handleSize(size)}
+                            />
+                            {size}
+                          </label>
+                        );
+                      })}
+                    </div>
                   </div>
-                  <div className="flex gap-6">
-                    <div>Хэмжээ</div>
-                    <div>+</div>
-                  </div>
-                </div>
-                <div className="border rounded-lg text-sm font-semibold w-fit py-2 px-3">
-                  Төрөл нэмэх
-                </div>
-              </div>
-              <div className="bg-white rounded-lg w-full flex flex-col gap-2 px-6 py-5">
-                <div className="font-semibold">Таг</div>
-                <textarea
-                  placeholder="Таг нэмэх..."
-                  className="border rounded-lg text-[#8B8E95] bg-[#F7F7F8] p-1 resize-none"
-                ></textarea>
-                <div className="text-sm text-[#5E6166]">
-                  Санал болгох: Гутал , Цүнх , Эмэгтэй{" "}
                 </div>
               </div>
               <div className="w-full flex justify-end">
