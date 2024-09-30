@@ -20,7 +20,6 @@ export const Navbar = () => {
   const [search, setSearch] = useState("");
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [limit, setLimit] = useState<number>(50);
 
   const logOut = async () => {
     try {
@@ -107,8 +106,11 @@ export const Navbar = () => {
         <div className="flex items-center gap-6">
           <div className="flex gap-6">
             <Link href={`/liked`}>
-              <div>
+              <div className="relative">
                 <CiHeart className="w-6 h-6" />
+                <div className="bg-[#2563EB] rounded-full px-1 text-xs absolute top-[-15%] right-[-15%]">
+                  {user?.liked.length}
+                </div>
               </div>
             </Link>
             <Link href={`/buysteps/cart`}>
