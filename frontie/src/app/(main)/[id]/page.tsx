@@ -229,9 +229,6 @@ export const Detail = () => {
               <div className="pt-[100px] flex flex-col gap-6">
                 <div>
                   <div className="flex flex-col gap-2">
-                    <div className="py-[2px] px-[10px] rounded-full border w-fit font-semibold border-[#2563EB]">
-                      ШИНЭ
-                    </div>
                     <div className="flex gap-2">
                       <div>{product?.productName}</div>
                       <div>
@@ -412,8 +409,8 @@ export const Detail = () => {
           <div className="grid grid-cols-4 gap-x-[21px] gap-y-12">
             {allProducts?.slice(0, 8).map((item, index) => {
               return (
-                <Link href={`${item._id}`}>
-                  <div key={index}>
+                <Link key={index} href={`${item._id}`}>
+                  <div>
                     <ProductCard
                       img={item.images[0]}
                       title={item.productName}

@@ -3,8 +3,15 @@ import { cartModel } from "../../models/cart.schema";
 
 export const deleteCartController: RequestHandler = async (req, res) => {
   try {
-    const { cartId } = req.query;
-    console.log("ustgah", cartId);
+    const { cartId, userId } = req.query;
+    console.log("ustgah", cartId, userId);
+
+    if (!cartId && userId) {
+      await cartModel.deleteMany({ userId });
+      return res.status(200).json({
+        message: "Cart has been cleared",
+      });
+    }
 
     const deletedCart = await cartModel.findByIdAndDelete(cartId);
 

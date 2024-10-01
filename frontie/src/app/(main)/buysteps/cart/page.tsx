@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useProductContext } from "@/components/utils/context";
 import axios from "axios";
-import Image from "next/image";
 import { DeliveryCard } from "@/components/co-components/DeliveryCard";
 
 export const Cart = () => {
@@ -89,7 +88,10 @@ export const Cart = () => {
                 {totalPrice.toLocaleString()}₮
               </div>
             </div>
-            <Link href={`/buysteps/address`} className="self-end">
+            <Link
+              href={`${carts.length > 0 ? "/buysteps/address" : ""}`}
+              className="self-end"
+            >
               <button className="px-9 py-2 rounded-full text-white bg-[#2563EB]">
                 Худалдан авах
               </button>

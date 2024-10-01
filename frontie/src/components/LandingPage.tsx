@@ -16,7 +16,7 @@ export const LandingPage = () => {
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
   const [filterBySize, setFilterBySize] = useState<string[]>([]);
   const [filterType, setFilterType] = useState<string[]>([]);
-  const [limit, setLimit] = useState<number>(20);
+  const [limit, setLimit] = useState<number>(22);
 
   const getProductsFilter = async (categoryId: string[], sizes: string[]) => {
     try {

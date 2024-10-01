@@ -45,7 +45,10 @@ const Liked = () => {
           <div className="flex flex-col gap-4 ">
             {user?.liked.map((item, index) => {
               return (
-                <div className="flex justify-between gap-6 bg-white rounded-2xl relative">
+                <div
+                  key={index}
+                  className="flex justify-between gap-6 bg-white rounded-2xl relative"
+                >
                   <div className="relative h-[120px] w-[120px]">
                     <Image
                       alt=""

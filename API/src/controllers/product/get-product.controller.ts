@@ -7,6 +7,11 @@ export const getProductsController: RequestHandler = async (req, res) => {
 
     let query: any = {};
 
+    if (!page && !limit) {
+      const products = await productModel.find({});
+      return res.status(200).json({ products });
+    }
+
     if (categoryId) {
       query.categoryId = categoryId ? { $in: categoryId } : categoryId;
     }

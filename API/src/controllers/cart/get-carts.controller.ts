@@ -4,7 +4,6 @@ import { cartModel } from "../../models/cart.schema";
 export const getCartsController: RequestHandler = async (req, res) => {
   try {
     const { userId } = req.query;
-    console.log(userId);
     const carts = await cartModel.find({ userId }).populate("cartProducts");
     return res.status(201).json({
       carts,

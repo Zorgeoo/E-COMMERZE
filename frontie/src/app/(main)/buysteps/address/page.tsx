@@ -40,6 +40,16 @@ const address = () => {
           },
         }
       );
+      const clearCartResponse = await axios.delete(
+        `http://localhost:3004/cart`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          params: { userId: user?.id },
+        }
+      );
+      console.log(clearCartResponse.data);
       router.push("payment");
       console.log(res.data);
     } catch (error) {
