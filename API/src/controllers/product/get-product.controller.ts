@@ -1,6 +1,5 @@
 import { RequestHandler } from "express";
 import { productModel } from "../../models/product.schema";
-import { userModel } from "../../models/user.schema";
 
 export const getProductsController: RequestHandler = async (req, res) => {
   try {

@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Correct } from "../../assets/Correct";
-import Image from "next/image";
+import { Correct } from "@/app/assets/Correct";
 
 export const Payment = () => {
   return (

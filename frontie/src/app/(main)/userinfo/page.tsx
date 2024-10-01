@@ -1,18 +1,48 @@
 "use client";
 import { useProductContext } from "@/components/utils/context";
+import axios from "axios";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const data = [
   { img: "/hoodie.png", title: "Hoodie", price: 12000 },
   { img: "/boy.png", title: "Chunky boy", price: 13000 },
   { img: "/girlwithcap.png", title: "Cap", price: 124000 },
 ];
+
+interface Product {
+  images: string[];
+  productName: string;
+  price: number;
+  categoryId: string[];
+  sizes: string[];
+  _id: string;
+}
+
 export const Userinfo = () => {
   const [page, setPage] = useState(true);
   const [hideOrder, setHideOrder] = useState(true);
   const { user } = useProductContext();
-  console.log(user);
+  const [orders, setOrders] = useState<any[]>([]);
+
+  const getOrders = async () => {
+    try {
+      const res = await axios.get(`http://localhost:3004/order`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        params: { userId: user?.id },
+      });
+      setOrders(res.data.orders);
+      console.log(res.data.orders);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getOrders();
+  }, []);
 
   return (
     <div>
@@ -104,29 +134,37 @@ export const Userinfo = () => {
                     hideOrder ? "" : "hidden"
                   } `}
                 >
-                  {data.map((item, index) => {
+                  {orders?.map((item, index) => {
                     return (
                       <div
                         key={index}
                         className="flex justify-between gap-6 items-center"
                       >
-                        <div className="relative h-20 w-40">
-                          <Image
-                            alt=""
-                            fill
-                            src={item.img}
-                            className="object-cover rounded-xl"
-                          />
-                        </div>
-                        <div className="flex flex-col justify-between w-full">
-                          <div>
-                            <div className="pb-1">{item.title}</div>
-                          </div>
-                          <div>2 x 120’000₮</div>
-                        </div>
-                        <div className="font-bold">
-                          {item.price.toLocaleString()}₮
-                        </div>
+                        {item.products?.map((product, index) => {
+                          return (
+                            <div>
+                              <div className="relative h-20 w-40">
+                                {/* <Image
+                                  alt=""
+                                  fill
+                                  src={item.images[0]}
+                                  className="object-cover rounded-xl"
+                                /> */}
+                              </div>
+                              <div className="flex flex-col justify-between w-full">
+                                <div>
+                                  <div className="pb-1">
+                                    {/* {item.productId.productName} */}
+                                  </div>
+                                </div>
+                                <div>2 x 120’000₮</div>
+                              </div>
+                              <div className="font-bold">
+                                {/* {item.price.toLocaleString()}₮ */}
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     );
                   })}

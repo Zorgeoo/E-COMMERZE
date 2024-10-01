@@ -30,8 +30,6 @@ const login: RequestHandler = async (req, res) => {
 
   const user = await userModel.findOne({ email, password });
 
-  console.log(user);
-
   if (!user) {
     return res.status(401).json({ message: "Invalid credentials" });
   }

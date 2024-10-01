@@ -108,7 +108,6 @@ export const Detail = () => {
         },
       });
       setAllReviews(response.data.reviews);
-      console.log(response.data.reviews);
     } catch (error) {
       console.log(error);
     }

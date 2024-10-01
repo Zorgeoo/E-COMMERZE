@@ -3,9 +3,11 @@ import { OrderModel } from "../../models/order.schema";
 
 export const getOrdersController: RequestHandler = async (req, res) => {
   try {
-    const orders = await OrderModel.find({})
-      .populate("productId")
-      .populate("userId");
+    const { userId } = req.query;
+
+    const orders = await OrderModel.find({ userId }).populate(
+      "products.productId"
+    );
 
     return res.status(200).json({
       orders,

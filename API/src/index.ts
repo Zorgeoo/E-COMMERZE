@@ -8,7 +8,7 @@ import { categoryRouter } from "./routes/category.router";
 import { orderRouter } from "./routes/order.router";
 import { reviewRouter } from "./routes/review.router";
 import { authRouter } from "./routes/auth.route";
-import { v2 as cloudinary } from "cloudinary";
+// import { v2 as cloudinary } from "cloudinary";
 // import Multer, { memoryStorage } from "multer";
 import dotenv from "dotenv";
 
@@ -35,14 +35,6 @@ app.use("/order", orderRouter);
 app.use("/review", reviewRouter);
 app.use("/auth", authRouter);
 app.use("/cart", cartRouter);
-
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
-});
-
-// const storage = memoryStorage;
 
 app.listen(3004, () => {
   console.log("Server is running on http://localhost:3004");

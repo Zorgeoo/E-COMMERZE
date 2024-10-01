@@ -9,10 +9,16 @@ interface AddressCardProps {
     productName: string;
     price: number;
   };
+  qty: number;
+  deleteCart: () => void;
 }
 
-export const DeliveryCard: React.FC<AddressCardProps> = ({ item }) => {
-  const [count, setCount] = useState(1);
+export const DeliveryCard: React.FC<AddressCardProps> = ({
+  item,
+  qty,
+  deleteCart,
+}) => {
+  const [count, setCount] = useState(qty);
 
   return (
     <div className="flex justify-between gap-6">
@@ -30,14 +36,14 @@ export const DeliveryCard: React.FC<AddressCardProps> = ({ item }) => {
           <div className="flex items-center gap-4">
             <div
               className="flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black"
-              onClick={() => setCount((prev) => (prev > 0 ? prev - 1 : 0))}
+              onClick={() => setCount((qty: number) => (qty > 0 ? qty - 1 : 0))}
             >
               -
             </div>
             <div>{count}</div>
             <div
               className="flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black"
-              onClick={() => setCount((prev) => prev + 1)}
+              onClick={() => setCount((qty: number) => qty + 1)}
             >
               +
             </div>
@@ -48,7 +54,7 @@ export const DeliveryCard: React.FC<AddressCardProps> = ({ item }) => {
         </div>
       </div>
       <div className="p-4 cursor-pointer">
-        <FaRegTrashCan />
+        <FaRegTrashCan onClick={deleteCart} />
       </div>
     </div>
   );

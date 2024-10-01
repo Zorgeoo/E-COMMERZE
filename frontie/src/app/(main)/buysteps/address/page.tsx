@@ -1,12 +1,80 @@
+"use client";
+import { Correct } from "@/app/assets/Correct";
+import { useProductContext } from "@/components/utils/context";
+import axios from "axios";
 import Image from "next/image";
-import { Correct } from "../../assets/Correct";
-import Link from "next/link";
-const data = [
-  { img: "/hoodie.png", title: "Hoodie", price: 12000 },
-  { img: "/boy.png", title: "Chunky boy", price: 13000 },
-  { img: "/girlwithcap.png", title: "Cap", price: 124000 },
-];
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
 const address = () => {
+  const [carts, setCarts] = useState<any[]>([]);
+  const { user, getMe } = useProductContext();
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [lastName, setLastName] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  const [addInfo, setAddInfo] = useState<string>("");
+  const router = useRouter();
+
+  const createOrder = async () => {
+    try {
+      const res = await axios.post(
+        `http://localhost:3004/order`,
+        {
+          userId: user?.id,
+          products: carts.map((item) => ({
+            productId: item.cartProducts._id,
+            quantity: item.quantity,
+            size: item.size,
+          })),
+          lastName,
+          firstName,
+          phoneNumber,
+          address,
+          addInfo,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      router.push("payment");
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getCarts = async (userId: string) => {
+    try {
+      const res = await axios.get(`http://localhost:3004/cart`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        params: { userId },
+      });
+      setCarts(res.data.carts);
+      console.log(res.data.carts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (user?.id) {
+      getCarts(user.id);
+    }
+    getMe();
+  }, []);
+
+  useEffect(() => {
+    const totalPrice = carts.reduce((acc, item) => {
+      return acc + item.cartProducts.price * item.quantity;
+    }, 0);
+    setTotalPrice(totalPrice);
+  }, [carts]);
   return (
     <div>
       <div className="w-[1280px] m-auto">
@@ -26,29 +94,38 @@ const address = () => {
             <div>
               <div className="flex gap-1 pb-6">
                 <div>Сагс </div>
-                <div>(4)</div>
+                <div>({carts.length})</div>
               </div>
             </div>
             <div>
               <div className="flex flex-col gap-6 border-b pb-6 border-gray-300 border-dashed">
-                {data.map((item, index) => {
+                {carts.map((item, index) => {
                   return (
                     <div key={index} className="flex justify-between gap-6">
                       <div className="relative h-20 w-40">
                         <Image
                           alt=""
                           fill
-                          src={item.img}
+                          src={item.cartProducts.images[0]}
                           className="object-cover rounded-xl"
                         />
                       </div>
                       <div className="flex flex-col justify-between w-full">
                         <div>
-                          <div className="pb-1">{item.title}</div>
+                          <div className="pb-1">
+                            {item.cartProducts.productName}
+                          </div>
                         </div>
-                        <div>2 x 120’000₮</div>
+                        <div className="flex items-center gap-1">
+                          <div>{item.quantity}</div>
+                          <div>x</div>
+                          <div>{item.cartProducts.price.toLocaleString()}₮</div>
+                        </div>
                         <div className="font-bold">
-                          {item.price.toLocaleString()}₮
+                          {(
+                            item.cartProducts.price * item.quantity
+                          ).toLocaleString()}
+                          ₮
                         </div>
                       </div>
                     </div>
@@ -58,7 +135,9 @@ const address = () => {
             </div>
             <div className="flex justify-between">
               <div>Үнийн дүн:</div>
-              <div className="font-bold text-[20px]">120’000₮</div>
+              <div className="font-bold text-[20px]">
+                {totalPrice.toLocaleString()}₮
+              </div>
             </div>
           </div>
           <div className="p-8 bg-gray-100 rounded-xl w-full flex flex-col gap-9 ">
@@ -68,23 +147,48 @@ const address = () => {
             <div className="flex flex-col gap-8">
               <div>
                 <div>Овог:</div>
-                <input id="surname" className="w-full rounded-md px-3 py-1" />
+                <input
+                  id="lastname"
+                  onChange={(event) => setLastName(event.target.value)}
+                  value={lastName}
+                  className="w-full rounded-md px-3 py-1"
+                />
               </div>
               <div>
                 <div>Нэр:</div>
-                <input id="surname" className="w-full rounded-md px-3 py-1" />
+                <input
+                  id="firstname"
+                  value={firstName}
+                  onChange={(event) => setFirstName(event.target.value)}
+                  className="w-full rounded-md px-3 py-1"
+                />
               </div>
               <div>
                 <div>Утасны дугаар:</div>
-                <input id="surname" className="w-full rounded-md px-3 py-1" />
+                <input
+                  id="phonenumber"
+                  onChange={(event) => setPhoneNumber(event.target.value)}
+                  value={phoneNumber}
+                  className="w-full rounded-md px-3 py-1"
+                />
               </div>
               <div>
                 <div>Хаяг:</div>
-                <input id="surname" className="w-full rounded-md px-3 py-1" />
+                <input
+                  id="address"
+                  value={address}
+                  onChange={(event) => setAddress(event.target.value)}
+                  className="w-full rounded-md px-3 py-1"
+                />
               </div>
               <div>
                 <div>Нэмэлт мэдээлэл:</div>
-                <input id="surname" className="w-full rounded-md px-3 py-1" />
+                <input
+                  id="addInfo"
+                  value={addInfo}
+                  onChange={(event) => setAddInfo(event.target.value)}
+                  className="w-full rounded-md px-3 py-1"
+                />
                 <div className="text-[12px]">
                   Хүргэлттэй холбоотой нэмэлт мэдээлэл үлдээгээрэй
                 </div>
@@ -93,11 +197,14 @@ const address = () => {
                 <button className="py-2 px-9 rounded-full border bg-white">
                   Буцах
                 </button>
-                <Link href={`/buysteps/payment`}>
-                  <button className="py-2 px-9 rounded-full bg-[#2563EB] text-white">
-                    Төлбөр төлөх
-                  </button>
-                </Link>
+                {/* <Link href={`/buysteps/payment`}> */}
+                <button
+                  className="py-2 px-9 rounded-full bg-[#2563EB] text-white"
+                  onClick={createOrder}
+                >
+                  Төлбөр төлөх
+                </button>
+                {/* </Link> */}
               </div>
             </div>
           </div>

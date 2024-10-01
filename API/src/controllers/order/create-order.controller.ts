@@ -3,6 +3,8 @@ import { OrderModel } from "../../models/order.schema";
 
 export const createOrderController: RequestHandler = async (req, res) => {
   try {
+    console.log(req.body);
+
     await OrderModel.create({
       ...req.body,
     });
