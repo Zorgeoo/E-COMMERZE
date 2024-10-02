@@ -6,9 +6,10 @@ import axios from "axios";
 import { DeliveryCard } from "@/components/co-components/DeliveryCard";
 
 export const Cart = () => {
-  const { user, getMe } = useProductContext();
+  const { user } = useProductContext();
   const [carts, setCarts] = useState<any[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [newQty, setNewQty] = useState<number>(0);
 
   const getCarts = async (userId: string) => {
     try {
@@ -42,15 +43,17 @@ export const Cart = () => {
     if (user?.id) {
       getCarts(user.id);
     }
-    getMe();
   }, [user]);
 
   useEffect(() => {
     const totalPrice = carts.reduce((acc, item) => {
       return acc + item.cartProducts.price * item.quantity;
     }, 0);
+    console.log("dasa");
+
     setTotalPrice(totalPrice);
   }, [carts]);
+  console.log(newQty);
 
   return (
     <div>

@@ -14,7 +14,7 @@ export const createProductController: RequestHandler = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      message: "Internal server error",
+      message: "Internal server errorrrr",
     });
   }
 };

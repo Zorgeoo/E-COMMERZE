@@ -13,7 +13,7 @@ const productSchema = new Schema({
   images: { type: [String], required: false },
   sizes: { type: [String], required: false },
   salePercent: { type: Number, required: false },
-  description: { type: String, required: true, default: "Description" },
+  description: { type: String, required: false, default: "Description" },
   reviewCount: { type: Number, required: false, default: 0 },
   averageRating: { type: Number, required: false, default: 0 },
   createdAt: {

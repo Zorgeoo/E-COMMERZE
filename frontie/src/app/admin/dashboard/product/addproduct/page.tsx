@@ -1,10 +1,14 @@
 "use client";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import Image from "next/image";
+import { ChangeEvent, useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 
 const sizeData = ["Free", "S", "M", "L", "XL", "2XL", "3XL"];
-
+interface Category {
+  categoryName: string;
+  _id: string;
+}
 export default function home() {
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState<number | undefined>();
@@ -12,12 +16,30 @@ export default function home() {
   const [categoryId, setCategoryId] = useState<string[]>([]);
   const [description, setDescription] = useState("");
   const [sizes, setSizes] = useState<string[]>([]);
+  const [image, setImage] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [imgUrl, setImgUrl] = useState<string[]>([]);
 
-  interface Category {
-    categoryName: string;
-    _id: string;
-  }
+  const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.currentTarget.files;
+    if (files) setImage(files[0]);
+  };
+  const handleUpload = async () => {
+    if (!image) return;
 
+    const formData = new FormData();
+
+    formData.append("image", image);
+
+    const res = await axios.post("http://localhost:3004/upload", formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const uploadImages = [...imgUrl, res.data.secure_url];
+    setImgUrl(uploadImages);
+    setLoading(false);
+  };
   const createProduct = async () => {
     try {
       const response = await axios.post(
@@ -28,6 +50,7 @@ export default function home() {
           categoryId,
           description,
           sizes,
+          images: imgUrl,
         },
         {
           headers: {
@@ -78,6 +101,9 @@ export default function home() {
       setSizes([...sizes, size]);
     }
   };
+
+  console.log(imgUrl);
+
   return (
     <div className="bg-[#1C20240A] h-screen p-4">
       <div className="flex w-[940px] m-auto gap-4">
@@ -113,26 +139,37 @@ export default function home() {
                     onChange={(event) => setDescription(event.target.value)}
                   ></textarea>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <div className="text-sm font-semibold text-[#121316]">
-                    Барааны код
-                  </div>
-                  <input
-                    placeholder="#12345678"
-                    className="bg-[#F7F7F8] text-[#8B8E95] p-2 rounded-lg w-full"
-                  ></input>
-                </div>
               </div>
               <div className="flex flex-col p-6 gap-4 bg-white rounded-lg">
                 <div className="font-semibold text-lg">
                   Бүтээгдэхүүний зураг
                 </div>
-                <div className="flex gap-2">
-                  <div className="flex-1 border-2 rounded-lg border-dashed h-[124px]"></div>
-                  <div className="flex-1 border-2 rounded-lg border-dashed h-[124px]"></div>
-                  <div className="flex-1 border-2 rounded-lg border-dashed h-[124px]"></div>
-                  <div className="flex-1 flex justify-center items-center">
-                    +
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    {imgUrl.map((item, index) => {
+                      return (
+                        <div key={index} className="flex-1">
+                          <div className="relative w-[125px] h-[200px]">
+                            <Image
+                              src={item}
+                              fill
+                              alt="Product Image"
+                              className="object-fill"
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="flex-1 flex justify-center items-center gap-2">
+                    <input
+                      type="file"
+                      className="text-sm"
+                      onChange={handleChangeFile}
+                    />
+                    <button onClick={handleUpload}>
+                      {loading ? "Uploading ..." : "Upload"}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -160,7 +197,6 @@ export default function home() {
                 </div>
               </div>
             </div>
-
             <div className="flex-1 flex flex-col gap-6">
               <div className="bg-white rounded-lg w-full flex flex-col gap-4 p-6">
                 <div className="flex flex-col gap-2">
@@ -206,9 +242,6 @@ export default function home() {
               </div>
               <div className="w-full flex justify-end">
                 <div className="flex gap-6">
-                  <div className="border bg-white font-semibold rounded-lg w-fit px-5 py-4 text-lg">
-                    Ноорог
-                  </div>
                   <div
                     className="bg-black text-white font-semibold rounded-lg w-fit px-5 py-4 text-lg"
                     onClick={createProduct}
