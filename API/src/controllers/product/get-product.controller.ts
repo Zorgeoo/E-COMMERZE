@@ -7,12 +7,20 @@ export const getProductsController: RequestHandler = async (req, res) => {
 
     let query: any = {};
 
-    if (!page && !limit) {
-      const products = await productModel.find({});
+    if (!page && !limit && !categoryId && !sizes) {
+      const products = await productModel
+        .find({})
+        .populate("categoryId", { categoryName: 1 });
       return res.status(200).json({ products });
     }
 
     if (categoryId) {
+      if (categoryId === "All") {
+        const products = await productModel
+          .find({})
+          .populate("categoryId", { categoryName: 1 });
+        return res.status(200).json({ products });
+      }
       query.categoryId = categoryId ? { $in: categoryId } : categoryId;
     }
 
@@ -22,6 +30,7 @@ export const getProductsController: RequestHandler = async (req, res) => {
 
     const products = await productModel
       .find(query)
+      .populate("categoryId", { categoryName: 1 })
       .limit(Number(limit) ? Number(limit) : 6)
       .skip((Number(page) - 1) * 6);
 
