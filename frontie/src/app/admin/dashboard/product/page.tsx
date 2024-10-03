@@ -9,6 +9,13 @@ import Image from "next/image";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Product {
   images: string[];
@@ -16,8 +23,36 @@ interface Product {
   price: number;
   categoryId: string[];
 }
+interface Category {
+  categoryName: string;
+  _id: string;
+}
+
+interface CategoriesType {
+  categories: Category[];
+}
 export default function home() {
-  const [allProducts, setAllProducts] = useState<Product[] | null>(null);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<
+    Product[] | undefined
+  >(undefined);
+  const [search, setSearch] = useState("");
+  const [allCategories, setAllCategories] = useState<CategoriesType | null>(
+    null
+  );
+
+  const getCategories = async () => {
+    try {
+      const response = await axios.get("http://localhost:3004/category/", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setAllCategories(response.data.categories);
+    } catch (error) {
+      console.log("error bdgshaa");
+    }
+  };
 
   const getProducts = async () => {
     try {
@@ -35,7 +70,20 @@ export default function home() {
 
   useEffect(() => {
     getProducts();
+    getCategories();
   }, []);
+
+  useEffect(() => {
+    if (search.length > 0 && allProducts) {
+      const filtered = allProducts?.filter((product) =>
+        product.productName.toLocaleLowerCase().includes(search)
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(allProducts);
+    }
+  }, [search, allProducts]);
+
   return (
     <div className="bg-[#1C20240A] h-screen p-4">
       <div className="w-[985px] m-auto flex gap-4">
@@ -59,7 +107,15 @@ export default function home() {
                   <div>
                     <LuShapes />
                   </div>
-                  <div className="text-[#3F4145]">Ангилал</div>
+                  <Select>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Ангилал" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="light">Light</SelectItem>
+                      {/* {allCategories} */}
+                    </SelectContent>
+                  </Select>
                   <div>
                     <FaArrowDown />
                   </div>
@@ -87,7 +143,9 @@ export default function home() {
                 </div>
                 <input
                   className="outline-none w-[360px]"
-                  placeholder="Бүтээгдэхүүний нэр, SKU, UPC"
+                  placeholder="Бүтээгдэхүүний нэр"
+                  value={search}
+                  onChange={(event) => setSearch(event?.target.value)}
                 ></input>
               </div>
             </div>
@@ -100,7 +158,7 @@ export default function home() {
                 <div className=" flex-1 ">Зарагдсан</div>
                 <div className=" flex-1 pr-[100px] "> Нэмсэн огноо</div>
               </div>
-              {allProducts?.map((item, index) => {
+              {filteredProducts?.map((item, index) => {
                 return (
                   <div key={index} className="flex border-t h-[72px] text-sm">
                     <div className="flex-[2] flex  items-center  gap-[80px] justify-center">

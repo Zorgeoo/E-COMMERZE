@@ -16,6 +16,11 @@ const OrderSchema = new Schema({
   phoneNumber: { type: String, required: false },
   address: { type: String, required: false },
   addInfo: { type: String, required: false },
+  createdAt: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
 });
 
 export const OrderModel = model("Order", OrderSchema);

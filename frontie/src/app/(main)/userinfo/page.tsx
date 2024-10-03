@@ -47,7 +47,6 @@ export const Userinfo = () => {
       });
       setOrders(res.data.orders);
       setHideOrder(new Array(res.data.orders.length).fill(true));
-      console.log(res.data.orders);
     } catch (error) {
       console.log(error);
     }
@@ -60,7 +59,7 @@ export const Userinfo = () => {
   const toggleOrder = (index: number) => {
     setHideOrder((prev) => {
       const newHideOrder = [...prev];
-      newHideOrder[index] = !newHideOrder[index]; // Toggle the specific order's visibility
+      newHideOrder[index] = !newHideOrder[index];
       return newHideOrder;
     });
   };

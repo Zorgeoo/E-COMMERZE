@@ -15,17 +15,7 @@ export const AdminNavbar = () => {
         </div>
         <div className="flex items-center gap-6">
           <div className="flex gap-6">
-            <Link href={`/buysteps/cart`}>
-              <div>
-                <CiShoppingCart className="w-6 h-6" />
-              </div>
-            </Link>
-            <Link href={`/userinfo`}>
-              <div>
-                <CiUser className="w-6 h-6" />
-              </div>
-            </Link>
-            <div>Username</div>
+            <div>ADMIN</div>
           </div>
           <div className="flex gap-2"></div>
         </div>
