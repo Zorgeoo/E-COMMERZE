@@ -3,6 +3,7 @@ import { productModel } from "../../models/product.schema";
 
 export const updateProductController: RequestHandler = async (req, res) => {
   const { updatedName, updatedPrice, productId, updatedCategory } = req.body;
+  console.log(req.body);
 
   try {
     const updatedProduct = await productModel.findByIdAndUpdate(

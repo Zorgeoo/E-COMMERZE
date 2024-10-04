@@ -2,7 +2,6 @@
 import { useProductContext } from "@/components/utils/context";
 import axios from "axios";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 
@@ -13,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { date } from "yup";
 
 interface Order {
   firstName: string;
@@ -23,7 +21,6 @@ interface Order {
 }
 
 const order = () => {
-  const { user } = useProductContext();
   const [orders, setOrders] = useState<Order[]>([]);
   const [filteredOrders, setfilteredOrders] = useState<Order[]>([]);
   const [search, setSearch] = useState("");
@@ -35,7 +32,7 @@ const order = () => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        params: { userId: user?.id, admin: "admin", status },
+        params: { admin: "admin", status },
       });
       setOrders(res.data.orders);
     } catch (error) {
@@ -45,21 +42,19 @@ const order = () => {
 
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     try {
-      const res = await axios.put(`http://localhost:3004/order/update`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        params: {
-          orderId,
-          newStatus,
-        },
-      });
-      // Update the local orders array with the new status
-      // setOrders((prevOrders) =>
-      //   prevOrders.map((order) =>
-      //     order._id === orderId ? { ...order, status: newStatus } : order
-      //   )
-      // );
+      const res = await axios.put(
+        `http://localhost:3004/order/update`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          params: {
+            orderId,
+            newStatus,
+          },
+        }
+      );
       getOrders(status);
       console.log(res.data.message);
     } catch (error) {

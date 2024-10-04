@@ -63,6 +63,8 @@ export const Userinfo = () => {
       return newHideOrder;
     });
   };
+  console.log(orders);
+
   return (
     <div className="bg-[#F4F4F5]">
       <div className="w-[1280px] m-auto">
@@ -102,7 +104,7 @@ export const Userinfo = () => {
               <div>
                 <div>Нэр:</div>
                 <input
-                  value={user?.username}
+                  placeholder={user?.username}
                   id="firstname"
                   className="w-full rounded-md px-3 py-1 border"
                 />
@@ -119,7 +121,7 @@ export const Userinfo = () => {
                 <input
                   id="email"
                   className="w-full rounded-md px-3 py-1 border"
-                  value={user?.email}
+                  placeholder={user?.email}
                 />
               </div>
               <div>
@@ -152,8 +154,9 @@ export const Userinfo = () => {
                         >
                           <div className="flex justify-between items-center">
                             <div className="flex gap-2">
-                              <div className="font-bold">2024-09-03</div>
-                              <div className="font-bold">15:24</div>
+                              <div className="font-bold">
+                                {new Date(order.createdAt).toLocaleString()}
+                              </div>
                               <div className="text-white bg-[#2563EB] text-sm rounded-full py-[2px] px-[10px]">
                                 {order.status}
                               </div>
@@ -175,7 +178,7 @@ export const Userinfo = () => {
                                 >
                                   <div className="relative w-9 h-11">
                                     <Image
-                                      src={item.productId.images[0]}
+                                      src={item?.productId?.images[0]}
                                       alt="das"
                                       fill
                                       className="rounded-xl"
@@ -184,16 +187,17 @@ export const Userinfo = () => {
                                   <div className="flex justify-between w-full items-center ">
                                     <div className="flex flex-col ">
                                       <div className="pb-1">
-                                        {item.productId.productName}
+                                        {item?.productId?.productName}
                                       </div>
                                       <div>
                                         {item.quantity} x{" "}
-                                        {item.productId.price.toLocaleString()}₮
+                                        {item?.productId?.price.toLocaleString()}
+                                        ₮
                                       </div>
                                     </div>
                                     <div className=" font-bold">
                                       {(
-                                        item.quantity * item.productId.price
+                                        item.quantity * item?.productId?.price
                                       ).toLocaleString()}
                                       ₮
                                     </div>
@@ -209,7 +213,7 @@ export const Userinfo = () => {
                                 .reduce(
                                   (total: number, item: any) =>
                                     total +
-                                    item.productId.price * item.quantity,
+                                    item?.productId?.price * item.quantity,
                                   0
                                 )
                                 .toLocaleString()}

@@ -18,12 +18,24 @@ import {
 } from "@/components/ui/select";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface Product {
   images: string[];
@@ -336,11 +348,36 @@ export default function home() {
                       <div className="w-[20%] text-center flex items-center justify-center">
                         {new Date(item.createdAt).toLocaleString()}
                       </div>
-                      <div className="w-[15%] flex items-center justify-center gap-6">
-                        <MdDeleteForever
-                          onClick={() => deleteProduct(item._id)}
-                          className="w-5 h-5 hover:text-red-500 cursor-pointer"
-                        />
+                      <div
+                        className="w-[15%] flex items-center justify-center gap-6
+                      "
+                      >
+                        <AlertDialog>
+                          <AlertDialogTrigger>
+                            <MdDeleteForever className="w-5 h-5 hover:text-red-500 cursor-pointer" />
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Та тус бүтээгдэхүүнийг устгахдаа итгэлтэй байна
+                                уу?
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will
+                                permanently delete your prduct from our servers.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Үгүй</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => deleteProduct(item._id)}
+                              >
+                                Тийм
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+
                         <Dialog>
                           <DialogTrigger>
                             <MdModeEdit className="w-5 h-5 cursor-pointer hover:text-green-500" />
@@ -420,12 +457,14 @@ export default function home() {
                                         })}
                                       </div>
                                     </div>
-                                    <button
-                                      onClick={() => updateProduct(item._id)}
-                                      className="px-3 py-2 cursor-pointer text-black rounded-xl bg-gray-300 hover:text-white hover:bg-black "
-                                    >
-                                      Өөрчлөлт оруулах
-                                    </button>
+                                    <DialogClose>
+                                      <button
+                                        onClick={() => updateProduct(item._id)}
+                                        className="px-3 py-2 cursor-pointer text-black rounded-xl bg-gray-300 hover:text-white hover:bg-black "
+                                      >
+                                        Өөрчлөлт оруулах
+                                      </button>
+                                    </DialogClose>
                                   </div>
                                 </div>
                               </DialogDescription>

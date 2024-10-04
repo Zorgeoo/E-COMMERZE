@@ -4,9 +4,8 @@ import { OrderModel } from "../../models/order.schema";
 export const getOrdersController: RequestHandler = async (req, res) => {
   try {
     const { userId, admin, status } = req.query;
-    console.log(req.query);
 
-    if ((admin && !status) || admin) {
+    if (admin && !status) {
       const orders = await OrderModel.find({}).populate("products.productId");
       return res.status(200).json({
         orders,
