@@ -16,7 +16,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { strict } from "assert";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface Product {
   images: string[];
@@ -45,6 +52,14 @@ export default function home() {
   const [sortByPrice, setSortByPrice] = useState<string | undefined>(undefined);
   const [sortByDate, setSortByDate] = useState<string | undefined>(undefined);
   const [page, setPage] = useState(true);
+
+  const [categoryName, setCategoryName] = useState<string>("");
+
+  const [updatedName, setUpdatedName] = useState<string>();
+  const [updatedPrice, setUpdatedPrice] = useState<number | undefined>(
+    undefined
+  );
+  const [updatedCategory, setUpdatedCategory] = useState<string[]>([]);
 
   const getCategories = async () => {
     try {
@@ -85,6 +100,42 @@ export default function home() {
       setAllProducts(response.data.products);
     } catch (error) {
       console.log("error bdgshaa");
+    }
+  };
+
+  const createCategory = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:3004/category/",
+        { categoryName },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      getCategories();
+      console.log(res.data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateProduct = async (productId: string) => {
+    try {
+      const res = await axios.put(
+        `http://localhost:3004/product/update`,
+        { updatedName, updatedPrice, productId, updatedCategory },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      getProducts(filterByCategory);
+      console.log(res.data.message);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -227,7 +278,7 @@ export default function home() {
               </div>
               <div className="flex flex-col bg-white rounded-[12px]">
                 <div className="flex w-full h-11 items-center">
-                  <div className="w-[5%] text-center"> </div>
+                  <div className="w-[5%] text-center">№</div>
                   <div className="w-[25%] text-center ">Бүтээгдэхүүн</div>
                   <div className="w-[15%] text-center flex justify-center">
                     Ангилал
@@ -245,7 +296,9 @@ export default function home() {
                       key={index}
                       className="flex border-t h-[72px] text-sm w-full"
                     >
-                      <div className="w-[5%] flex justify-center items-center"></div>
+                      <div className="w-[5%] flex justify-center items-center">
+                        {index + 1}.
+                      </div>
                       <div className="w-[25%] flex gap-3 justify-center -red-600 items-center">
                         <div className="relative w-10 h-10 rounded-full overflow-hidden">
                           <Image
@@ -264,7 +317,6 @@ export default function home() {
                           </div>
                         </div>
                       </div>
-
                       <div className="w-[15%] flex gap-2 items-center justify-center">
                         {item.categoryId.map((category, index) => {
                           return (
@@ -276,7 +328,7 @@ export default function home() {
                         })}
                       </div>
                       <div className="w-[10%] flex  items-center justify-center">
-                        {item.price}₮
+                        {item.price.toLocaleString()}₮
                       </div>
                       <div className="w-[10%]  flex  items-center justify-center">
                         {item.reviewCount}
@@ -284,12 +336,102 @@ export default function home() {
                       <div className="w-[20%] text-center flex items-center justify-center">
                         {new Date(item.createdAt).toLocaleString()}
                       </div>
-                      <div className="w-[15%]  flex  items-center justify-center gap-3">
+                      <div className="w-[15%] flex items-center justify-center gap-6">
                         <MdDeleteForever
                           onClick={() => deleteProduct(item._id)}
                           className="w-5 h-5 hover:text-red-500 cursor-pointer"
                         />
-                        <MdModeEdit className="w-5 h-5 cursor-pointer hover:text-green-500" />
+                        <Dialog>
+                          <DialogTrigger>
+                            <MdModeEdit className="w-5 h-5 cursor-pointer hover:text-green-500" />
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>
+                                Бүтээгдэхүүний мэдээлэл өөрчлөх
+                              </DialogTitle>
+                              <DialogDescription>
+                                <div>
+                                  <div className="flex p-5 justify-between">
+                                    <label className="text-black">
+                                      Бүтээгдэхүүний нэр өөрчлөх
+                                      <input
+                                        id="updatedName"
+                                        className="pl-2 bg-gray-200 mt-1 rounded-md"
+                                        placeholder={item.productName}
+                                        value={updatedName}
+                                        onChange={(event) =>
+                                          setUpdatedName(event?.target.value)
+                                        }
+                                      />
+                                    </label>
+                                    <label className="text-black">
+                                      Үнэ өөрчлөх
+                                      <input
+                                        id="updatePrice"
+                                        className=" pl-2 bg-gray-200 mt-1 rounded-md"
+                                        placeholder={item?.price.toLocaleString()}
+                                        value={updatedPrice}
+                                        onChange={(event) =>
+                                          setUpdatedPrice(
+                                            Number(event?.target.value)
+                                          )
+                                        }
+                                      />
+                                    </label>
+                                  </div>
+                                  <div className="flex p-5 justify-between">
+                                    <div>
+                                      <div className="text-black">
+                                        Ангиллууд
+                                      </div>
+                                      <div className="flex gap-2 mt-1">
+                                        {allCategories.map((category) => {
+                                          const isChecked =
+                                            updatedCategory.includes(
+                                              category._id
+                                            );
+                                          return (
+                                            <label key={category._id}>
+                                              <input
+                                                type="checkbox"
+                                                checked={isChecked}
+                                                onChange={(event) => {
+                                                  if (event.target.checked) {
+                                                    setUpdatedCategory(
+                                                      (prev) => [
+                                                        ...prev,
+                                                        category._id,
+                                                      ]
+                                                    );
+                                                  } else {
+                                                    setUpdatedCategory((prev) =>
+                                                      prev.filter(
+                                                        (catId) =>
+                                                          catId !== category._id
+                                                      )
+                                                    );
+                                                  }
+                                                }}
+                                              />
+                                              {category.categoryName}
+                                            </label>
+                                          );
+                                        })}
+                                      </div>
+                                    </div>
+                                    <button
+                                      onClick={() => updateProduct(item._id)}
+                                      className="px-3 py-2 cursor-pointer text-black rounded-xl bg-gray-300 hover:text-white hover:bg-black "
+                                    >
+                                      Өөрчлөлт оруулах
+                                    </button>
+                                  </div>
+                                </div>
+                              </DialogDescription>
+                            </DialogHeader>
+                          </DialogContent>
+                        </Dialog>
                       </div>
                     </div>
                   );
@@ -297,21 +439,40 @@ export default function home() {
               </div>
             </div>
             <div
-              className={`${!page ? "flex" : "hidden"}`}
+              className={`${
+                !page ? "flex" : "hidden"
+              } bg-white p-20 w-fit rounded-2xl`}
               onClick={() => setPage(false)}
             >
-              <div>
-                <div>
-                  {allCategories?.map((category, index) => {
-                    return (
-                      <div key={index}>
-                        {index + 1}.{category.categoryName}
-                      </div>
-                    );
-                  })}
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
+                  <div className="font-semibold">Ангиллууд</div>
+                  <div>
+                    {allCategories?.map((category, index) => {
+                      return (
+                        <div key={index}>
+                          {index + 1}.{category.categoryName}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-                <div>
-                  <input />
+                <div className="flex flex-col gap-4">
+                  <label>
+                    Ангиллын нэр
+                    <input
+                      value={categoryName}
+                      onChange={(event) => setCategoryName(event?.target.value)}
+                      className="px-3 bg-[#F7F7F8] text-[#8B8E95] rounded-lg w-full mt-1"
+                      placeholder="Ангиллын нэр оруулах"
+                    />
+                  </label>
+                  <button
+                    className="bg-green-500 px-3 py-2 rounded-2xl hover:text-white cursor-pointer"
+                    onClick={createCategory}
+                  >
+                    Ангилал үүсгэх
+                  </button>
                 </div>
               </div>
             </div>

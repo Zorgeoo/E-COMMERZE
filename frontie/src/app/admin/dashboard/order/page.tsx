@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { date } from "yup";
 
 interface Order {
   firstName: string;
@@ -44,19 +45,15 @@ const order = () => {
 
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     try {
-      const res = await axios.put(
-        `http://localhost:3004/order/update`,
-        { status: newStatus },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          params: {
-            orderId,
-            newStatus,
-          },
-        }
-      );
+      const res = await axios.put(`http://localhost:3004/order/update`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        params: {
+          orderId,
+          newStatus,
+        },
+      });
       // Update the local orders array with the new status
       // setOrders((prevOrders) =>
       //   prevOrders.map((order) =>
@@ -87,7 +84,7 @@ const order = () => {
   }, [search, orders]);
 
   return (
-    <div className="bg-[#1C20240A] h-screen">
+    <div className="bg-[#1C20240A] h-fit">
       <div className="w-[985px] m-auto flex">
         <div className="w-full">
           <div className="flex border-b w-full">
@@ -138,7 +135,7 @@ const order = () => {
             </div>
             <div>
               <input
-                placeholder="Дугаар, имэйл"
+                placeholder="Үйлчлүүлэгчийн нэр"
                 className="bg-white rounded-lg px-4 py-[10px] border mr-2"
                 type="search"
                 value={search}
@@ -173,7 +170,7 @@ const order = () => {
                         <div>{item.firstName}</div>
                       </div>
                       <div className="w-[15%] text-center">
-                        {item.createdAt}
+                        {new Date(item.createdAt).toLocaleString()}
                       </div>
                       <div className="w-[10%] text-center">Төлбөр</div>
                       <div className="w-[15%] text-center">

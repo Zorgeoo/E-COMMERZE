@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import mongoose from "mongoose";
 import { connectToDatabase } from "./database";
 import { userRouter } from "./routes/user.router";
 import { productRouter } from "./routes/product.router";
@@ -9,7 +8,6 @@ import { orderRouter } from "./routes/order.router";
 import { reviewRouter } from "./routes/review.router";
 import { authRouter } from "./routes/auth.route";
 import { upload } from "./config/multer";
-import Multer, { memoryStorage } from "multer";
 import { v2 as cloudinary } from "cloudinary";
 
 import dotenv from "dotenv";
@@ -45,14 +43,6 @@ cloudinary.config({
 });
 
 app.post("/upload", upload.single("image"), createCloudinaryController);
-
-// const storage = memoryStorage();
-
-// const upload = Multer({ storage });
-
-// async function handleUpload(file: string) {
-//   const res = await cloudinary.uploader.upload(file, { resource_type: "auto" });
-// }
 
 app.listen(3004, () => {
   console.log("Server is running on http://localhost:3004");

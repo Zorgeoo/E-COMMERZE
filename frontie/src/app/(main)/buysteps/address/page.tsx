@@ -50,7 +50,11 @@ const address = () => {
         }
       );
       console.log(clearCartResponse.data);
-      router.push("payment");
+      if (carts.length === 0) {
+        return;
+      } else {
+        router.push("payment");
+      }
       console.log(res.data);
     } catch (error) {
       console.log(error);

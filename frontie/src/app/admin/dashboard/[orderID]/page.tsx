@@ -60,7 +60,7 @@ export default function home() {
   useEffect(() => {
     if (order?.products) {
       const total = order.products.reduce((acc, item) => {
-        return acc + item.quantity * item.productId.price;
+        return acc + item.quantity * item?.productId?.price;
       }, 0);
       setTotalAmount(total);
     }
@@ -100,7 +100,7 @@ export default function home() {
                 <div className="w-[160px]  relative">
                   <Image
                     fill
-                    src={item.productId.images[0]}
+                    src={item?.productId?.images[0]}
                     alt="aa"
                     className="object-cover"
                   />
@@ -108,21 +108,24 @@ export default function home() {
                 <div className="flex-1 flex flex-col py-4 px-6 gap-3">
                   <div className="flex flex-col">
                     <div className="font-bold text-2xl">
-                      {item.productId.productName}
+                      {item?.productId?.productName}
                     </div>
                     <div className="text-[#3F4145] text-[14px]">
-                      Бүтээгдэхүүний ID: {item.productId._id}
+                      Бүтээгдэхүүний ID: {item?.productId?._id}
                     </div>
                   </div>
                   <div className="flex justify-between">
                     <div className="flex">
                       <div>Тоо ширхэг: {item.quantity}</div>
                       <div className="text-[#3F4145]">
-                        x {item.productId.price.toLocaleString()}₮
+                        x {item?.productId?.price.toLocaleString()}₮
                       </div>
                     </div>
                     <div className="font-semibold text-lg">
-                      ₮{(item.quantity * item.productId.price).toLocaleString()}
+                      ₮
+                      {(
+                        item.quantity * item?.productId?.price
+                      ).toLocaleString()}
                       ₮
                     </div>
                   </div>
@@ -153,13 +156,13 @@ export default function home() {
                     >
                       <div className="flex items-center justify-between w-full">
                         <div className="w-[120px] overflow-hidden text-sm font-semibold text-[#3F4145]">
-                          {item.productId.productName}
+                          {item?.productId?.productName}
                         </div>
                         <div className=" font-semibold text-[#3F4145] w-fit">
                           x {item.quantity}
                         </div>
                         <div className=" font-semibold text-[#3F4145] w-fit">
-                          {item.productId.price.toLocaleString()} ₮
+                          {item?.productId?.price.toLocaleString()} ₮
                         </div>
                       </div>
                     </div>

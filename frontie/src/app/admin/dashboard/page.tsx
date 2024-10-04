@@ -10,9 +10,16 @@ interface Product {
   price: number;
   categoryId: string[];
 }
+interface Order {
+  firstName: string;
+  createdAt: string;
+  _id: string;
+  status: string;
+}
 
 const Dashboard = () => {
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   const getProducts = async () => {
     try {
@@ -26,10 +33,25 @@ const Dashboard = () => {
       console.log("error bdgshaa");
     }
   };
-
+  const getOrders = async () => {
+    try {
+      const res = await axios.get(`http://localhost:3004/order`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        params: { admin: "admin" },
+      });
+      setOrders(res.data.orders);
+      console.log(res.data.orders);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     getProducts();
+    getOrders();
   }, []);
+
   return (
     <div className="bg-[#1C20240A] h-screen">
       <div className="w-[985px] m-auto flex">
@@ -69,7 +91,10 @@ const Dashboard = () => {
               <div>
                 {allProducts?.slice(0, 6).map((item, index) => {
                   return (
-                    <div className="flex py-4 items-center border-b">
+                    <div
+                      key={index}
+                      className="flex py-4 items-center border-b"
+                    >
                       <div className="w-[10%] text-center">{index + 1}</div>
                       <div className="w-[50%] text-center flex justify-center gap-5">
                         <div className="relative w-10 h-10">
@@ -88,7 +113,9 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="w-[20%] text-center">{index + 100}</div>
-                      <div className="w-[20%] text-center">{item.price}</div>
+                      <div className="w-[20%] text-center">
+                        {item.price.toLocaleString()}₮
+                      </div>
                     </div>
                   );
                 })}

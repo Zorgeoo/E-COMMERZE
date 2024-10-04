@@ -4,6 +4,7 @@ import { categoryModel } from "../../models/category.schema";
 export const createCategoryController: RequestHandler = async (req, res) => {
   try {
     const { categoryName } = req.body;
+    console.log(categoryName);
 
     await categoryModel.create({
       categoryName,
