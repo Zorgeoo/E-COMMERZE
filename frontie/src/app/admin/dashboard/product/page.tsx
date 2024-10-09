@@ -220,15 +220,13 @@ export default function home() {
               <div className={`flex justify-between h-10 my-2`}>
                 <div className="flex gap-3  ">
                   <div className="flex items-center gap-2 font-semibold bg-white rounded-lg">
-                    <div className="pl-3">
-                      <LuShapes />
-                    </div>
                     <Select
                       onValueChange={(category) =>
                         setFilterByCategory(category)
                       }
                     >
                       <SelectTrigger className="w-[180px]">
+                        <LuShapes />
                         <SelectValue placeholder="Ангилал" />
                       </SelectTrigger>
                       <SelectContent>
@@ -243,9 +241,14 @@ export default function home() {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="flex items-center gap-2 font-semibold pr-3 bg-white rounded-lg ">
+                  <div className="flex items-center gap-2 font-semibold bg-white rounded-lg ">
                     <Select onValueChange={(value) => setSortByPrice(value)}>
                       <SelectTrigger className="w-[180px]">
+                        <FaArrowDown
+                          className={`${
+                            sortByPrice === "highest" ? "rotate-180" : ""
+                          }`}
+                        />
                         <SelectValue placeholder="Үнээр" />
                       </SelectTrigger>
                       <SelectContent>
@@ -253,20 +256,11 @@ export default function home() {
                         <SelectItem value="lowest">Буурахаар</SelectItem>
                       </SelectContent>
                     </Select>
-                    <div>
-                      <FaArrowDown
-                        className={`${
-                          sortByPrice === "highest" ? "rotate-180" : ""
-                        }`}
-                      />
-                    </div>
                   </div>
-                  <div className="flex items-center gap-2 font-semibold pl-3 bg-white rounded-lg ">
-                    <div>
-                      <FaRegCalendar />
-                    </div>
+                  <div className="flex items-center gap-2 font-semibold bg-white rounded-lg ">
                     <Select onValueChange={(value) => setSortByDate(value)}>
                       <SelectTrigger className="w-[180px]">
+                        <FaRegCalendar />
                         <SelectValue placeholder="Хугацаагаар" />
                       </SelectTrigger>
                       <SelectContent>

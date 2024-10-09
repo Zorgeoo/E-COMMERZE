@@ -9,6 +9,8 @@ interface Product {
   productName: string;
   price: number;
   categoryId: string[];
+  _id: string;
+  soldQty: number;
 }
 interface Order {
   firstName: string;
@@ -18,8 +20,17 @@ interface Order {
 }
 
 const Dashboard = () => {
-  const [allProducts, setAllProducts] = useState<Product[] | null>(null);
+  const [allProducts, setAllProducts] = useState<Product[] | undefined>(
+    undefined
+  );
   const [orders, setOrders] = useState<Order[]>([]);
+  const [sortedProducts, setSortedProducts] = useState<Product[] | undefined>(
+    undefined
+  );
+  const [totalIncome, setTotalIncome] = useState<number | undefined>(undefined);
+  const [totalSoldQty, setTotalSoldQty] = useState<number | undefined>(
+    undefined
+  );
 
   const getProducts = async () => {
     try {
@@ -52,6 +63,22 @@ const Dashboard = () => {
     getOrders();
   }, []);
 
+  useEffect(() => {
+    const products = allProducts?.sort((a, b) => b.soldQty - a.soldQty);
+
+    const totalIncome = allProducts?.reduce((total, product) => {
+      return total + product.soldQty * product.price;
+    }, 0);
+
+    const totalSoldQty = allProducts?.reduce((total, product) => {
+      return total + product.soldQty;
+    }, 0);
+
+    setSortedProducts(products);
+    setTotalIncome(totalIncome);
+    setTotalSoldQty(totalSoldQty);
+  }, [allProducts]);
+
   return (
     <div className="bg-[#1C20240A] h-screen">
       <div className="w-[985px] m-auto flex">
@@ -59,18 +86,19 @@ const Dashboard = () => {
           <div className="flex gap-6 w-full">
             <div className="flex-1 flex flex-col bg-white rounded-xl px-6 py-4">
               <div className="flex gap-2 font-semibold">
-                <div>$</div>
-                <div>Орлого</div>
+                <div>₮</div>
+                <div>Нийт орлого</div>
               </div>
-              <div className="font-bold text-[32px]">235,000$</div>
+              <div className="font-bold text-[32px]">
+                {totalIncome?.toLocaleString()}₮
+              </div>
               <div className="text-[#5E6166]">Өнөөдөр</div>
             </div>
             <div className="flex-1 flex flex-col bg-white rounded-xl px-6 py-4">
               <div className="flex gap-2 font-semibold">
-                <div>$</div>
-                <div>Захиалга</div>
+                <div>Нийт борлуулагдсан хэмжээ</div>
               </div>
-              <div className="font-bold text-[32px]">23</div>
+              <div className="font-bold text-[32px]">{totalSoldQty}</div>
               <div className="text-[#5E6166]">Өнөөдөр</div>
             </div>
           </div>
@@ -89,7 +117,7 @@ const Dashboard = () => {
                 <div className="w-[20%] text-center">Үнэ</div>
               </div>
               <div>
-                {allProducts?.slice(0, 6).map((item, index) => {
+                {sortedProducts?.slice(0, 6).map((item, index) => {
                   return (
                     <div
                       key={index}
@@ -109,10 +137,12 @@ const Dashboard = () => {
                           <div className="font-semibold">
                             {item.productName}
                           </div>
-                          <div className="text-[#3F4145]">#12345678</div>
+                          <div className="text-[#3F4145]">
+                            #{item._id.slice(0, 6)}
+                          </div>
                         </div>
                       </div>
-                      <div className="w-[20%] text-center">{index + 100}</div>
+                      <div className="w-[20%] text-center">{item.soldQty}</div>
                       <div className="w-[20%] text-center">
                         {item.price.toLocaleString()}₮
                       </div>

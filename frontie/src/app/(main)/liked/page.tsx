@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import axios from "axios";
+import Link from "next/link";
 
 const Liked = () => {
   const { user, getMe } = useProductContext();
@@ -64,9 +65,11 @@ const Liked = () => {
                     <div className="font-bold">
                       {item.price.toLocaleString()}₮
                     </div>
-                    <button className="text-white bg-[#2563EB] w-fit py-2 px-3 rounded-full">
-                      Сагслах
-                    </button>
+                    <Link href={item._id}>
+                      <button className="text-white bg-[#2563EB] w-fit py-2 px-3 rounded-full">
+                        Бараа руу очих
+                      </button>
+                    </Link>
                   </div>
                   <FaHeart
                     onClick={() => handleLikedProducts(item._id)}
