@@ -14,17 +14,15 @@ interface Product {
 export const LandingPage = () => {
   const { getMe } = useProductContext();
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
-  const [filterBySize, setFilterBySize] = useState<string[]>([]);
-  const [filterType, setFilterType] = useState<string[]>([]);
-  const [limit, setLimit] = useState<number>(22);
+  
 
-  const getProductsFilter = async (categoryId: string[], sizes: string[]) => {
+  const getProductsFilter = async () => {
     try {
       const response = await axios.get(`http://localhost:3004/product`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        params: { categoryId: filterType, sizes: filterBySize, limit },
+        params: { limit:22 },
       });
       setAllProducts(response.data.products);
     } catch (error) {
@@ -33,7 +31,7 @@ export const LandingPage = () => {
   };
 
   useEffect(() => {
-    getProductsFilter(filterType, filterBySize);
+    getProductsFilter();
     getMe();
   }, []);
 

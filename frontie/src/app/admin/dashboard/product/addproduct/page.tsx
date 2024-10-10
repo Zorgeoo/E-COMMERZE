@@ -9,7 +9,7 @@ interface Category {
   categoryName: string;
   _id: string;
 }
-export default function home() {
+export default function Home() {
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState<number | undefined>();
   const [allCategories, setAllCategories] = useState<Category[] | null>(null);
@@ -42,7 +42,7 @@ export default function home() {
   };
   const createProduct = async () => {
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:3004/product/",
         {
           productName,

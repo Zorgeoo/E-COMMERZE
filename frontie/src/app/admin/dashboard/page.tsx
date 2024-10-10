@@ -12,18 +12,11 @@ interface Product {
   _id: string;
   soldQty: number;
 }
-interface Order {
-  firstName: string;
-  createdAt: string;
-  _id: string;
-  status: string;
-}
 
 const Dashboard = () => {
   const [allProducts, setAllProducts] = useState<Product[] | undefined>(
     undefined
   );
-  const [orders, setOrders] = useState<Order[]>([]);
   const [sortedProducts, setSortedProducts] = useState<Product[] | undefined>(
     undefined
   );
@@ -44,23 +37,8 @@ const Dashboard = () => {
       console.log("error bdgshaa");
     }
   };
-  const getOrders = async () => {
-    try {
-      const res = await axios.get(`http://localhost:3004/order`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        params: { admin: "admin" },
-      });
-      setOrders(res.data.orders);
-      console.log(res.data.orders);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
     getProducts();
-    getOrders();
   }, []);
 
   useEffect(() => {

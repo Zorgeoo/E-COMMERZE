@@ -4,11 +4,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const data = [
-  { img: "/hoodie.png", title: "Hoodie", price: 12000 },
-  { img: "/boy.png", title: "Chunky boy", price: 13000 },
-  { img: "/girlwithcap.png", title: "Cap", price: 124000 },
-];
+
 
 interface Product {
   images: string[];
@@ -18,6 +14,7 @@ interface Product {
   sizes: string[];
   _id: string;
 }
+
 interface OrderProduct {
   productId: Product;
   quantity: number;
@@ -31,7 +28,7 @@ interface Order {
   createdAt: string;
 }
 
-export const Userinfo = () => {
+const Userinfo = () => {
   const [page, setPage] = useState(true);
   const [hideOrder, setHideOrder] = useState<boolean[]>([]);
   const { user, getMe } = useProductContext();
@@ -58,7 +55,7 @@ export const Userinfo = () => {
 
   const updateUserInfo = async () => {
     try {
-      const res = await axios.put(
+     await axios.put(
         "http://localhost:3004/user/update",
         {
           userId: user?.id,
@@ -88,6 +85,9 @@ export const Userinfo = () => {
         },
         params: { userId: user?.id },
       });
+
+      console.log(res.data);
+      
       const sortedOrders = res.data.orders.sort(
         (a: Order, b: Order) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -234,7 +234,7 @@ export const Userinfo = () => {
                             }  border-gray-300 border-dashed border-b`}
                           >
                             {order.products.map(
-                              (item: any, itemIndex: number) => (
+                              (item: OrderProduct, itemIndex: number) => (
                                 <div
                                   key={itemIndex}
                                   className="flex gap-2 items-center w-full  "
@@ -274,7 +274,7 @@ export const Userinfo = () => {
                             <div className="font-bold">
                               {order.products
                                 .reduce(
-                                  (total: number, item: any) =>
+                                  (total: number, item: OrderProduct) =>
                                     total +
                                     item?.productId?.price * item.quantity,
                                   0

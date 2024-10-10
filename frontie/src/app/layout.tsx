@@ -1,4 +1,3 @@
-import { AdminBurgerBar } from "@/components/AdminBurgerBar";
 import "./globals.css";
 import { ProductContextProvider } from "@/components/utils/context";
 

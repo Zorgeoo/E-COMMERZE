@@ -5,9 +5,21 @@ import { useProductContext } from "@/components/utils/context";
 import axios from "axios";
 import { DeliveryCard } from "@/components/co-components/DeliveryCard";
 
-export const Cart = () => {
+type Cart={
+  quantity:number,
+  size:string,
+  _id:string,
+  cartProducts:{
+    _id:string,
+    price:number,
+    productName:string,
+    images:string[]
+  }
+  }
+
+const Cart = () => {
   const { user } = useProductContext();
-  const [carts, setCarts] = useState<any[]>([]);
+  const [carts, setCarts] = useState<Cart[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
   const getCarts = async (userId: string) => {
@@ -26,7 +38,7 @@ export const Cart = () => {
 
   const updateCart = async (cartId: string, qty: number) => {
     try {
-      const res = await axios.put(
+      await axios.put(
         `http://localhost:3004/cart/update`,
         { cartId, qty },
         {
@@ -66,7 +78,7 @@ export const Cart = () => {
 
   const deleteCart = async (cartId: string) => {
     try {
-      const res = await axios.delete(`http://localhost:3004/cart`, {
+      await axios.delete(`http://localhost:3004/cart`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

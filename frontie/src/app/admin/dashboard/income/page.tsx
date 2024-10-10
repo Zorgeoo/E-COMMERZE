@@ -1,7 +1,6 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FiDownload } from "react-icons/fi";
 
 interface Product {
   images: string[];
@@ -18,7 +17,7 @@ interface Order {
   _id: string;
   status: string;
 }
-const income = () => {
+const Income = () => {
   const [totalIncome, setTotalIncome] = useState<number | undefined>(undefined);
   const [allProducts, setAllProducts] = useState<Product[] | undefined>(
     undefined
@@ -116,4 +115,4 @@ const income = () => {
     </div>
   );
 };
-export default income;
+export default Income;

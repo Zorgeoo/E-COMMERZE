@@ -2,7 +2,7 @@
 import axios from "axios";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Order {
   firstName: string;
@@ -31,7 +31,7 @@ interface Products {
 type ParamsType = {
   orderID: string;
 };
-export default function home() {
+export default function Home() {
   const [order, setOrder] = useState<Order>();
   const { orderID } = useParams<ParamsType>();
   const [totalAmount, setTotalAmount] = useState<number>();

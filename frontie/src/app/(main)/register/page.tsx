@@ -13,7 +13,7 @@ interface FormValues {
   password: string;
   confirm: string;
 }
-export const Register = () => {
+const Register = () => {
   const router = useRouter();
   const initialValues: FormValues = {
     //Ymr ymr medeelel back ruu shidehee todorhoilno

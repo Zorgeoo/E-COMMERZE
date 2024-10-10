@@ -42,7 +42,7 @@ type ReviewType = {
   rating: number;
 };
 
-export const Detail = () => {
+ const Detail:React.FC = () => {
   const [product, setProduct] = useState<ProductType>();
 
   const [heartFill, setHeartFill] = useState(false);
@@ -80,7 +80,7 @@ export const Detail = () => {
     setHeartFill(!heartFill);
     if (user) {
       try {
-        const response = await axios.post(
+       await axios.post(
           "http://localhost:3004/user/liked",
           {
             userId: user.id,
@@ -133,7 +133,7 @@ export const Detail = () => {
     rating: number
   ) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:3004/review/",
         {
           productId,
@@ -166,7 +166,7 @@ export const Detail = () => {
 
   const buyProduct = async () => {
     try {
-      const response = await axios.post(
+       await axios.post(
         `http://localhost:3004/cart`,
         {
           userId: user?.id,

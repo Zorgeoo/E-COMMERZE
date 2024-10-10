@@ -5,9 +5,18 @@ import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-const address = () => {
-  const [carts, setCarts] = useState<any[]>([]);
+type Cart={
+quantity:number,
+size:string
+cartProducts:{
+  _id:string,
+  price:number,
+  productName:string,
+  images:string[]
+}
+}
+const Address = () => {
+  const [carts, setCarts] = useState<Cart[]>([]);
   const { user, getMe } = useProductContext();
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [lastName, setLastName] = useState<string>("");
@@ -227,4 +236,4 @@ const address = () => {
     </div>
   );
 };
-export default address;
+export default Address;

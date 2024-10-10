@@ -1,7 +1,7 @@
 "use client";
 import { useProductContext } from "@/components/utils/context";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import axios from "axios";
 import Link from "next/link";
@@ -14,7 +14,7 @@ const Liked = () => {
     setHeartFill(!heartFill);
     if (user) {
       try {
-        const response = await axios.post(
+         await axios.post(
           "http://localhost:3004/user/liked",
           {
             userId: user.id,

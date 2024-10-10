@@ -1,5 +1,4 @@
 "use client";
-import { useProductContext } from "@/components/utils/context";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -20,7 +19,7 @@ interface Order {
   status: string;
 }
 
-const order = () => {
+const OrderPage = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [filteredOrders, setfilteredOrders] = useState<Order[]>([]);
   const [search, setSearch] = useState("");
@@ -200,4 +199,4 @@ const order = () => {
     </div>
   );
 };
-export default order;
+export default OrderPage;

@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   createContext,
   useState,
@@ -10,12 +10,20 @@ import {
 } from "react";
 import axios from "axios";
 
+interface Product {
+  images: string[];
+  productName: string;
+  price: number;
+  categoryId: string[];
+  sizes: string[];
+  _id: string;
+}
 interface User {
   username: string;
   lastName: string;
   email: string;
   id: string;
-  liked: any[];
+  liked: Product[];
   address: string;
   phoneNumber: string;
 }

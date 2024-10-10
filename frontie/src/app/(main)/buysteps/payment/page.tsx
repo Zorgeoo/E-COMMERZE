@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Correct } from "@/app/assets/Correct";
 
-export const Payment = () => {
+const Payment = () => {
   return (
     <div>
       <div className="w-[1280px] m-auto">

@@ -1,7 +1,6 @@
-import { Correct } from "@/app/assets/Correct";
 import Image from "next/image";
 
-export const Success = () => {
+const Success = () => {
   return (
     <div className="bg-[#F4F4F5] h-screen ">
       <div className="w-[1280px] m-auto flex border h-2/3 ">

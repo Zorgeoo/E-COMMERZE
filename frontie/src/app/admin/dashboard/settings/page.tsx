@@ -1,4 +1,3 @@
-import { AdminBurgerBar } from "@/components/AdminBurgerBar";
 
 const settings = () => {
   return (

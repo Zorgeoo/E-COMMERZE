@@ -51,7 +51,7 @@ interface Category {
   _id: string;
 }
 
-export default function home() {
+export default function Home() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<
     Product[] | undefined
@@ -88,19 +88,19 @@ export default function home() {
 
   const deleteProduct = async (productId: string) => {
     try {
-      const response = await axios.delete("http://localhost:3004/product/", {
+      await axios.delete("http://localhost:3004/product/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         params: { productId },
       });
-      getProducts(filterByCategory);
+      getProducts();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getProducts = async (categoryId: string | undefined) => {
+  const getProducts = async () => {
     try {
       const response = await axios.get("http://localhost:3004/product/", {
         headers: {
@@ -116,7 +116,7 @@ export default function home() {
 
   const createCategory = async () => {
     try {
-      const res = await axios.post(
+      await axios.post(
         "http://localhost:3004/category/",
         { categoryName },
         {
@@ -133,7 +133,7 @@ export default function home() {
 
   const updateProduct = async (productId: string) => {
     try {
-      const res = await axios.put(
+      await axios.put(
         `http://localhost:3004/product/update`,
         { updatedName, updatedPrice, productId, updatedCategory },
         {
@@ -142,14 +142,14 @@ export default function home() {
           },
         }
       );
-      getProducts(filterByCategory);
+      getProducts();
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getProducts(filterByCategory);
+    getProducts();
   }, [filterByCategory]);
 
   useEffect(() => {

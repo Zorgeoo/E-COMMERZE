@@ -1,8 +1,7 @@
 "use client";
 import { ProductCard } from "@/components/co-components/ProductCard";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { number } from "yup";
 
 const sizeData = ["Free", "S", "M", "L", "XL", "2XL", "3XL"];
 
@@ -24,7 +23,7 @@ interface CategoriesType {
   categories: Category[];
 }
 
-export const Category = () => {
+const Category = () => {
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
   const [allCategories, setAllCategories] = useState<CategoriesType | null>(
     null
@@ -47,7 +46,7 @@ export const Category = () => {
     }
   };
 
-  const getProductsFilter = async (categoryId: string[], sizes: string[]) => {
+  const getProductsFilter = async () => {
     try {
       const response = await axios.get(`http://localhost:3004/product`, {
         headers: {
@@ -67,7 +66,7 @@ export const Category = () => {
   }, []);
 
   useEffect(() => {
-    getProductsFilter(filterType, filterBySize);
+    getProductsFilter();
   }, [filterType, filterBySize, page]);
 
   const handleFilter = (id: string) => {
@@ -149,6 +148,7 @@ export const Category = () => {
             {new Array(Math.ceil(total / 6)).fill(0).map((_, index) => (
               <div
                 onClick={() => setPage(index + 1)}
+                key={index}
                 className={`cursor-pointer border rounded-full py-2 px-4 ${
                   page === index + 1 ? "bg-black text-white" : ""
                 }`}

@@ -1,7 +1,3 @@
-import type { Metadata } from "next";
-
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 import { ProductContextProvider } from "@/components/utils/context";
 import { AdminBurgerBar } from "@/components/AdminBurgerBar";
 import { AdminNavbar } from "@/components/adminNavbar";
