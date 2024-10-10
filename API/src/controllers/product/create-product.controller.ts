@@ -2,8 +2,6 @@ import { RequestHandler } from "express";
 import { productModel } from "../../models/product.schema";
 
 export const createProductController: RequestHandler = async (req, res) => {
-  console.log(req.body);
-
   try {
     await productModel.create({
       ...req.body,

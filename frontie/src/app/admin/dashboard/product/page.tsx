@@ -45,6 +45,7 @@ interface Product {
   _id: string;
   createdAt: string;
   reviewCount: number;
+  stock:number
 }
 interface Category {
   categoryName: string;
@@ -334,7 +335,7 @@ export default function Home() {
                         {item.price.toLocaleString()}₮
                       </div>
                       <div className="w-[10%]  flex  items-center justify-center">
-                        {item.reviewCount}
+                        {item.stock}
                       </div>
                       <div className="w-[20%] text-center flex items-center justify-center">
                         {new Date(item.createdAt).toLocaleString()}

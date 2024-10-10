@@ -22,6 +22,7 @@ type ProductType = {
   averageRating: number;
   reviewCount: number;
   description: string;
+  stock:number
 };
 
 interface Product {
@@ -71,6 +72,8 @@ type ReviewType = {
         },
       });
       setProduct(response.data.product);
+      console.log(response.data.product);
+      
     } catch (error) {
       console.log("error bdgshaa");
     }
@@ -157,7 +160,7 @@ type ReviewType = {
 
   useEffect(() => {
     getOneProduct(id), getProducts();
-  }, [product]);
+  }, []);
 
   useEffect(() => {
     getReviewByProductId(id);
@@ -278,15 +281,19 @@ type ReviewType = {
                     <div>{count}</div>
                     <div
                       className="flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black"
-                      onClick={() => setCount((prev) => prev + 1)}
+                      onClick={() => setCount((prev) => (prev < product?.stock ? prev + 1 : prev))}
                     >
                       +
                     </div>
                   </div>
+              <div className="flex gap-2">
+                <div className="underline">Барааны үлдэгдэл:</div>
+                <div className="font-semibold">{product?.stock}</div>
+              </div>
                 </div>
                 <div>
                   <div className="font-bold text-[20px] pb-2">
-                    {product?.price}$
+                    {(product?.price)}₮
                   </div>
                   <button
                     onClick={buyProduct}

@@ -14,16 +14,13 @@ export const createOrderController: RequestHandler = async (req, res) => {
       ...req.body,
     });
 
-    // await productModel.findByIdAndUpdate(
-    //   req.body.products[0].productId,
-    //   { $inc: { soldQty: req.body.products[0].quantity } },
-    //   { new: true }
-    // );
-
     const updatePromises = req.body.products.map((product: Products) =>
       productModel.findByIdAndUpdate(
         product.productId,
-        { $inc: { soldQty: product.quantity } },
+        { $inc: { soldQty: product.quantity,
+          stock: -product.quantity
+        },
+      },
         { new: true }
       )
     );

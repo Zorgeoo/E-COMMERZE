@@ -19,6 +19,7 @@ export default function Home() {
   const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [imgUrl, setImgUrl] = useState<string[]>([]);
+  const [stock,SetStock]=useState<number|undefined>(undefined)
 
   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files;
@@ -51,6 +52,7 @@ export default function Home() {
           description,
           sizes,
           images: imgUrl,
+          stock
         },
         {
           headers: {
@@ -102,7 +104,7 @@ export default function Home() {
     }
   };
 
-  console.log(imgUrl);
+  console.log(stock)
 
   return (
     <div className="bg-[#1C20240A] h-screen p-4">
@@ -193,6 +195,10 @@ export default function Home() {
                   <input
                     className="p-3 bg-[#F7F7F8] text-[#8B8E95] rounded-lg w-full"
                     placeholder="Үлдэгдэл тоо ширхэг"
+                    value={stock}
+                    onChange={(event) =>
+                      SetStock(Number(event.target.value) || undefined)
+                    }
                   ></input>
                 </div>
               </div>
