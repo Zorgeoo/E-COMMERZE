@@ -19,9 +19,11 @@ export const getMeController = async (req: CustomRequest, res: Response) => {
     const userData = {
       id: user._id,
       username: user.username,
+      lastName: user.lastName,
       email: user.email,
       liked: user.liked,
-      // Add any other fields you wish to return
+      address: user.address,
+      phoneNumber: user.phoneNumber,
     };
 
     res.json(userData);

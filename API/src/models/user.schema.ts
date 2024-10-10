@@ -3,6 +3,7 @@ const { Schema, model } = mongoose; //Mongoose-s Schema-g oruulj ireed table uus
 
 const userSchema = new Schema({
   username: { type: String, required: true }, //Field bolgon typetai bh ystoi, mun zaaval required esehiig ni todorhoilj uguh ystoi.
+  lastName: { type: String, required: false, default: "Temuujin" },
   email: { type: String, required: true },
   phoneNumber: { type: String, required: true, default: "91112892" },
   password: { type: String, required: true },

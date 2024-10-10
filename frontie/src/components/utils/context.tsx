@@ -10,39 +10,37 @@ import {
 } from "react";
 import axios from "axios";
 
-// Define the type for the context value
-
 interface User {
   username: string;
+  lastName: string;
   email: string;
   id: string;
   liked: any[];
+  address: string;
+  phoneNumber: string;
 }
 
 interface ProductContextProviderProps {
   children: ReactNode;
 }
 
-// Initialize the context with a default value of `null` or the correct type
 export const ProductContext = createContext<ProductContextType | null>(null);
 
-// Define the props for the Provider component
 interface ProductContextType {
   totalPrice: number;
   setTotalPrice: (price: number) => void;
-  login: (email: string, password: string) => Promise<void>; // Add the login function type
-  user: User | null; // Optional user state
-  setUser: (user: User | null) => void;
+  login: (email: string, password: string) => Promise<void>;
+  user: User | undefined;
+  setUser: (user: User | undefined) => void;
   getMe: () => void;
 }
 
 export const ProductContextProvider = ({
   children,
 }: ProductContextProviderProps) => {
-  // Initialize state with a type annotation
   const router = useRouter();
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
   const login = async (email: string, password: string) => {
@@ -66,7 +64,6 @@ export const ProductContextProvider = ({
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
       setUser(res.data);
     } catch (error) {
       console.log(error);
@@ -99,7 +96,7 @@ export const ProductContextProvider = ({
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading indicator while user data is being fetched
+    return <div>Loading...</div>;
   }
 
   return (

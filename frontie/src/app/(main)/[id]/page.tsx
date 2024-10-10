@@ -21,6 +21,7 @@ type ProductType = {
   sizes: string[];
   averageRating: number;
   reviewCount: number;
+  description: string;
 };
 
 interface Product {
@@ -146,12 +147,10 @@ export const Detail = () => {
           },
         }
       );
-      setComment(""); // Reset comment input
-      setRating(0); // Reset rating
+      setComment("");
+      setRating(0);
       await getReviewByProductId(id);
-      console.log(response.data);
     } catch (error) {
-      console.log("Review error bdgshaa");
       console.log(error);
     }
   };
@@ -181,7 +180,6 @@ export const Detail = () => {
           },
         }
       );
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -244,7 +242,7 @@ export const Detail = () => {
                         />
                       </div>
                     </div>
-                    <div>Зэрлэг цэцгийн зурагтай даавуун материалтай цамц</div>
+                    <div>{product?.description}</div>
                   </div>
                 </div>
                 <div className="flex flex-col gap-4">

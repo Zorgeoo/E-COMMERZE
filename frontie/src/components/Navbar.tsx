@@ -24,7 +24,7 @@ export const Navbar = () => {
   const logOut = async () => {
     try {
       localStorage.removeItem("token");
-      setUser(null);
+      setUser(undefined);
     } catch (error) {
       console.log(error);
     }

@@ -11,15 +11,17 @@ interface AddressCardProps {
   };
   qty: number;
   deleteCart: () => void;
+  increaseQty: () => void;
+  decreaseQty: () => void;
 }
 
 export const DeliveryCard: React.FC<AddressCardProps> = ({
   item,
   qty,
   deleteCart,
+  increaseQty,
+  decreaseQty,
 }) => {
-  const [count, setCount] = useState(qty);
-
   return (
     <div className="flex justify-between gap-6">
       <div className="relative h-[120px] w-[120px]">
@@ -35,23 +37,21 @@ export const DeliveryCard: React.FC<AddressCardProps> = ({
           <div className="pb-1">{item.productName}</div>
           <div className="flex items-center gap-4">
             <div
-              className="flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black"
-              onClick={() => setCount((qty: number) => (qty > 0 ? qty - 1 : 0))}
+              onClick={decreaseQty}
+              className="cursor-pointer flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black"
             >
               -
             </div>
-            <div>{count}</div>
+            <div>{qty}</div>
             <div
-              className="flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black"
-              onClick={() => setCount((qty: number) => qty + 1)}
+              onClick={increaseQty}
+              className="cursor-pointer flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black"
             >
               +
             </div>
           </div>
         </div>
-        <div className="font-bold">
-          {(count * item.price).toLocaleString()}₮
-        </div>
+        <div className="font-bold">{(qty * item.price).toLocaleString()}₮</div>
       </div>
       <div className="p-4 cursor-pointer">
         <FaRegTrashCan onClick={deleteCart} />

@@ -34,8 +34,51 @@ interface Order {
 export const Userinfo = () => {
   const [page, setPage] = useState(true);
   const [hideOrder, setHideOrder] = useState<boolean[]>([]);
-  const { user } = useProductContext();
-  const [orders, setOrders] = useState<any[]>([]);
+  const { user, getMe } = useProductContext();
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  const [updatedFirstName, setUpdatedFirstname] = useState<string | undefined>(
+    undefined
+  );
+
+  const [updatedLastName, setUpdatedLastName] = useState<string | undefined>(
+    undefined
+  );
+
+  const [updatedPhoneNumber, setUpdatedPhoneNumber] = useState<
+    string | undefined
+  >(undefined);
+
+  const [updatedAddress, setUpdatedAddress] = useState<string | undefined>(
+    undefined
+  );
+  const [updatedEmail, setUpdatedEmail] = useState<string | undefined>(
+    undefined
+  );
+
+  const updateUserInfo = async () => {
+    try {
+      const res = await axios.put(
+        "http://localhost:3004/user/update",
+        {
+          userId: user?.id,
+          updatedFirstName,
+          updatedLastName,
+          updatedPhoneNumber,
+          updatedAddress,
+          updatedEmail,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      getMe();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getOrders = async () => {
     try {
@@ -45,13 +88,16 @@ export const Userinfo = () => {
         },
         params: { userId: user?.id },
       });
-      setOrders(res.data.orders);
+      const sortedOrders = res.data.orders.sort(
+        (a: Order, b: Order) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      setOrders(sortedOrders);
       setHideOrder(new Array(res.data.orders.length).fill(true));
     } catch (error) {
       console.log(error);
     }
   };
-
   useEffect(() => {
     getOrders();
   }, []);
@@ -63,7 +109,6 @@ export const Userinfo = () => {
       return newHideOrder;
     });
   };
-  console.log(orders);
 
   return (
     <div className="bg-[#F4F4F5]">
@@ -99,6 +144,9 @@ export const Userinfo = () => {
                 <input
                   id="lastname"
                   className="w-full rounded-md px-3 py-1 border"
+                  value={updatedLastName}
+                  onChange={(event) => setUpdatedLastName(event.target.value)}
+                  placeholder={user?.lastName}
                 />
               </div>
               <div>
@@ -107,6 +155,8 @@ export const Userinfo = () => {
                   placeholder={user?.username}
                   id="firstname"
                   className="w-full rounded-md px-3 py-1 border"
+                  value={updatedFirstName}
+                  onChange={(event) => setUpdatedFirstname(event.target.value)}
                 />
               </div>
               <div>
@@ -114,6 +164,11 @@ export const Userinfo = () => {
                 <input
                   id="phonenumber"
                   className="w-full rounded-md px-3 py-1 border"
+                  value={updatedPhoneNumber}
+                  onChange={(event) =>
+                    setUpdatedPhoneNumber(event.target.value)
+                  }
+                  placeholder={user?.phoneNumber}
                 />
               </div>
               <div>
@@ -122,17 +177,25 @@ export const Userinfo = () => {
                   id="email"
                   className="w-full rounded-md px-3 py-1 border"
                   placeholder={user?.email}
+                  value={updatedEmail}
+                  onChange={(event) => setUpdatedEmail(event.target.value)}
                 />
               </div>
               <div>
                 <div>Хаяг:</div>
                 <input
+                  placeholder={user?.address}
                   id="address"
                   className="w-full rounded-md px-3 py-1 border"
+                  value={updatedAddress}
+                  onChange={(event) => setUpdatedAddress(event.target.value)}
                 />
               </div>
             </div>
-            <button className="py-2 px-9 bg-[#2563EB] text-white rounded-full self-end">
+            <button
+              onClick={() => updateUserInfo()}
+              className="py-2 px-9 bg-[#2563EB] text-white rounded-full self-end"
+            >
               Мэдээлэл шинэчлэх
             </button>
           </div>

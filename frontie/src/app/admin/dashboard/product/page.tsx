@@ -95,7 +95,6 @@ export default function home() {
         params: { productId },
       });
       getProducts(filterByCategory);
-      console.log(response.data.message);
     } catch (error) {
       console.log(error);
     }
@@ -127,7 +126,6 @@ export default function home() {
         }
       );
       getCategories();
-      console.log(res.data.message);
     } catch (error) {
       console.log(error);
     }
@@ -145,7 +143,6 @@ export default function home() {
         }
       );
       getProducts(filterByCategory);
-      console.log(res.data.message);
     } catch (error) {
       console.log(error);
     }
