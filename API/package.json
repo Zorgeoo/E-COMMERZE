@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.ts",
+    "start": "node build/index.js",
     "dev": "nodemon src/index.ts",
-    "build": "tsc"
+    "build": "tsc -p ."
   },
-  "type": "module",
   "author": "",
   "license": "ISC",
   "dependencies": {
