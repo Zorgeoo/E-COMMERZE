@@ -13,6 +13,20 @@ interface Product {
   soldQty: number;
 }
 
+interface ProductOrder {
+  quantity: number;
+  _id: string;
+  productId: Product;
+}
+
+interface Order {
+  firstName: string;
+  createdAt: string;
+  _id: string;
+  status: string;
+  products: ProductOrder[];
+}
+
 const Dashboard = () => {
   const [allProducts, setAllProducts] = useState<Product[] | undefined>(
     undefined
@@ -24,6 +38,7 @@ const Dashboard = () => {
   const [totalSoldQty, setTotalSoldQty] = useState<number | undefined>(
     undefined
   );
+  const [orders, setOrders] = useState<Order[]>([]);
 
   const getProducts = async () => {
     try {
@@ -39,26 +54,50 @@ const Dashboard = () => {
   };
   useEffect(() => {
     getProducts();
+    getOrders();
   }, []);
+
+  const getOrders = async () => {
+    try {
+      const res = await apiClient.get(`/order`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        params: { admin: "admin", dateFilter: "today" },
+      });
+      setOrders(res.data.orders);
+      console.log(res.data.orders);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const products = allProducts?.sort((a, b) => b.soldQty - a.soldQty);
-
-    const totalIncome = allProducts?.reduce((total, product) => {
-      return total + product.soldQty * product.price;
+    const totalIncome = orders.reduce((total, order) => {
+      return (
+        total +
+        order.products.reduce((orderTotal, productOrder) => {
+          const price = productOrder.productId?.price;
+          if (price !== undefined) {
+            return orderTotal + productOrder.quantity * price;
+          }
+          return orderTotal;
+        }, 0)
+      );
     }, 0);
-
-    const totalSoldQty = allProducts?.reduce((total, product) => {
-      return total + product.soldQty;
-    }, 0);
-
-    setSortedProducts(products);
+    // const totalSoldQty = orders?.reduce((total, order) => {
+    //   return (
+    //     total+ order.products.reduce((orderTotal,order)=>{})
+    //   )
+    // }, 0);
     setTotalIncome(totalIncome);
+    setSortedProducts(products);
     setTotalSoldQty(totalSoldQty);
   }, [allProducts]);
 
   return (
-    <div className="bg-[#1C20240A] h-screen">
+    <div className="h-screen">
       <div className="w-[985px] m-auto flex">
         <div className="flex flex-col gap-[50px] w-full  px-6 py-6">
           <div className="flex gap-6 w-full">
@@ -70,14 +109,12 @@ const Dashboard = () => {
               <div className="font-bold text-[32px]">
                 {totalIncome?.toLocaleString()}₮
               </div>
-              <div className="text-[#5E6166]">Өнөөдөр</div>
             </div>
             <div className="flex-1 flex flex-col bg-white rounded-xl px-6 py-4">
               <div className="flex gap-2 font-semibold">
                 <div>Нийт борлуулагдсан хэмжээ</div>
               </div>
               <div className="font-bold text-[32px]">{totalSoldQty}</div>
-              <div className="text-[#5E6166]">Өнөөдөр</div>
             </div>
           </div>
           <div className="flex gap-6 w-full">

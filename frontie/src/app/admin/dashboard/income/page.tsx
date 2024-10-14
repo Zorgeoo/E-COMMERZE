@@ -11,31 +11,23 @@ interface Product {
   soldQty: number;
 }
 
+interface ProductOrder {
+  quantity: number;
+  _id: string;
+  productId: Product;
+}
+
 interface Order {
   firstName: string;
   createdAt: string;
   _id: string;
   status: string;
+  products: ProductOrder[];
 }
 const Income = () => {
   const [totalIncome, setTotalIncome] = useState<number | undefined>(undefined);
-  const [allProducts, setAllProducts] = useState<Product[] | undefined>(
-    undefined
-  );
   const [orders, setOrders] = useState<Order[]>([]);
-
-  const getProducts = async () => {
-    try {
-      const response = await apiClient.get("/product/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      setAllProducts(response.data.products);
-    } catch (error) {
-      console.log("Can not get products");
-    }
-  };
+  const [dateFilter, setDateFilter] = useState<string | undefined>(undefined);
 
   const getOrders = async () => {
     try {
@@ -43,7 +35,7 @@ const Income = () => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        params: { admin: "admin" },
+        params: { admin: "admin", dateFilter },
       });
       setOrders(res.data.orders);
       console.log(res.data.orders);
@@ -51,33 +43,62 @@ const Income = () => {
       console.log(error);
     }
   };
-  useEffect(() => {
-    getProducts();
-    getOrders();
-  }, []);
 
   useEffect(() => {
-    const totalIncome = allProducts?.reduce((total, product) => {
-      return total + product.soldQty * product.price;
+    getOrders();
+  }, [dateFilter]);
+
+  useEffect(() => {
+    const totalIncome = orders.reduce((total, order) => {
+      return (
+        total +
+        order.products.reduce((orderTotal, productOrder) => {
+          const price = productOrder.productId?.price;
+          if (price !== undefined) {
+            return orderTotal + productOrder.quantity * price;
+          }
+          return orderTotal;
+        }, 0)
+      );
     }, 0);
     setTotalIncome(totalIncome);
-  }, [allProducts]);
+  }, [orders]);
 
   return (
-    <div className="bg-[#1C20240A] h-screen">
+    <div className="h-screen">
       <div className="w-[985px] m-auto flex">
         <div className="w-3/5 m-auto">
           <div className="w-full bg-white rounded-lg">
             <div className="flex justify-between p-6 border-b">
               <div className="font-bold text-xl">Орлого</div>
             </div>
-            <div className="flex justify-between p-6 font-semibold text-xl">
+            <div className="flex justify-between p-6 font-semibold text-lg">
               {totalIncome?.toLocaleString()}₮
-              <div className="font-bold text-3xl"></div>
               <div className="flex gap-2">
-                <div>Өнөөдөр</div>
-                <div>7 хоног</div>
-                <div>Сараар</div>
+                <div
+                  className={`cursor-pointer border rounded-xl px-2 py-1 ${
+                    dateFilter === "today" ? "text-white bg-green-500" : ""
+                  }`}
+                  onClick={() => setDateFilter("today")}
+                >
+                  Өнөөдөр
+                </div>
+                <div
+                  className={`cursor-pointer border rounded-xl px-2 py-1 ${
+                    dateFilter === "last7days" ? "text-white bg-green-500" : ""
+                  }`}
+                  onClick={() => setDateFilter("last7days")}
+                >
+                  7 хоног
+                </div>
+                <div
+                  className={`cursor-pointer border rounded-xl px-2 py-1 ${
+                    dateFilter === "lastMonth" ? "text-white bg-green-500" : ""
+                  }`}
+                  onClick={() => setDateFilter("lastMonth")}
+                >
+                  Сараар
+                </div>
               </div>
             </div>
           </div>

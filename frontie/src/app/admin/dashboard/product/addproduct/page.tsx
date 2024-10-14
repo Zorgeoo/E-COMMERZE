@@ -107,7 +107,7 @@ export default function Home() {
   console.log(stock);
 
   return (
-    <div className="bg-[#1C20240A] h-screen p-4">
+    <div className="h-screen p-4">
       <div className="flex w-[940px] m-auto gap-4">
         <div className="flex-1 flex flex-col gap-8">
           <div className="flex gap-4 items-center p-4 bg-white">

@@ -24,6 +24,7 @@ const OrderPage = () => {
   const [filteredOrders, setfilteredOrders] = useState<Order[]>([]);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<string | undefined>(undefined);
+  const [dateFilter, setDateFilter] = useState<string | undefined>(undefined);
 
   const getOrders = async (status: string | undefined) => {
     try {
@@ -66,19 +67,39 @@ const OrderPage = () => {
   }, [status]);
 
   useEffect(() => {
-    if (search.length > 0 && orders) {
-      const filtered = orders.filter((order) =>
+    let filtered = orders;
+
+    if (search.length > 0) {
+      filtered = filtered.filter((order) =>
         order.firstName.toLowerCase().startsWith(search.toLowerCase())
       );
-
-      setfilteredOrders(filtered);
-    } else {
-      setfilteredOrders(orders);
     }
-  }, [search, orders]);
+
+    if (dateFilter) {
+      const now = new Date();
+      if (dateFilter === "today") {
+        const startOfDay = new Date(now.setHours(0, 0, 0, 0));
+        filtered = filtered.filter(
+          (order) => new Date(order.createdAt) >= startOfDay
+        );
+      } else if (dateFilter === "last7days") {
+        const last7Days = new Date(now.setDate(now.getDate() - 7));
+        filtered = filtered.filter(
+          (order) => new Date(order.createdAt) >= last7Days
+        );
+      } else if (dateFilter === "lastMonth") {
+        const lastMonth = new Date(now.setMonth(now.getMonth() - 1));
+        filtered = filtered.filter(
+          (order) => new Date(order.createdAt) >= lastMonth
+        );
+      }
+    }
+
+    setfilteredOrders(filtered);
+  }, [search, orders, status, dateFilter]);
 
   return (
-    <div className="bg-[#1C20240A] h-fit">
+    <div className="h-fit">
       <div className="w-[985px] m-auto flex">
         <div className="w-full">
           <div className="flex border-b w-full">
@@ -117,13 +138,22 @@ const OrderPage = () => {
           </div>
           <div className="flex justify-between py-6 px-4">
             <div className="flex gap-2">
-              <button className="px-4 py-[10px] border bg-white rounded-[8px]">
+              <button
+                className="px-4 py-[10px] border bg-white rounded-[8px]"
+                onClick={() => setDateFilter("today")}
+              >
                 Өнөөдөр
               </button>
-              <button className="px-4 py-[10px] border bg-white rounded-[8px]">
+              <button
+                className="px-4 py-[10px] border bg-white rounded-[8px]"
+                onClick={() => setDateFilter("last7days")}
+              >
                 7 хоног
               </button>
-              <div className="px-4 py-[10px] border bg-white rounded-[8px]">
+              <div
+                className="px-4 py-[10px] border bg-white rounded-[8px]"
+                onClick={() => setDateFilter("lastMonth")}
+              >
                 Сараар
               </div>
             </div>
@@ -147,7 +177,7 @@ const OrderPage = () => {
                 <div className="w-[20%] text-center">Үйлчлүүлэгч</div>
                 <div className="w-[15%] text-center">Огноо</div>
                 <div className="w-[10%] text-center">Төлбөр</div>
-                <div className="w-[15%] text-center">Статус</div>
+                <div className="w-[15%] text-center">Статус өөрчлөх</div>
                 <div className="w-[15%] text-center">Дэлгэрэнгүй</div>
               </div>
               <div className="flex flex-col">

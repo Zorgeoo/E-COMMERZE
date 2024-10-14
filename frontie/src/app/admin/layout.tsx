@@ -10,7 +10,10 @@ export default function MainLayout({
   return (
     <>
       <ProductContextProvider>
-        <div style={{ minHeight: "calc(100vh - 320.5px - 74px)" }}>
+        <div
+          className="bg-[#1C20240A]"
+          style={{ minHeight: "calc(100vh - 320.5px - 74px)" }}
+        >
           <AdminNavbar />
           <div className="flex m-auto w-[1280px]">
             <AdminBurgerBar />

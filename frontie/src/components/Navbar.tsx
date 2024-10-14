@@ -35,7 +35,6 @@ export const Navbar = () => {
     try {
       const response = await apiClient.get("/product");
       setAllProducts(response.data.products);
-      console.log(response.data.products);
     } catch (error) {
       console.log("Can not get products");
     }
@@ -65,7 +64,9 @@ export const Navbar = () => {
               <Image src={`/Logo.png`} alt="Hello" width={32} height={32} />
             </div>
           </Link>
-          <div>ECOMMERCE</div>
+          <Link href={"/admin/dashboard"}>
+            <div>Admin</div>
+          </Link>
           <Link href={`/Category`}>
             <div>Ангилал</div>
           </Link>

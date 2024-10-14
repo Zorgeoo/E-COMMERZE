@@ -1,7 +1,6 @@
-
 const settings = () => {
   return (
-    <div className="bg-[#1C20240A] h-screen">
+    <div className="h-screen">
       <div className="w-[985px] m-auto flex">
         <div className="flex flex-col bg-white rounded-lg h-fit px-6 py-8 m-auto gap-2 w-1/2">
           <div className="font-bold">Тохиргоо</div>

@@ -13,9 +13,12 @@ const authMiddleware = (
   //Controlleruud req,res gsn 2 parameter avdag bol middleware +next.
   //Controlleriin umnu ajillana.
 
-  console.log(req.path);
-
-  if (req.path.startsWith("/auth") || req.path.startsWith("/product"))
+  if (
+    req.path.startsWith("/auth") ||
+    req.path.startsWith("/product") ||
+    req.path.startsWith("/category") ||
+    req.path.startsWith("/order")
+  )
     return next(); //REQ ni /auth pathaar ehelsen bol algasna. Uchir ni login,signup huseltuuded token shalgah shaardlagagui. Busad REQ-d auth shaardana.
 
   const auth = req.headers.authorization; //Req-header-s token-oo avna.

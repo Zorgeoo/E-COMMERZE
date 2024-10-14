@@ -2,8 +2,13 @@ import { RequestHandler } from "express";
 import { productModel } from "../../models/product.schema";
 
 export const updateProductController: RequestHandler = async (req, res) => {
-  const { updatedName, updatedPrice, productId, updatedCategory } = req.body;
-  console.log(req.body);
+  const {
+    updatedName,
+    updatedPrice,
+    productId,
+    updatedCategory,
+    updatedStock,
+  } = req.body;
 
   try {
     const updatedProduct = await productModel.findByIdAndUpdate(
@@ -12,6 +17,7 @@ export const updateProductController: RequestHandler = async (req, res) => {
         productName: updatedName,
         price: updatedPrice,
         categoryId: updatedCategory,
+        stock: updatedStock,
       },
       { new: true }
     );

@@ -72,6 +72,9 @@ export default function Home() {
   const [updatedPrice, setUpdatedPrice] = useState<number | undefined>(
     undefined
   );
+  const [updatedStock, setUpdatedStock] = useState<number | undefined>(
+    undefined
+  );
   const [updatedCategory, setUpdatedCategory] = useState<string[]>([]);
 
   const getCategories = async () => {
@@ -136,7 +139,7 @@ export default function Home() {
     try {
       await apiClient.put(
         `/product/update`,
-        { updatedName, updatedPrice, productId, updatedCategory },
+        { updatedName, updatedPrice, productId, updatedCategory, updatedStock },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -161,21 +164,24 @@ export default function Home() {
     if (search.length > 0 || sortByPrice || sortByDate) {
       const filtered = allProducts
         ?.filter((product) =>
-          product.productName.toLocaleLowerCase().includes(search)
+          product.productName.toLowerCase().includes(search.toLowerCase())
         )
         .sort((a, b) => {
-          if (sortByPrice === "highest") {
-            return a.price - b.price;
-          } else if (sortByPrice === "lowest") {
-            return b.price - a.price;
+          if (sortByPrice) {
+            if (sortByPrice === "highest") {
+              return b.price - a.price;
+            } else if (sortByPrice === "lowest") {
+              return a.price - b.price;
+            }
           }
-          return 0;
-        })
-        .sort((a, b) => {
-          if (sortByDate === "old") {
-            return a.price - b.price;
-          } else if (sortByDate === "new") {
-            return b.price - a.price;
+          if (sortByDate) {
+            const dateA = new Date(a.createdAt).getTime();
+            const dateB = new Date(b.createdAt).getTime();
+            if (sortByDate === "old") {
+              return dateA - dateB;
+            } else if (sortByDate === "new") {
+              return dateB - dateA;
+            }
           }
           return 0;
         });
@@ -186,7 +192,7 @@ export default function Home() {
   }, [search, allProducts, sortByPrice, sortByDate]);
 
   return (
-    <div className="bg-[#1C20240A] h-screen p-4">
+    <div className="h-screen p-4">
       <div className="w-[985px] m-auto flex gap-4">
         <div className="flex w-full">
           <div className={`flex-col w-full gap-6`}>
@@ -397,12 +403,28 @@ export default function Home() {
                                     <label className="text-black">
                                       Үнэ өөрчлөх
                                       <input
-                                        id="updatePrice"
+                                        id="updatedPrice"
                                         className=" pl-2 bg-gray-200 mt-1 rounded-md"
                                         placeholder={item?.price.toLocaleString()}
                                         value={updatedPrice}
                                         onChange={(event) =>
                                           setUpdatedPrice(
+                                            Number(event?.target.value)
+                                          )
+                                        }
+                                      />
+                                    </label>
+                                  </div>
+                                  <div>
+                                    <label className="text-black">
+                                      Барааны үлдэгдэл өөрчлөх
+                                      <input
+                                        id="updatedStock"
+                                        className=" pl-2 bg-gray-200 mt-1 rounded-md"
+                                        placeholder={item?.stock.toLocaleString()}
+                                        value={updatedStock}
+                                        onChange={(event) =>
+                                          setUpdatedStock(
                                             Number(event?.target.value)
                                           )
                                         }
@@ -449,15 +471,15 @@ export default function Home() {
                                         })}
                                       </div>
                                     </div>
-                                    <DialogClose>
-                                      <button
-                                        onClick={() => updateProduct(item._id)}
-                                        className="px-3 py-2 cursor-pointer text-black rounded-xl bg-gray-300 hover:text-white hover:bg-black "
-                                      >
-                                        Өөрчлөлт оруулах
-                                      </button>
-                                    </DialogClose>
                                   </div>
+                                  <DialogClose>
+                                    <button
+                                      onClick={() => updateProduct(item._id)}
+                                      className="px-3 py-2 cursor-pointer text-black rounded-xl bg-gray-300 hover:text-white hover:bg-black "
+                                    >
+                                      Өөрчлөлт оруулах
+                                    </button>
+                                  </DialogClose>
                                 </div>
                               </DialogDescription>
                             </DialogHeader>

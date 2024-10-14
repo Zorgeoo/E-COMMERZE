@@ -12,7 +12,7 @@ export const AdminBurgerBar = () => {
     pathname === path ? "bg-black text-white" : "";
 
   return (
-    <div className="flex flex-col gap-4 w-[21%] bg-white pt-6 h-[800px]">
+    <div className="flex flex-col gap-4 w-[21%] bg-white pt-6 h-screen">
       <Link href={`/admin/dashboard`}>
         <div
           className={`flex gap-4 items-center px-4 rounded-xl py-2  ${isActive(
