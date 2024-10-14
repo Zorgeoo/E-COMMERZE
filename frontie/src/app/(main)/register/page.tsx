@@ -4,8 +4,8 @@ import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Link from "next/link";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { apiClient } from "@/components/axios/page";
 
 interface FormValues {
   username: string;
@@ -57,7 +57,7 @@ const Register = () => {
 
   const createUser = async (values: FormValues) => {
     try {
-      const response = await axios.post("http://localhost:3004/auth/register", {
+      const response = await apiClient.post("/auth/register", {
         username: values.username,
         email: values.email,
         password: values.password,

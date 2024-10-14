@@ -9,6 +9,7 @@ import {
   useEffect,
 } from "react";
 import axios from "axios";
+import { apiClient } from "../axios/page";
 
 interface Product {
   images: string[];
@@ -53,7 +54,7 @@ export const ProductContextProvider = ({
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:3004/auth/login", {
+      const response = await apiClient.post("/auth/login", {
         email,
         password,
       });
@@ -67,7 +68,7 @@ export const ProductContextProvider = ({
 
   const getMe = async () => {
     try {
-      const res = await axios.get("http://localhost:3004/user/me", {
+      const res = await apiClient.get("/user/me", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -87,7 +88,7 @@ export const ProductContextProvider = ({
 
         if (!token) return; //token bhgui bol duusgana.
 
-        const res = await axios.get("http://localhost:3004/user/me", {
+        const res = await apiClient.get("/user/me", {
           headers: {
             Authorization: `Bearer ${token}`, //Hervee token baival user ooriin mdeellee avna. buh huseltuud headers deer tokenoo yvuulna.
           },

@@ -2,20 +2,20 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useProductContext } from "@/components/utils/context";
-import axios from "axios";
 import { DeliveryCard } from "@/components/co-components/DeliveryCard";
+import { apiClient } from "@/components/axios/page";
 
-type Cart={
-  quantity:number,
-  size:string,
-  _id:string,
-  cartProducts:{
-    _id:string,
-    price:number,
-    productName:string,
-    images:string[]
-  }
-  }
+type Cart = {
+  quantity: number;
+  size: string;
+  _id: string;
+  cartProducts: {
+    _id: string;
+    price: number;
+    productName: string;
+    images: string[];
+  };
+};
 
 const Cart = () => {
   const { user } = useProductContext();
@@ -24,7 +24,7 @@ const Cart = () => {
 
   const getCarts = async (userId: string) => {
     try {
-      const res = await axios.get(`http://localhost:3004/cart`, {
+      const res = await apiClient.get(`/cart`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -38,8 +38,8 @@ const Cart = () => {
 
   const updateCart = async (cartId: string, qty: number) => {
     try {
-      await axios.put(
-        `http://localhost:3004/cart/update`,
+      await apiClient.put(
+        `/cart/update`,
         { cartId, qty },
         {
           headers: {
@@ -78,7 +78,7 @@ const Cart = () => {
 
   const deleteCart = async (cartId: string) => {
     try {
-      await axios.delete(`http://localhost:3004/cart`, {
+      await apiClient.delete(`/cart`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

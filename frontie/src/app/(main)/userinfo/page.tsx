@@ -1,10 +1,8 @@
 "use client";
+import { apiClient } from "@/components/axios/page";
 import { useProductContext } from "@/components/utils/context";
-import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
-
 
 interface Product {
   images: string[];
@@ -55,8 +53,8 @@ const Userinfo = () => {
 
   const updateUserInfo = async () => {
     try {
-     await axios.put(
-        "http://localhost:3004/user/update",
+      await apiClient.put(
+        "user/update",
         {
           userId: user?.id,
           updatedFirstName,
@@ -79,7 +77,7 @@ const Userinfo = () => {
 
   const getOrders = async () => {
     try {
-      const res = await axios.get(`http://localhost:3004/order`, {
+      const res = await apiClient.get(`/order`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -87,7 +85,7 @@ const Userinfo = () => {
       });
 
       console.log(res.data);
-      
+
       const sortedOrders = res.data.orders.sort(
         (a: Order, b: Order) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()

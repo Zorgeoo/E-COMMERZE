@@ -1,5 +1,4 @@
 "use client";
-import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
@@ -11,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { apiClient } from "@/components/axios/page";
 
 interface Order {
   firstName: string;
@@ -27,7 +27,7 @@ const OrderPage = () => {
 
   const getOrders = async (status: string | undefined) => {
     try {
-      const res = await axios.get(`http://localhost:3004/order`, {
+      const res = await apiClient.get(`/order`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -41,8 +41,8 @@ const OrderPage = () => {
 
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     try {
-      const res = await axios.put(
-        `http://localhost:3004/order/update`,
+      const res = await apiClient.put(
+        `/order/update`,
         {},
         {
           headers: {

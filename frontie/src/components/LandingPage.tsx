@@ -1,8 +1,8 @@
 "use client";
-import axios from "axios";
 import { ProductCard } from "./co-components/ProductCard";
 import { useEffect, useState } from "react";
 import { useProductContext } from "./utils/context";
+import { apiClient } from "./axios/page";
 
 interface Product {
   images: string[];
@@ -14,15 +14,14 @@ interface Product {
 export const LandingPage = () => {
   const { getMe } = useProductContext();
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
-  
 
   const getProductsFilter = async () => {
     try {
-      const response = await axios.get(`http://localhost:3004/product`, {
+      const response = await apiClient.get(`/product`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        params: { limit:22 },
+        params: { limit: 22 },
       });
       setAllProducts(response.data.products);
     } catch (error) {

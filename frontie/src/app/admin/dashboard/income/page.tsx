@@ -1,5 +1,5 @@
 "use client";
-import axios from "axios";
+import { apiClient } from "@/components/axios/page";
 import { useEffect, useState } from "react";
 
 interface Product {
@@ -26,7 +26,7 @@ const Income = () => {
 
   const getProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3004/product/", {
+      const response = await apiClient.get("/product/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -39,7 +39,7 @@ const Income = () => {
 
   const getOrders = async () => {
     try {
-      const res = await axios.get(`http://localhost:3004/order`, {
+      const res = await apiClient.get(`/order`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

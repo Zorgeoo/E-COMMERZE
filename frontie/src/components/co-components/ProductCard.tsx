@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { useProductContext } from "../utils/context";
-import axios from "axios";
+import { apiClient } from "../axios/page";
 
 interface MyComponentProps {
   img: string;
@@ -27,8 +27,8 @@ export const ProductCard: React.FC<MyComponentProps> = ({
     setHeartFill(!heartFill);
     if (user) {
       try {
-        const response = await axios.post(
-          "http://localhost:3004/user/liked",
+        const response = await apiClient.post(
+          "/user/liked",
           {
             userId: user.id,
             productId: id,

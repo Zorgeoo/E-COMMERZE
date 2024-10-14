@@ -1,6 +1,5 @@
 "use client";
 import { ProductCard } from "@/components/co-components/ProductCard";
-import axios from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
@@ -8,6 +7,7 @@ import { FaStar } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
 import { useProductContext } from "@/components/utils/context";
+import { apiClient } from "@/components/axios/page";
 
 type ParamsType = {
   id: string;
@@ -22,7 +22,7 @@ type ProductType = {
   averageRating: number;
   reviewCount: number;
   description: string;
-  stock:number
+  stock: number;
 };
 
 interface Product {
@@ -43,7 +43,7 @@ type ReviewType = {
   rating: number;
 };
 
- const Detail:React.FC = () => {
+const Detail: React.FC = () => {
   const [product, setProduct] = useState<ProductType>();
 
   const [heartFill, setHeartFill] = useState(false);
@@ -66,14 +66,13 @@ type ReviewType = {
   const getOneProduct = async (id: string) => {
     //ID-raa back ruu get req yvulaad state-d hadgalna
     try {
-      const response = await axios.get(`http://localhost:3004/product/${id}`, {
+      const response = await apiClient.get(`/product/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
       setProduct(response.data.product);
       console.log(response.data.product);
-      
     } catch (error) {
       console.log("error bdgshaa");
     }
@@ -83,8 +82,8 @@ type ReviewType = {
     setHeartFill(!heartFill);
     if (user) {
       try {
-       await axios.post(
-          "http://localhost:3004/user/liked",
+        await apiClient.post(
+          "/user/liked",
           {
             userId: user.id,
             productId: productId,
@@ -106,7 +105,7 @@ type ReviewType = {
 
   const getReviewByProductId = async (id: string) => {
     try {
-      const response = await axios.get(`http://localhost:3004/review/${id}`, {
+      const response = await apiClient.get(`/review/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -119,7 +118,7 @@ type ReviewType = {
 
   const getProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3004/product/", {
+      const response = await apiClient.get("/product/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -136,8 +135,8 @@ type ReviewType = {
     rating: number
   ) => {
     try {
-      await axios.post(
-        "http://localhost:3004/review/",
+      await apiClient.post(
+        "/review/",
         {
           productId,
           userId,
@@ -169,8 +168,8 @@ type ReviewType = {
 
   const buyProduct = async () => {
     try {
-       await axios.post(
-        `http://localhost:3004/cart`,
+      await apiClient.post(
+        `/cart`,
         {
           userId: user?.id,
           quantity: count,
@@ -281,19 +280,23 @@ type ReviewType = {
                     <div>{count}</div>
                     <div
                       className="flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black"
-                      onClick={() => setCount((prev) => (prev < product?.stock ? prev + 1 : prev))}
+                      onClick={() =>
+                        setCount((prev) =>
+                          prev < (product?.stock ?? 0) ? prev + 1 : prev
+                        )
+                      }
                     >
                       +
                     </div>
                   </div>
-              <div className="flex gap-2">
-                <div className="underline">Барааны үлдэгдэл:</div>
-                <div className="font-semibold">{product?.stock}</div>
-              </div>
+                  <div className="flex gap-2">
+                    <div className="underline">Барааны үлдэгдэл:</div>
+                    <div className="font-semibold">{product?.stock}</div>
+                  </div>
                 </div>
                 <div>
                   <div className="font-bold text-[20px] pb-2">
-                    {(product?.price)}₮
+                    {product?.price}₮
                   </div>
                   <button
                     onClick={buyProduct}

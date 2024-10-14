@@ -1,5 +1,5 @@
 "use client";
-import axios from "axios";
+import { apiClient } from "@/components/axios/page";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -38,14 +38,11 @@ export default function Home() {
   const getOneOrder = async (orderID: string) => {
     //ID-raa back ruu get req yvulaad state-d hadgalna
     try {
-      const response = await axios.get(
-        `http://localhost:3004/order/${orderID}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await apiClient.get(`/order/${orderID}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       setOrder(response.data.order);
       console.log(response.data.order);
     } catch (error) {

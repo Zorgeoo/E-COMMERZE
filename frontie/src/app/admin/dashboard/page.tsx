@@ -1,8 +1,8 @@
 "use client";
 import { FaArrowRight } from "react-icons/fa";
 import Image from "next/image";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { apiClient } from "@/components/axios/page";
 
 interface Product {
   images: string[];
@@ -27,7 +27,7 @@ const Dashboard = () => {
 
   const getProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3004/product/", {
+      const response = await apiClient.get("/product/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

@@ -7,7 +7,7 @@ import { CiShoppingCart } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
 import { CiUser } from "react-icons/ci";
 import { useProductContext } from "./utils/context";
-import axios from "axios";
+import { apiClient } from "./axios/page";
 
 interface Product {
   images: string[];
@@ -32,7 +32,7 @@ export const Navbar = () => {
 
   const getProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3004/product/", {
+      const response = await apiClient.get("/product/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

@@ -1,7 +1,7 @@
 "use client";
 import { ProductCard } from "@/components/co-components/ProductCard";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { apiClient } from "@/components/axios/page";
 
 const sizeData = ["Free", "S", "M", "L", "XL", "2XL", "3XL"];
 
@@ -35,7 +35,7 @@ const Category = () => {
 
   const getCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:3004/category/", {
+      const response = await apiClient.get("/category/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -48,7 +48,7 @@ const Category = () => {
 
   const getProductsFilter = async () => {
     try {
-      const response = await axios.get(`http://localhost:3004/product`, {
+      const response = await apiClient.get(`/product`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

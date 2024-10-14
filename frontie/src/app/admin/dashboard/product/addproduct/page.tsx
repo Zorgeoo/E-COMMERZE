@@ -1,5 +1,5 @@
 "use client";
-import axios from "axios";
+import { apiClient } from "@/components/axios/page";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
@@ -19,7 +19,7 @@ export default function Home() {
   const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [imgUrl, setImgUrl] = useState<string[]>([]);
-  const [stock,SetStock]=useState<number|undefined>(undefined)
+  const [stock, SetStock] = useState<number | undefined>(undefined);
 
   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files;
@@ -32,7 +32,7 @@ export default function Home() {
 
     formData.append("image", image);
 
-    const res = await axios.post("http://localhost:3004/upload", formData, {
+    const res = await apiClient.post("/upload", formData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -43,8 +43,8 @@ export default function Home() {
   };
   const createProduct = async () => {
     try {
-      await axios.post(
-        "http://localhost:3004/product/",
+      await apiClient.post(
+        "/product/",
         {
           productName,
           price,
@@ -52,7 +52,7 @@ export default function Home() {
           description,
           sizes,
           images: imgUrl,
-          stock
+          stock,
         },
         {
           headers: {
@@ -68,7 +68,7 @@ export default function Home() {
 
   const getCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:3004/category/", {
+      const response = await apiClient.get("/category/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -104,7 +104,7 @@ export default function Home() {
     }
   };
 
-  console.log(stock)
+  console.log(stock);
 
   return (
     <div className="bg-[#1C20240A] h-screen p-4">

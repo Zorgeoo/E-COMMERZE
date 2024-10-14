@@ -6,7 +6,6 @@ import { FaArrowDown } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 import Image from "next/image";
-import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
@@ -36,6 +35,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { apiClient } from "@/components/axios/page";
 
 interface Product {
   images: string[];
@@ -45,7 +45,7 @@ interface Product {
   _id: string;
   createdAt: string;
   reviewCount: number;
-  stock:number
+  stock: number;
 }
 interface Category {
   categoryName: string;
@@ -76,7 +76,7 @@ export default function Home() {
 
   const getCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:3004/category/", {
+      const response = await apiClient.get("/category/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -89,7 +89,7 @@ export default function Home() {
 
   const deleteProduct = async (productId: string) => {
     try {
-      await axios.delete("http://localhost:3004/product/", {
+      await apiClient.delete("/product/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -103,7 +103,7 @@ export default function Home() {
 
   const getProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:3004/product/", {
+      const response = await apiClient.get("/product/", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -117,8 +117,8 @@ export default function Home() {
 
   const createCategory = async () => {
     try {
-      await axios.post(
-        "http://localhost:3004/category/",
+      await apiClient.post(
+        "/category/",
         { categoryName },
         {
           headers: {
@@ -134,8 +134,8 @@ export default function Home() {
 
   const updateProduct = async (productId: string) => {
     try {
-      await axios.put(
-        `http://localhost:3004/product/update`,
+      await apiClient.put(
+        `/product/update`,
         { updatedName, updatedPrice, productId, updatedCategory },
         {
           headers: {

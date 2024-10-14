@@ -3,8 +3,8 @@ import { useProductContext } from "@/components/utils/context";
 import Image from "next/image";
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
-import axios from "axios";
 import Link from "next/link";
+import { apiClient } from "@/components/axios/page";
 
 const Liked = () => {
   const { user, getMe } = useProductContext();
@@ -14,8 +14,8 @@ const Liked = () => {
     setHeartFill(!heartFill);
     if (user) {
       try {
-         await axios.post(
-          "http://localhost:3004/user/liked",
+        await apiClient.post(
+          "/user/liked",
           {
             userId: user.id,
             productId: productId,

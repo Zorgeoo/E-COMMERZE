@@ -1,20 +1,20 @@
 "use client";
 import { Correct } from "@/app/assets/Correct";
+import { apiClient } from "@/components/axios/page";
 import { useProductContext } from "@/components/utils/context";
-import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-type Cart={
-quantity:number,
-size:string
-cartProducts:{
-  _id:string,
-  price:number,
-  productName:string,
-  images:string[]
-}
-}
+type Cart = {
+  quantity: number;
+  size: string;
+  cartProducts: {
+    _id: string;
+    price: number;
+    productName: string;
+    images: string[];
+  };
+};
 const Address = () => {
   const [carts, setCarts] = useState<Cart[]>([]);
   const { user, getMe } = useProductContext();
@@ -28,8 +28,8 @@ const Address = () => {
 
   const createOrder = async () => {
     try {
-      const res = await axios.post(
-        `http://localhost:3004/order`,
+      const res = await apiClient.post(
+        `/order`,
         {
           userId: user?.id,
           products: carts.map((item) => ({
@@ -49,15 +49,12 @@ const Address = () => {
           },
         }
       );
-      const clearCartResponse = await axios.delete(
-        `http://localhost:3004/cart`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          params: { userId: user?.id },
-        }
-      );
+      const clearCartResponse = await apiClient.delete(`/cart`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        params: { userId: user?.id },
+      });
       console.log(clearCartResponse.data);
       if (carts.length === 0) {
         return;
@@ -72,7 +69,7 @@ const Address = () => {
 
   const getCarts = async (userId: string) => {
     try {
-      const res = await axios.get(`http://localhost:3004/cart`, {
+      const res = await apiClient.get(`/cart`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
