@@ -7,7 +7,7 @@ export const getProductsController: RequestHandler = async (req, res) => {
 
     let query: any = {};
 
-    if (!page && !limit && !categoryId && !sizes) {
+    if ((!page && !limit && !categoryId && !sizes) || limit) {
       const products = await productModel
         .find({})
         .populate("categoryId", { categoryName: 1 });
