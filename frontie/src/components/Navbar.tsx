@@ -33,11 +33,7 @@ export const Navbar = () => {
 
   const getProducts = async () => {
     try {
-      const response = await apiClient.get("/product/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await apiClient.get("/product");
       setAllProducts(response.data.products);
       console.log(response.data.products);
     } catch (error) {
