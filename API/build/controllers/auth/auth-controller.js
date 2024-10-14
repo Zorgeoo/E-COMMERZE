@@ -14,6 +14,7 @@ const user_schema_1 = require("../../models/user.schema");
 const jwt = require("jsonwebtoken");
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, email, password } = req.body;
+    console.log(req.body);
     const user = yield user_schema_1.userModel.findOne({ email });
     if (user)
         return res.status(400).json({ message: "User already exists" });

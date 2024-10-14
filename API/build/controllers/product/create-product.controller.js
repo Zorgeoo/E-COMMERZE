@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createProductController = void 0;
 const product_schema_1 = require("../../models/product.schema");
 const createProductController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body);
     try {
         yield product_schema_1.productModel.create(Object.assign({}, req.body));
         return res.status(201).json({

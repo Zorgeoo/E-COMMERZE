@@ -20,6 +20,7 @@ const productSchema = new Schema({
     salePercent: { type: Number, required: false },
     description: { type: String, required: false, default: "Description" },
     reviewCount: { type: Number, required: false, default: 0 },
+    stock: { type: Number, required: false, default: 0 },
     soldQty: { type: Number, required: false, default: 0 },
     averageRating: { type: Number, required: false, default: 0 },
     createdAt: {

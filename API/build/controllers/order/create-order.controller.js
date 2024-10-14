@@ -15,12 +15,10 @@ const product_schema_1 = require("../../models/product.schema");
 const createOrderController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield order_schema_1.OrderModel.create(Object.assign({}, req.body));
-        // await productModel.findByIdAndUpdate(
-        //   req.body.products[0].productId,
-        //   { $inc: { soldQty: req.body.products[0].quantity } },
-        //   { new: true }
-        // );
-        const updatePromises = req.body.products.map((product) => product_schema_1.productModel.findByIdAndUpdate(product.productId, { $inc: { soldQty: product.quantity } }, { new: true }));
+        const updatePromises = req.body.products.map((product) => product_schema_1.productModel.findByIdAndUpdate(product.productId, { $inc: { soldQty: product.quantity,
+                stock: -product.quantity
+            },
+        }, { new: true }));
         // eniig todruulah
         yield Promise.all(updatePromises);
         return res.status(201).json({

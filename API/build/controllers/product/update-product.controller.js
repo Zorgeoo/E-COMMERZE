@@ -12,13 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateProductController = void 0;
 const product_schema_1 = require("../../models/product.schema");
 const updateProductController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { updatedName, updatedPrice, productId, updatedCategory } = req.body;
-    console.log(req.body);
+    const { updatedName, updatedPrice, productId, updatedCategory, updatedStock, } = req.body;
     try {
         const updatedProduct = yield product_schema_1.productModel.findByIdAndUpdate(productId, {
             productName: updatedName,
             price: updatedPrice,
             categoryId: updatedCategory,
+            stock: updatedStock,
         }, { new: true });
         if (!updatedProduct) {
             return res.status(404).json({

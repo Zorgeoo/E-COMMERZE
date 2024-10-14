@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createCloudinaryController = void 0;
 const cloudinary_1 = require("../../utils/cloudinary");
 const createCloudinaryController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.file);
     if (!req.file)
         return res.status(400).send("No file uploaded.");
     try {
