@@ -32,6 +32,7 @@ export const LandingPage = () => {
   return (
     <div>
       <div className="w-[1280px] m-auto p-14">
+        hi
         <div className="h-fit w-full grid grid-cols-4 gap-x-5 gap-y-8 [&>div:nth-child(1)]:col-span-4 [&>div:nth-child(8)]:col-span-2 [&>div:nth-child(8)]:row-span-2 [&>div:nth-child(9)]:row-span-2 [&>div:nth-child(9)]:col-span-2">
           {allProducts?.map((item, index) => {
             const customHeight =
