@@ -18,9 +18,6 @@ export const LandingPage = () => {
   const getProducts = async () => {
     try {
       const response = await apiClient.get("/product/", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
         params: { limit: 100 },
       });
       setAllProducts(response.data.products);
