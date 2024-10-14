@@ -35,8 +35,8 @@ interface ChartData {
 }
 
 const chartConfig = {
-  income: {
-    label: "Орлого",
+  desktop: {
+    label: "Income",
     color: "#2563eb",
   },
 } satisfies ChartConfig;

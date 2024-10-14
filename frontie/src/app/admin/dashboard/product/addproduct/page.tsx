@@ -25,6 +25,7 @@ export default function Home() {
     const files = e.currentTarget.files;
     if (files) setImage(files[0]);
   };
+
   const handleUpload = async () => {
     if (!image) return;
 
@@ -35,6 +36,7 @@ export default function Home() {
     const res = await apiClient.post("/upload", formData, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
       },
     });
     const uploadImages = [...imgUrl, res.data.secure_url];

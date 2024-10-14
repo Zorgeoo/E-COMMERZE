@@ -152,6 +152,7 @@ const Detail: React.FC = () => {
       setComment("");
       setRating(0);
       await getReviewByProductId(id);
+      getOneProduct(id);
     } catch (error) {
       console.log(error);
     }
@@ -187,6 +188,7 @@ const Detail: React.FC = () => {
         }
       );
       toast.success("Сагсанд нэмэгдлээ");
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -254,13 +256,13 @@ const Detail: React.FC = () => {
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-2">
-                    <div className="underline">Хэмжээний заавар</div>
+                    <div className="underline">Размерууд</div>
                     <div className="flex gap-1">
                       {product?.sizes.map((item, index) => {
                         return (
                           <div
                             key={index}
-                            className={`flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black text-black hover:bg-[#E4E4E7] ${
+                            className={`flex justify-center text-sm items-center p-2 w-8 h-8 rounded-full border border-black text-black hover:bg-[#E4E4E7] ${
                               sizeChange === item
                                 ? "bg-black text-white hover:bg-black"
                                 : "bg-white"
@@ -301,7 +303,7 @@ const Detail: React.FC = () => {
                 </div>
                 <div>
                   <div className="font-bold text-[20px] pb-2">
-                    {product?.price}₮
+                    {product?.price.toLocaleString()}₮
                   </div>
                   <button
                     onClick={buyProduct}
@@ -323,11 +325,21 @@ const Detail: React.FC = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="flex">
-                      <FaStar className="text-yellow-400" />
-                      <FaStar className="text-gray-300" />
-                      <FaStar className="text-gray-300" />
-                      <FaStar className="text-gray-300" />
-                      <FaStar className="text-gray-300" />
+                      {Array(5)
+                        .fill(null)
+                        .map((_, index) => {
+                          return (
+                            <FaStar
+                              className={`${
+                                product
+                                  ? product?.averageRating >= index + 1
+                                    ? "text-yellow-400"
+                                    : ""
+                                  : ""
+                              }`}
+                            />
+                          );
+                        })}
                     </div>
                     <div className="flex gap-2">
                       <div className="font-bold">

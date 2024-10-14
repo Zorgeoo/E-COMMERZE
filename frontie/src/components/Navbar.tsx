@@ -16,17 +16,43 @@ interface Product {
   price: number;
   _id: string;
 }
+type Cart = {
+  quantity: number;
+  size: string;
+  _id: string;
+  cartProducts: {
+    _id: string;
+    price: number;
+    productName: string;
+    images: string[];
+  };
+};
 export const Navbar = () => {
   const { user, setUser, getMe } = useProductContext();
   const [search, setSearch] = useState("");
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [carts, setCarts] = useState<Cart[]>([]);
 
   const logOut = async () => {
     try {
       localStorage.removeItem("token");
       setUser(undefined);
-      toast.error("Амжилттай гарлаа")
+      toast.error("Амжилттай гарлаа");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getCarts = async (userId: string) => {
+    try {
+      const res = await apiClient.get(`/cart`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        params: { userId },
+      });
+      setCarts(res.data.carts);
+      console.log(res.data.carts);
     } catch (error) {
       console.log(error);
     }
@@ -44,6 +70,12 @@ export const Navbar = () => {
     getProducts();
     getMe();
   }, []);
+
+  useEffect(() => {
+    if (user?.id) {
+      getCarts(user.id);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (search.length > 0 && allProducts) {
@@ -85,7 +117,10 @@ export const Navbar = () => {
             <div className="absolute bg-white text-black w-full mt-1 max-h-64 overflow-y-auto shadow-md rounded-lg z-20">
               {filteredProducts.map((product) => (
                 <Link href={`${product._id}`} key={product._id}>
-                  <div className="flex items-center p-2 hover:bg-gray-100 cursor-pointer">
+                  <div
+                    onClick={() => setSearch("")}
+                    className="flex items-center p-2 hover:bg-gray-100 cursor-pointer"
+                  >
                     <img
                       src={product.images[0]}
                       alt={product.productName}
@@ -116,8 +151,15 @@ export const Navbar = () => {
               </div>
             </Link>
             <Link href={`/buysteps/cart`}>
-              <div>
+              <div className="relative">
                 <CiShoppingCart className="w-6 h-6" />
+                <div
+                  className={`bg-[#2563EB] rounded-full px-1 text-xs absolute top-[-15%] right-[-15%]  ${
+                    carts.length === 0 ? "hidden" : "block"
+                  }`}
+                >
+                  {carts?.length}
+                </div>
               </div>
             </Link>
             <Link href={`/userinfo`}>
