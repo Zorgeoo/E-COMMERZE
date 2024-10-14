@@ -42,7 +42,7 @@ const Category = () => {
       });
       setAllCategories(response.data);
     } catch (error) {
-      console.log("error bdgshaa");
+      console.log("Can not get categories");
     }
   };
 
@@ -57,7 +57,7 @@ const Category = () => {
       setAllProducts(response.data.products);
       setTotal(response.data.totalCount);
     } catch (error) {
-      console.log("error bdgshaa");
+      console.log("can not get products");
     }
   };
 

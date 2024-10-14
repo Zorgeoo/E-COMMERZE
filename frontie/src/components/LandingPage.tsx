@@ -25,7 +25,7 @@ export const LandingPage = () => {
       });
       setAllProducts(response.data.products);
     } catch (error) {
-      console.log("error bdgshaa");
+      console.log("Can not get products");
     }
   };
 

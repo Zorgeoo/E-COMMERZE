@@ -9,6 +9,7 @@ interface AddressCardProps {
     price: number;
   };
   qty: number;
+  size: string;
   deleteCart: () => void;
   increaseQty: () => void;
   decreaseQty: () => void;
@@ -17,6 +18,7 @@ interface AddressCardProps {
 export const DeliveryCard: React.FC<AddressCardProps> = ({
   item,
   qty,
+  size,
   deleteCart,
   increaseQty,
   decreaseQty,
@@ -32,7 +34,7 @@ export const DeliveryCard: React.FC<AddressCardProps> = ({
         />
       </div>
       <div className="flex flex-col justify-between w-full">
-        <div>
+        <div className="flex flex-col gap-1">
           <div className="pb-1">{item.productName}</div>
           <div className="flex items-center gap-4">
             <div
@@ -49,11 +51,17 @@ export const DeliveryCard: React.FC<AddressCardProps> = ({
               +
             </div>
           </div>
+          <div className="flex items-center gap-2">
+            <div>Хувцасны размер:</div>
+            <div className="font-semibold">{size}</div>
+          </div>
+          <div className="font-bold">
+            {(qty * item.price).toLocaleString()}₮
+          </div>
         </div>
-        <div className="font-bold">{(qty * item.price).toLocaleString()}₮</div>
       </div>
       <div className="p-4 cursor-pointer">
-        <FaRegTrashCan onClick={deleteCart} />
+        <FaRegTrashCan className="hover:text-red-600" onClick={deleteCart} />
       </div>
     </div>
   );

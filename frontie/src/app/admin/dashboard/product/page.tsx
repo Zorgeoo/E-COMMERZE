@@ -83,7 +83,7 @@ export default function Home() {
       });
       setAllCategories(response.data.categories);
     } catch (error) {
-      console.log("error bdgshaa");
+      console.log("Can not get categories");
     }
   };
 
@@ -111,7 +111,7 @@ export default function Home() {
       });
       setAllProducts(response.data.products);
     } catch (error) {
-      console.log("error bdgshaa");
+      console.log("Can not get products");
     }
   };
 

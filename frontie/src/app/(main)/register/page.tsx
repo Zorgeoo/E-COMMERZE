@@ -6,6 +6,7 @@ import * as yup from "yup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { apiClient } from "@/components/axios/page";
+import { toast } from "react-toastify";
 
 interface FormValues {
   username: string;
@@ -16,7 +17,6 @@ interface FormValues {
 const Register = () => {
   const router = useRouter();
   const initialValues: FormValues = {
-    //Ymr ymr medeelel back ruu shidehee todorhoilno
     username: "",
     email: "",
     password: "",
@@ -24,7 +24,6 @@ const Register = () => {
   };
 
   const validationSchema = yup.object({
-    //yup ashiglan ymr ymr utga avj bloh requirements-g oruulna
     username: yup.string().required("Нэвтрэх нэрээ оруулна уу"),
     email: yup.string().email("Алдаатай имэйл").required("Имэйлээ оруулна уу"),
     password: yup
@@ -63,9 +62,9 @@ const Register = () => {
         password: values.password,
       });
       router.push("/login");
-      console.log("User created:", response.data.message);
+      console.log("User created", response.data.message);
     } catch (error) {
-      console.error("Error creating user:", error);
+      toast.error("Бүртгэлтэй имэйл байна.");
     }
   };
 
@@ -110,9 +109,6 @@ const Register = () => {
               value={formik.values.confirm}
               onChange={formik.handleChange}
             />
-            {formik.errors.confirm ? (
-              <p className="text-red-600">{formik.errors.confirm}</p>
-            ) : null}
           </div>
           <div className="flex flex-col gap-1 px-2">
             <div

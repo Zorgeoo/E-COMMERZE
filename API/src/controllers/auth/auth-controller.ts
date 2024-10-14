@@ -8,6 +8,7 @@ const register: RequestHandler = async (req, res) => {
     email: String;
     password: String;
   };
+  console.log(req.body);
 
   const user = await userModel.findOne({ email });
 

@@ -9,6 +9,7 @@ import {
   useEffect,
 } from "react";
 import { apiClient } from "../axios/page";
+import { toast } from "react-toastify";
 
 interface Product {
   images: string[];
@@ -60,6 +61,7 @@ export const ProductContextProvider = ({
       localStorage.setItem("token", response.data.token); //Localstorage deer token-r SETelne./browser deer hadgalagdsn/
       setUser(response.data.user);
       router.replace("/");
+      toast.success("Амжилттай нэвтэрлээ");
     } catch (error) {
       console.log(error);
     }

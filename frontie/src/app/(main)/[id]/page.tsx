@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useProductContext } from "@/components/utils/context";
 import { apiClient } from "@/components/axios/page";
+import { toast } from "react-toastify";
 
 type ParamsType = {
   id: string;
@@ -64,7 +65,6 @@ const Detail: React.FC = () => {
   const [allReviews, setAllReviews] = useState<ReviewType[]>();
 
   const getOneProduct = async (id: string) => {
-    //ID-raa back ruu get req yvulaad state-d hadgalna
     try {
       const response = await apiClient.get(`/product/${id}`, {
         headers: {
@@ -74,7 +74,7 @@ const Detail: React.FC = () => {
       setProduct(response.data.product);
       console.log(response.data.product);
     } catch (error) {
-      console.log("error bdgshaa");
+      console.log("Can not get product infos");
     }
   };
 
@@ -125,7 +125,7 @@ const Detail: React.FC = () => {
       });
       setAllProducts(response.data.products);
     } catch (error) {
-      console.log("error bdgshaa");
+      console.log("Can not get products");
     }
   };
   const createReview = async (
@@ -167,6 +167,10 @@ const Detail: React.FC = () => {
   useEffect(() => {}, []);
 
   const buyProduct = async () => {
+    if (!sizeChange) {
+      toast.error("Та бүтээгдэхүүний размераа сонгоно уу!");
+      return;
+    }
     try {
       await apiClient.post(
         `/cart`,
@@ -182,6 +186,7 @@ const Detail: React.FC = () => {
           },
         }
       );
+      toast.success("Сагсанд нэмэгдлээ");
     } catch (error) {
       console.log(error);
     }
@@ -272,7 +277,7 @@ const Detail: React.FC = () => {
                     <div
                       className="flex justify-center items-center p-2 w-8 h-8 rounded-full border border-black"
                       onClick={() =>
-                        setCount((prev) => (prev > 0 ? prev - 1 : 0))
+                        setCount((prev) => (prev > 1 ? prev - 1 : 1))
                       }
                     >
                       -

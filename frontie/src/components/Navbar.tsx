@@ -25,6 +25,7 @@ export const Navbar = () => {
     try {
       localStorage.removeItem("token");
       setUser(undefined);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -40,7 +41,7 @@ export const Navbar = () => {
       setAllProducts(response.data.products);
       console.log(response.data.products);
     } catch (error) {
-      console.log("error bdgshaa");
+      console.log("Can not get products");
     }
   };
   useEffect(() => {
@@ -85,7 +86,7 @@ export const Navbar = () => {
           {filteredProducts.length > 0 && (
             <div className="absolute bg-white text-black w-full mt-1 max-h-64 overflow-y-auto shadow-md rounded-lg z-20">
               {filteredProducts.map((product) => (
-                <Link href={`/product/${product._id}`} key={product._id}>
+                <Link href={`${product._id}`} key={product._id}>
                   <div className="flex items-center p-2 hover:bg-gray-100 cursor-pointer">
                     <img
                       src={product.images[0]}

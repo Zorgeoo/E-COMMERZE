@@ -130,6 +130,7 @@ const Cart = () => {
                   increaseQty={() => increaseQty(item._id, item.quantity)}
                   decreaseQty={() => decreaseQty(item._id, item.quantity)}
                   deleteCart={() => deleteCart(item._id)}
+                  size={item.size}
                 />
               );
             })}

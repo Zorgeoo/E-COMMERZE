@@ -34,7 +34,7 @@ const Dashboard = () => {
       });
       setAllProducts(response.data.products);
     } catch (error) {
-      console.log("error bdgshaa");
+      console.log("Can not get products");
     }
   };
   useEffect(() => {
