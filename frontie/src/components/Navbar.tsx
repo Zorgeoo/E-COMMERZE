@@ -8,6 +8,7 @@ import { CiSearch } from "react-icons/ci";
 import { CiUser } from "react-icons/ci";
 import { useProductContext } from "./utils/context";
 import { apiClient } from "./axios/page";
+import { toast } from "react-toastify";
 
 interface Product {
   images: string[];
@@ -25,7 +26,7 @@ export const Navbar = () => {
     try {
       localStorage.removeItem("token");
       setUser(undefined);
-      window.location.reload();
+      toast.error("Амжилттай гарлаа")
     } catch (error) {
       console.log(error);
     }

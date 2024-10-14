@@ -3,6 +3,9 @@ import { FaArrowRight } from "react-icons/fa";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { apiClient } from "@/components/axios/page";
+import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 interface Product {
   images: string[];
@@ -26,6 +29,17 @@ interface Order {
   status: string;
   products: ProductOrder[];
 }
+interface ChartData {
+  month: string; // Represents the formatted date as a string
+  desktop: number; // Represents the income amount
+}
+
+const chartConfig = {
+  income: {
+    label: "Орлого",
+    color: "#2563eb",
+  },
+} satisfies ChartConfig;
 
 const Dashboard = () => {
   const [allProducts, setAllProducts] = useState<Product[] | undefined>(
@@ -39,6 +53,7 @@ const Dashboard = () => {
     undefined
   );
   const [orders, setOrders] = useState<Order[]>([]);
+  const [chartData, setChartData] = useState<ChartData[]>([]);
 
   const getProducts = async () => {
     try {
@@ -57,6 +72,47 @@ const Dashboard = () => {
     getOrders();
   }, []);
 
+  const generateChartData = (orders: Order[]) => {
+    const today = new Date();
+
+    const lastFiveDays = Array.from({ length: 5 }, (_, i) => {
+      const day = new Date(today);
+      day.setDate(today.getDate() - i);
+      return day.toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+      });
+    });
+
+    const data = lastFiveDays.map((day) => {
+      const dayOrders = orders.filter((order) => {
+        const orderDate = new Date(order.createdAt);
+        const orderDateString = orderDate.toLocaleDateString("en-US", {
+          month: "short",
+          day: "2-digit",
+        });
+
+        return orderDateString === day;
+      });
+
+      const totalIncome = dayOrders.reduce((total, order) => {
+        return (
+          total +
+          order.products.reduce((orderTotal, productOrder) => {
+            const price = productOrder.productId?.price;
+            if (price !== undefined) {
+              return orderTotal + productOrder.quantity * price;
+            }
+            return orderTotal;
+          }, 0)
+        );
+      }, 0);
+      return { month: day, desktop: totalIncome };
+    });
+
+    return data.reverse();
+  };
+
   const getOrders = async () => {
     try {
       const res = await apiClient.get(`/order`, {
@@ -66,11 +122,13 @@ const Dashboard = () => {
         params: { admin: "admin", dateFilter: "today" },
       });
       setOrders(res.data.orders);
-      console.log(res.data.orders);
+      const generatedData = generateChartData(res.data.orders);
+      setChartData(generatedData);
     } catch (error) {
       console.log(error);
     }
   };
+  console.log(chartData);
 
   useEffect(() => {
     const products = allProducts?.sort((a, b) => b.soldQty - a.soldQty);
@@ -86,11 +144,15 @@ const Dashboard = () => {
         }, 0)
       );
     }, 0);
-    // const totalSoldQty = orders?.reduce((total, order) => {
-    //   return (
-    //     total+ order.products.reduce((orderTotal,order)=>{})
-    //   )
-    // }, 0);
+    const totalSoldQty = orders?.reduce((total, order) => {
+      return (
+        total +
+        order.products.reduce((orderTotal, order) => {
+          return orderTotal + order.quantity;
+        }, 0)
+      );
+    }, 0);
+
     setTotalIncome(totalIncome);
     setSortedProducts(products);
     setTotalSoldQty(totalSoldQty);
@@ -104,7 +166,7 @@ const Dashboard = () => {
             <div className="flex-1 flex flex-col bg-white rounded-xl px-6 py-4">
               <div className="flex gap-2 font-semibold">
                 <div>₮</div>
-                <div>Нийт орлого</div>
+                <div>Өнөөдрийн нийт орлого</div>
               </div>
               <div className="font-bold text-[32px]">
                 {totalIncome?.toLocaleString()}₮
@@ -112,7 +174,7 @@ const Dashboard = () => {
             </div>
             <div className="flex-1 flex flex-col bg-white rounded-xl px-6 py-4">
               <div className="flex gap-2 font-semibold">
-                <div>Нийт борлуулагдсан хэмжээ</div>
+                <div>Өнөөдрийн нийт борлуулагдсан тоо</div>
               </div>
               <div className="font-bold text-[32px]">{totalSoldQty}</div>
             </div>
@@ -166,10 +228,35 @@ const Dashboard = () => {
                 })}
               </div>
             </div>
-            <div className="flex-1 rounded-xl px-6 py-4 bg-white">
-              <div className="flex items-center w-full justify-between pb-5">
-                <div className="font-semibold text-[18px]">Борлуулалт</div>
-                <FaArrowRight />
+            <div className="flex-1 rounded-xl px-6 py-4 bg-white h-fit">
+              <div className="flex flex-col items-center w-full justify-between pb-5">
+                <div className="flex justify-between w-full">
+                  <div className="font-semibold text-[18px]">Борлуулалт</div>
+                  <FaArrowRight />
+                </div>
+                <div className="flex items-center">
+                  <ChartContainer
+                    config={chartConfig}
+                    className="min-h-[200px] w-full"
+                  >
+                    <BarChart accessibilityLayer data={chartData}>
+                      <CartesianGrid vertical={false} />
+                      <XAxis
+                        dataKey="month"
+                        tickLine={false}
+                        tickMargin={10}
+                        axisLine={false}
+                        tickFormatter={(value) => value.slice(0, 6)}
+                      />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Bar
+                        dataKey="desktop"
+                        fill="var(--color-desktop)"
+                        radius={4}
+                      />
+                    </BarChart>
+                  </ChartContainer>
+                </div>
               </div>
             </div>
           </div>
