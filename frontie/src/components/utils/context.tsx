@@ -8,7 +8,6 @@ import {
   useContext,
   useEffect,
 } from "react";
-import axios from "axios";
 import { apiClient } from "../axios/page";
 
 interface Product {
