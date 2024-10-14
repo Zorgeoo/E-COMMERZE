@@ -17,10 +17,10 @@ export const LandingPage = () => {
 
   const getProducts = async () => {
     try {
-      const response = await apiClient.get("/product/");
+      const response = await apiClient.get("/product");
       setAllProducts(response.data.products);
     } catch (error) {
-      console.log("Can not get products");
+      console.log(error);
     }
   };
 
