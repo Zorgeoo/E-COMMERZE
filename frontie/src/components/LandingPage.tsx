@@ -15,17 +15,21 @@ export const LandingPage = () => {
   const { getMe } = useProductContext();
   const [allProducts, setAllProducts] = useState<Product[] | null>(null);
 
-  const getProducts = async () => {
+  const getProductsFilter = async () => {
     try {
-      const response = await apiClient.get("/product");
+      const response = await apiClient.get(`/product`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       setAllProducts(response.data.products);
     } catch (error) {
-      console.log(error);
+      console.log("can not get products");
     }
   };
 
   useEffect(() => {
-    getProducts();
+    getProductsFilter();
     getMe();
   }, []);
 
