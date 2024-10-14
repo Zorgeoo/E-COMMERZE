@@ -330,6 +330,7 @@ const Detail: React.FC = () => {
                         .map((_, index) => {
                           return (
                             <FaStar
+                              key={index}
                               className={`${
                                 product
                                   ? product?.averageRating >= index + 1
